@@ -17,6 +17,7 @@ namespace Scripts.Manager
 
         private int _waveCount = 1;
         [SerializeField] private int _amountOfMechs = 10;
+
         private Transform _startPoint;
 
 
@@ -27,14 +28,14 @@ namespace Scripts.Manager
 
         private void Start()
         {
-            _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
+            StartCoroutine("StartRound");
         }
 
         GameObject CreateMech()
         {
             GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)]);
             mech.transform.parent = _mechContainer.transform;
-            mech.SetActive(false);
+            //mech.SetActive(false);
             _mechPool.Add(mech);
 
             return mech;
@@ -68,17 +69,28 @@ namespace Scripts.Manager
 
         public void StartWave()
         {
-            GenerateMechs(_amountOfMechs * _waveCount);
             StartCoroutine(SpawnTime());
 
+            _waveCount++;
         }
 
         IEnumerator SpawnTime()
         {
-            while (true)
+            while (true) // number of mechs released <= total mechs for round
             {
                 yield return new WaitForSeconds(2);
                 GetMech();
+            }
+
+        }
+
+        IEnumerator StartRound()
+        {
+            while (true)
+            {
+                _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
+                yield return new WaitForSeconds(60);
+                StartWave();
             }
             
         }

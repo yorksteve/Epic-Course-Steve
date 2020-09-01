@@ -9,8 +9,11 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent _agent;
     private Vector3 _destination;
     private Animator _anim;
+    [SerializeField] private ParticleSystem _dust;
 
     public int health;
+    [SerializeField] private int _money = 500;
+    [SerializeField] private int _mechMoney;
 
     // Start is called before the first frame update
     void Start()
@@ -28,24 +31,22 @@ public class EnemyAI : MonoBehaviour
         
     }
 
-    void DestroyMech()
-    {
-        this.gameObject.SetActive(false);
-    }
-
     void TakeDamage()
     {
         //health -= damageAmount;
 
         if (health <= 0)
         {
-            _anim.Play("Dying");
-            DestroyMech();
+            // Kill mech and get money
+            _anim.SetBool("Die", true);
+            this.gameObject.SetActive(false);
+
+            _money += _mechMoney;
         }
     }
 
     void Attack()
     {
-        _anim.Play("Attacking");
+        _anim.SetBool("Attack", true);
     }
 }
