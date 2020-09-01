@@ -15,8 +15,8 @@ namespace Scripts.Manager
         [SerializeField]
         private GameObject _mechContainer;
 
-        private int _waveCount;
-        [SerializeField] private int _amountOfMechs;
+        private int _waveCount = 1;
+        [SerializeField] private int _amountOfMechs = 10;
         private Transform _startPoint;
 
 
@@ -30,6 +30,17 @@ namespace Scripts.Manager
             _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
         }
 
+        GameObject CreateMech()
+        {
+            GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)]);
+            mech.transform.parent = _mechContainer.transform;
+            mech.SetActive(false);
+            _mechPool.Add(mech);
+
+            return mech;
+        }
+
+
         List<GameObject> GenerateMechs(int amountOfMechs)
         {
             for (int i = 0; i < amountOfMechs; i++)
@@ -40,15 +51,6 @@ namespace Scripts.Manager
             return _mechPool;
         }
 
-        GameObject CreateMech()
-        {
-            GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)]);
-            mech.transform.parent = _mechContainer.transform;
-            mech.SetActive(false);
-            _mechPool.Add(mech);
-
-            return mech;
-        }
 
         public GameObject GetMech()
         {
@@ -61,10 +63,28 @@ namespace Scripts.Manager
                 }
             }
 
-
             return CreateMech();
         }
 
+        public void StartWave()
+        {
+            GenerateMechs(_amountOfMechs * _waveCount);
+            StartCoroutine(SpawnTime());
+
+        }
+
+        IEnumerator SpawnTime()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(2);
+                GetMech();
+            }
+            
+        }
+
     }
+
+
 }
 
