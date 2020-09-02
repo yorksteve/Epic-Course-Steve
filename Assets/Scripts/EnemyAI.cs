@@ -14,6 +14,9 @@ public class EnemyAI : MonoBehaviour
     //[SerializeField] private int _money = 500;
     [SerializeField] private int _mechMoney;
 
+    private float _reachRange = 1.0f;
+    private float _distanceFromDes;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,9 +30,15 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_agent.transform.position == _destination)
+        DestinationReached();
+    }
+
+    void DestinationReached()
+    {
+        _distanceFromDes = Vector3.Distance(transform.position, _destination);
+        if (_distanceFromDes <= _reachRange)
         {
-            Debug.Log("Mech reached destination");
+            Debug.Log("Destination Reached");
             this.gameObject.SetActive(false);
             // Reduce player's life count
         }
@@ -51,7 +60,7 @@ public class EnemyAI : MonoBehaviour
     }
 
 
-    // Mechs can attack soldiers placed in the field (to be added later)
+    // Mechs can attack soldiers placed in the field (to be added later...probably)
     void Attack()
     {
         _anim.SetBool("Attack", true);

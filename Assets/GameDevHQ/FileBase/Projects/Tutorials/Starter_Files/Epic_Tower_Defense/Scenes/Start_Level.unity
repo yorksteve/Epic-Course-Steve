@@ -4963,7 +4963,7 @@ Transform:
   m_GameObject: {fileID: 1207510472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -47.11, y: 0.4, z: 0.04}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.0113, y: 5.897534, z: 2.0113}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
@@ -6764,8 +6764,9 @@ MonoBehaviour:
   _mechs:
   - {fileID: 1637921026644932, guid: b6f9eb08e9dcb484fbccc49d65f561ab, type: 3}
   - {fileID: 1079767520691416, guid: fed6fd85e4a83418485118c22ed9f184, type: 3}
-  _mechContainer: {fileID: 323889744}
   _amountOfMechs: 10
+  _mechContainer: {fileID: 323889744}
+  _mechPool: []
 --- !u!4 &1490091709
 Transform:
   m_ObjectHideFlags: 0

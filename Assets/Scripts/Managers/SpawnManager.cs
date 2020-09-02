@@ -68,18 +68,26 @@ namespace Scripts.Manager
         public void StartWave()
         {
             StartCoroutine(SpawnTime());
-
+            
             _waveCount++;
         }
 
         IEnumerator SpawnTime()
         {
-            while (_mechsSpawned <= _amountOfMechs * _waveCount) // number of mechs released <= total mechs for round
+            //while (_mechsSpawned <= _amountOfMechs * _waveCount) // number of mechs released <= total mechs for round
+            //{
+            //    yield return new WaitForSeconds(5);
+            //    GetMech();
+            //    _mechsSpawned++;
+            //}
+
+            for (int i = 0; i <= (_amountOfMechs * _waveCount); i++)
             {
                 yield return new WaitForSeconds(5);
                 GetMech();
-                _mechsSpawned++;
             }
+
+            Debug.Log("Spawning for current wave finished");
 
         }
 
