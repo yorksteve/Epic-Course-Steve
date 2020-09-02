@@ -9,10 +9,9 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent _agent;
     private Vector3 _destination;
     private Animator _anim;
-    [SerializeField] private ParticleSystem _dust;
 
     public int health;
-    [SerializeField] private int _money = 500;
+    //[SerializeField] private int _money = 500;
     [SerializeField] private int _mechMoney;
 
     // Start is called before the first frame update
@@ -28,23 +27,31 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (_agent.transform.position == _destination)
+        {
+            Debug.Log("Mech reached destination");
+            this.gameObject.SetActive(false);
+            // Reduce player's life count
+        }
     }
 
-    void TakeDamage()
+    void Health()
     {
-        //health -= damageAmount;
+        //health -= damageAmount; (dependant upon the weapon)
 
         if (health <= 0)
         {
             // Kill mech and get money
+            health = 0;
             _anim.SetBool("Die", true);
             this.gameObject.SetActive(false);
 
-            _money += _mechMoney;
+            // Increase War Fund based on value of mech destroyed
         }
     }
 
+
+    // Mechs can attack soldiers placed in the field (to be added later)
     void Attack()
     {
         _anim.SetBool("Attack", true);

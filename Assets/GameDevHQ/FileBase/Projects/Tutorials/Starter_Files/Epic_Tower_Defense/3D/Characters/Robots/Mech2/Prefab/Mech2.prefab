@@ -436,9 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbff045b59fe9dd42a1d11e27f3e64de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dust: {fileID: 2289901618619969438, guid: ec725eafbadf5ff439528cb19d2ecf42, type: 3}
   health: 20
-  _money: 500
   _mechMoney: 0
 --- !u!1 &1088550950582580
 GameObject:

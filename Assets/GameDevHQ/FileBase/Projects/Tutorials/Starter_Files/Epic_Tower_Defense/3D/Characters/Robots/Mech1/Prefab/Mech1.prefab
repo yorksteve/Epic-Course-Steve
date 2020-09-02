@@ -1581,6 +1581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
+  _mechMoney: 0
 --- !u!1 &1695296882317140
 GameObject:
   m_ObjectHideFlags: 0

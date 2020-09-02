@@ -7,18 +7,14 @@ namespace Scripts.Manager
 {
     public class SpawnManager : MonoSingleton<SpawnManager>
     {
-        [SerializeField]
-        private GameObject[] _mechs;
-
-        private List<GameObject> _mechPool;
-
-        [SerializeField]
-        private GameObject _mechContainer;
-
-        private int _waveCount = 1;
+        [SerializeField] private GameObject[] _mechs;
         [SerializeField] private int _amountOfMechs = 10;
+        [SerializeField] private GameObject _mechContainer;
 
+        [SerializeField] private List<GameObject> _mechPool;
+        private int _waveCount = 1;
         private Transform _startPoint;
+        private int _mechsSpawned;
 
 
         public override void Init()
@@ -28,14 +24,16 @@ namespace Scripts.Manager
 
         private void Start()
         {
-            StartCoroutine("StartRound");
+            //StartCoroutine("StartRound");
+            _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
+            StartWave();
         }
 
         GameObject CreateMech()
         {
             GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)]);
             mech.transform.parent = _mechContainer.transform;
-            //mech.SetActive(false);
+            mech.SetActive(false);
             _mechPool.Add(mech);
 
             return mech;
@@ -76,24 +74,25 @@ namespace Scripts.Manager
 
         IEnumerator SpawnTime()
         {
-            while (true) // number of mechs released <= total mechs for round
+            while (_mechsSpawned <= _amountOfMechs * _waveCount) // number of mechs released <= total mechs for round
             {
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(5);
                 GetMech();
+                _mechsSpawned++;
             }
 
         }
 
-        IEnumerator StartRound()
-        {
-            while (true)
-            {
-                _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
-                yield return new WaitForSeconds(60);
-                StartWave();
-            }
+        //IEnumerator StartRound()
+        //{
+        //    while (true)
+        //    {
+        //        _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
+        //        yield return new WaitForSeconds(60);
+        //        StartWave();
+        //    }
             
-        }
+        //}
 
     }
 
