@@ -7,15 +7,12 @@ using Scripts.Manager;
 public class EnemyAI : MonoBehaviour
 {
     private NavMeshAgent _agent;
-    private Vector3 _destination;
+    private Transform _destination;
     private Animator _anim;
 
     public int health;
     //[SerializeField] private int _money = 500;
     [SerializeField] private int _mechMoney;
-
-    private float _reachRange = 1.0f;
-    private float _distanceFromDes;
 
     // Start is called before the first frame update
     void Start()
@@ -23,25 +20,8 @@ public class EnemyAI : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
 
-        _destination = GameObject.Find("Destination").transform.position;
-        _agent.SetDestination(_destination);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        DestinationReached();
-    }
-
-    void DestinationReached()
-    {
-        _distanceFromDes = Vector3.Distance(transform.position, _destination);
-        if (_distanceFromDes <= _reachRange)
-        {
-            Debug.Log("Destination Reached");
-            this.gameObject.SetActive(false);
-            // Reduce player's life count
-        }
+        _destination = SpawnManager.Instance.RequestDestination();
+        _agent.SetDestination(_destination.position);
     }
 
     void Health()

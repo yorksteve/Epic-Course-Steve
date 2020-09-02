@@ -4887,6 +4887,7 @@ GameObject:
   - component: {fileID: 1207510474}
   - component: {fileID: 1207510473}
   - component: {fileID: 1207510477}
+  - component: {fileID: 1207510478}
   m_Layer: 0
   m_Name: Destination
   m_TagString: Untagged
@@ -4984,6 +4985,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1207510478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207510472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0184bb7d41c74984e98cf7b450249261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1220650254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6767,6 +6780,7 @@ MonoBehaviour:
   _amountOfMechs: 10
   _mechContainer: {fileID: 323889744}
   _mechPool: []
+  _destination: {fileID: 1207510476}
 --- !u!4 &1490091709
 Transform:
   m_ObjectHideFlags: 0

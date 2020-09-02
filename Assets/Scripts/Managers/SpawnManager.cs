@@ -14,8 +14,7 @@ namespace Scripts.Manager
         [SerializeField] private List<GameObject> _mechPool;
         private int _waveCount = 1;
         private Transform _startPoint;
-        private int _mechsSpawned;
-
+        [SerializeField] private Transform _destination;
 
         public override void Init()
         {
@@ -74,13 +73,6 @@ namespace Scripts.Manager
 
         IEnumerator SpawnTime()
         {
-            //while (_mechsSpawned <= _amountOfMechs * _waveCount) // number of mechs released <= total mechs for round
-            //{
-            //    yield return new WaitForSeconds(5);
-            //    GetMech();
-            //    _mechsSpawned++;
-            //}
-
             for (int i = 0; i <= (_amountOfMechs * _waveCount); i++)
             {
                 yield return new WaitForSeconds(5);
@@ -91,17 +83,10 @@ namespace Scripts.Manager
 
         }
 
-        //IEnumerator StartRound()
-        //{
-        //    while (true)
-        //    {
-        //        _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
-        //        yield return new WaitForSeconds(60);
-        //        StartWave();
-        //    }
-            
-        //}
-
+        public Transform RequestDestination()
+        {
+            return _destination;
+        }
     }
 
 
