@@ -5,15 +5,28 @@ using Scripts.Manager;
 
 public class EndZone : MonoBehaviour
 {
+    private int _mechsTriggered;
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Destination Reached");
+        _mechsTriggered++;
         other.gameObject.SetActive(false);
         // Reduce player's life count
 
-        if (other.gameObject) //Check number of mechs that go through in addition to destroyed ones for starting next wave
+        if (_mechsTriggered == SpawnManager.Instance.mechsInWave)
         {
-            SpawnManager.Instance.StartWave();
+            // Add functionality for destroyed mechs
+
+            StartCoroutine(NextWave());
         }
+    
+    }
+
+    IEnumerator NextWave()
+    {
+        Debug.Log("NextWave()");
+        yield return new WaitForSeconds(10);
+        SpawnManager.Instance.StartWave();
     }
 }

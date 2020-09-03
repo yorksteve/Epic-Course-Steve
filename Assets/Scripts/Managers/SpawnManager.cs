@@ -13,8 +13,10 @@ namespace Scripts.Manager
 
         [SerializeField] private List<GameObject> _mechPool;
         private int _waveCount = 1;
-        private Transform _startPoint;
+        [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _destination;
+
+        public int mechsInWave;
 
         public override void Init()
         {
@@ -30,7 +32,7 @@ namespace Scripts.Manager
 
         GameObject CreateMech()
         {
-            GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)]);
+            GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity);
             mech.transform.parent = _mechContainer.transform;
             mech.SetActive(false);
             _mechPool.Add(mech);
@@ -56,6 +58,7 @@ namespace Scripts.Manager
             {
                 if (mech.activeInHierarchy == false)
                 {
+                    mech.transform.position = _startPoint.position;
                     mech.SetActive(true);
                     return mech;
                 }
@@ -66,6 +69,9 @@ namespace Scripts.Manager
 
         public void StartWave()
         {
+            Debug.Log("Starting Wave");
+            mechsInWave = _amountOfMechs * _waveCount;
+
             StartCoroutine(SpawnTime());
             
             _waveCount++;
@@ -73,7 +79,7 @@ namespace Scripts.Manager
 
         IEnumerator SpawnTime()
         {
-            for (int i = 0; i <= (_amountOfMechs * _waveCount); i++)
+            for (int i = 0; i <= mechsInWave; i++)
             {
                 yield return new WaitForSeconds(5);
                 GetMech();
