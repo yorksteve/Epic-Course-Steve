@@ -24,17 +24,18 @@ public class EnemyAI : MonoBehaviour
         _agent.SetDestination(_destination.position);
     }
 
+    private void Update()
+    {
+        Health();
+    }
+
     void Health()
     {
         //health -= damageAmount; (dependant upon the weapon)
 
         if (health <= 0)
         {
-            // Kill mech and get money
-            health = 0;
-            _anim.SetBool("Die", true);
-            this.gameObject.SetActive(false);
-
+            StartCoroutine(DestroyMech());
             // Increase War Fund based on value of mech destroyed
         }
     }
@@ -44,5 +45,13 @@ public class EnemyAI : MonoBehaviour
     void Attack()
     {
         _anim.SetBool("Attack", true);
+    }
+
+    IEnumerator DestroyMech()
+    {
+        health = 0;
+        _anim.SetBool("Die", true);
+        yield return new WaitForSeconds(1.5f);
+        this.gameObject.SetActive(false);
     }
 }

@@ -58,8 +58,8 @@ namespace Scripts.Manager
             {
                 if (mech.activeInHierarchy == false)
                 {
-                    mech.transform.position = _startPoint.position;
                     mech.SetActive(true);
+                    mech.transform.position = _startPoint.position;
                     return mech;
                 }
             }
@@ -75,6 +75,8 @@ namespace Scripts.Manager
             StartCoroutine(SpawnTime());
             
             _waveCount++;
+
+            Debug.Log("End of StartWave()");
         }
 
         IEnumerator SpawnTime()
