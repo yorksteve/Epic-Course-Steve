@@ -24,17 +24,31 @@ namespace Scripts.Managers
             StartWave();
         }
 
+        private void OnEnable()
+        {
+            EndZone.onEndZoneReached += EndZone_onEndZoneReached;
+        }
+
+        private void EndZone_onEndZoneReached()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnDisable()
+        {
+            EndZone.onEndZoneReached -= EndZone_onEndZoneReached;
+        }
 
         public void StartWave()
         {
-            Debug.Log("Starting Wave");
+            Debug.Log("SpawnManager :: StartWave() : Starting Wave");
             mechsInWave = _amountOfMechs * _waveCount;
 
             StartCoroutine(SpawnTime());
             
             _waveCount++;
 
-            Debug.Log("End of StartWave()");
+            Debug.Log("SpawnManager :: StartWave() : End of StartWave()");
         }
 
         IEnumerator SpawnTime()
@@ -45,13 +59,11 @@ namespace Scripts.Managers
                 PoolManager.Instance.GetMech();
             }
 
-            Debug.Log("Spawning for current wave finished");
+            Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
         }
 
         public void CheckWave()
         {
-
-
             if (mechsInWave == EndZone._mechsTriggered)
             {
                 StartCoroutine(NextWave());
@@ -60,7 +72,7 @@ namespace Scripts.Managers
 
         IEnumerator NextWave()
         {
-            Debug.Log("NextWave()");
+            Debug.Log("SpawnManager :: NextWave()");
             yield return new WaitForSeconds(10);
             StartWave();
         }

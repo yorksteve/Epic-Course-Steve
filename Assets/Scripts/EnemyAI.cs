@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Scripts.Managers;
+using System;
 
 
 namespace Scripts
@@ -18,23 +19,35 @@ namespace Scripts
         [SerializeField] private int _mechMoney;
         private int _destroyedMechs;
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            _agent = GetComponent<NavMeshAgent>();
-            _anim = GetComponent<Animator>();
+        public static event Action onMechDestroyed;
 
+        private void Start()
+        {
             _destination = SpawnManager.Instance.RequestDestination();
-            _agent.SetDestination(_destination.position);
+
+            if (_anim != null)
+            {
+                _anim = GetComponent<Animator>();
+            }
+
+            if (_agent != null)
+            {
+                _agent.SetDestination(_destination.position);
+            }
+            else
+            {
+                _agent = GetComponent<NavMeshAgent>();
+                _agent.SetDestination(_destination.position);
+            }
         }
 
         void Health()
         {
             //health -= damageAmount; (dependant upon the weapon)
 
-            if (health <= 0)
+            if (health <= 0 && onMechDestroyed != null)
             {
-                StartCoroutine(DestroyMech());
+                onMechDestroyed();
                 // Increase War Fund based on value of mech destroyed
             }
         }

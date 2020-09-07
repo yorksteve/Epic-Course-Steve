@@ -30,6 +30,21 @@ namespace Scripts.Managers
 
         }
 
+        private void OnEnable()
+        {
+            EndZone.onEndZoneReached += EndZone_onEndZoneReached;
+        }
+
+        private void EndZone_onEndZoneReached()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void OnDisable()
+        {
+            EndZone.onEndZoneReached -= EndZone_onEndZoneReached;
+        }
+
         GameObject CreateMech()
         {
             GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity);
