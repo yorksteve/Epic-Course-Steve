@@ -81,6 +81,11 @@ namespace Scripts.Managers
 
             return CreateMech();
         }
+
+        public void RecycleMech()
+        {
+            EndZone_onEndZoneReached();
+        }
     }
 }
 

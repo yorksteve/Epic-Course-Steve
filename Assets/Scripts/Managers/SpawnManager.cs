@@ -62,12 +62,14 @@ namespace Scripts.Managers
             Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
         }
 
-        public void CheckWave()
+        public void CheckWave() // Work with an event
         {
-            if (mechsInWave == EndZone._mechsTriggered)
-            {
-                StartCoroutine(NextWave());
-            }
+            //if (mechsInWave == EndZone._mechsTriggered)
+            //{
+            //    StartCoroutine(NextWave());
+            //}
+
+            EndZone_onEndZoneReached();
         }
 
         IEnumerator NextWave()

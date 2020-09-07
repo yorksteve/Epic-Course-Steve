@@ -48,6 +48,7 @@ namespace Scripts
             if (health <= 0 && onMechDestroyed != null)
             {
                 onMechDestroyed();
+                health = 0;
                 // Increase War Fund based on value of mech destroyed
             }
         }
