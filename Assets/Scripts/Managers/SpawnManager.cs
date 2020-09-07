@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using YorkSDK.Util;
 
-namespace Scripts.Manager
+namespace Scripts.Managers
 {
     public class SpawnManager : MonoSingleton<SpawnManager>
     {
-        [SerializeField] private GameObject[] _mechs;
-        [SerializeField] private int _amountOfMechs = 10;
-        [SerializeField] private GameObject _mechContainer;
-
-        [SerializeField] private List<GameObject> _mechPool;
         private int _waveCount = 1;
         [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _destination;
 
         public int mechsInWave;
+        private int _amountOfMechs = 10;
 
         public override void Init()
         {
@@ -25,47 +21,9 @@ namespace Scripts.Manager
 
         private void Start()
         {
-            //StartCoroutine("StartRound");
-            _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
             StartWave();
         }
 
-        GameObject CreateMech()
-        {
-            GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity);
-            mech.transform.parent = _mechContainer.transform;
-            mech.SetActive(false);
-            _mechPool.Add(mech);
-
-            return mech;
-        }
-
-
-        List<GameObject> GenerateMechs(int amountOfMechs)
-        {
-            for (int i = 0; i < amountOfMechs; i++)
-            {
-                GameObject mech = CreateMech();
-            }
-
-            return _mechPool;
-        }
-
-
-        public GameObject GetMech()
-        {
-            foreach (var mech in _mechPool)
-            {
-                if (mech.activeInHierarchy == false)
-                {
-                    mech.SetActive(true);
-                    mech.transform.position = _startPoint.position;
-                    return mech;
-                }
-            }
-
-            return CreateMech();
-        }
 
         public void StartWave()
         {
@@ -84,16 +42,42 @@ namespace Scripts.Manager
             for (int i = 0; i <= mechsInWave; i++)
             {
                 yield return new WaitForSeconds(5);
-                GetMech();
+                PoolManager.Instance.GetMech();
             }
 
             Debug.Log("Spawning for current wave finished");
+        }
 
+        public void CheckWave()
+        {
+
+
+            if (mechsInWave == EndZone._mechsTriggered)
+            {
+                StartCoroutine(NextWave());
+            }
+        }
+
+        IEnumerator NextWave()
+        {
+            Debug.Log("NextWave()");
+            yield return new WaitForSeconds(10);
+            StartWave();
         }
 
         public Transform RequestDestination()
         {
             return _destination;
+        }
+
+        public Transform RequestStartPoint()
+        {
+            return _startPoint;
+        }
+
+        public int RequestWave()
+        {
+            return _waveCount;
         }
     }
 

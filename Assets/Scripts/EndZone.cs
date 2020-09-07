@@ -1,32 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Scripts.Manager;
+using Scripts.Managers;
 
-public class EndZone : MonoBehaviour
+
+namespace Scripts
 {
-    private int _mechsTriggered;
-
-    private void OnTriggerEnter(Collider other)
+    public class EndZone : MonoBehaviour
     {
-        Debug.Log("Destination Reached");
-        _mechsTriggered++;
-        other.gameObject.SetActive(false);
-        // Reduce player's life count
+        public static int _mechsTriggered;
 
-        if (_mechsTriggered == SpawnManager.Instance.mechsInWave)
+        private void OnTriggerEnter(Collider other)
         {
-            // Add functionality for destroyed mechs
+            Debug.Log("Destination Reached");
+            _mechsTriggered++;
+            other.gameObject.SetActive(false);
+            // Reduce player's life count
 
-            StartCoroutine(NextWave());
+            SpawnManager.Instance.CheckWave();
         }
-    
-    }
-
-    IEnumerator NextWave()
-    {
-        Debug.Log("NextWave()");
-        yield return new WaitForSeconds(10);
-        SpawnManager.Instance.StartWave();
     }
 }
+

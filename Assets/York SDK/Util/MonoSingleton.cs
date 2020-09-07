@@ -21,6 +21,7 @@ namespace YorkSDK.Util
         private void Awake()
         {
             _instance = this as T;
+            Init();
         }
 
         public virtual void Init()
