@@ -15,10 +15,14 @@ namespace Scripts
         {
             Debug.Log("EndZone :: OnTriggerEnter : Destination Reached");
 
-            if (onEndZoneReached != null)
+            if (other.tag == "Enemy")
             {
-                onEndZoneReached();
+                if (onEndZoneReached != null)
+                {
+                    onEndZoneReached();
+                }
             }
+           
         }
     }
 }

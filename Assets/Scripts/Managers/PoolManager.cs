@@ -32,17 +32,12 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            EndZone.onEndZoneReached += EndZone_onEndZoneReached;
-        }
-
-        private void EndZone_onEndZoneReached()
-        {
-            throw new System.NotImplementedException();
+            EndZone.onEndZoneReached += RecycleMech;
         }
 
         private void OnDisable()
         {
-            EndZone.onEndZoneReached -= EndZone_onEndZoneReached;
+            EndZone.onEndZoneReached -= RecycleMech;
         }
 
         GameObject CreateMech()
@@ -84,7 +79,7 @@ namespace Scripts.Managers
 
         public void RecycleMech()
         {
-            EndZone_onEndZoneReached();
+            //mech.SetActive(false);
         }
     }
 }

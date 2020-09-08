@@ -13,6 +13,8 @@ namespace Scripts.Managers
 
         public int mechsInWave;
         private int _amountOfMechs = 10;
+        private int _successfulMechs;
+        private int _destroyedMechs;
 
         public override void Init()
         {
@@ -26,17 +28,14 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            EndZone.onEndZoneReached += EndZone_onEndZoneReached;
-        }
-
-        private void EndZone_onEndZoneReached()
-        {
-            throw new System.NotImplementedException();
+            EndZone.onEndZoneReached += SuccessfulMechs;
+            EnemyAI.onMechDestroyed += DestroyedMechs;
         }
 
         private void OnDisable()
         {
-            EndZone.onEndZoneReached -= EndZone_onEndZoneReached;
+            EndZone.onEndZoneReached -= SuccessfulMechs;
+            EnemyAI.onMechDestroyed -= DestroyedMechs;
         }
 
         public void StartWave()
@@ -62,14 +61,30 @@ namespace Scripts.Managers
             Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
         }
 
-        public void CheckWave() // Work with an event
+        public void CheckWave()
         {
-            //if (mechsInWave == EndZone._mechsTriggered)
-            //{
-            //    StartCoroutine(NextWave());
-            //}
+            if (mechsInWave == (_successfulMechs + _destroyedMechs))
+            {
+                StartCoroutine(NextWave());
+            }
 
-            EndZone_onEndZoneReached();
+            Debug.Log("SpawnManager::CheckWave(): Completed Wave Check");
+        }
+
+        public void SuccessfulMechs()
+        {
+            _successfulMechs++;
+            Debug.Log("SpawnManager::SuccessfulMechs()");
+
+            CheckWave();
+        }
+
+        public void DestroyedMechs()
+        {
+            _destroyedMechs++;
+            Debug.Log("SpawnManager::DestroyedMechs()");
+
+            CheckWave();
         }
 
         IEnumerator NextWave()

@@ -15,9 +15,7 @@ namespace Scripts
         private Animator _anim;
 
         public int health;
-        //[SerializeField] private int _money = 500;
-        [SerializeField] private int _mechMoney;
-        private int _destroyedMechs;
+        [SerializeField] private int _mechWarFund;
 
         public static event Action onMechDestroyed;
 
@@ -66,7 +64,6 @@ namespace Scripts
             _anim.SetBool("Die", true);
             yield return new WaitForSeconds(1.5f);
             this.gameObject.SetActive(false);
-            _destroyedMechs++;
         }
     }
 }
