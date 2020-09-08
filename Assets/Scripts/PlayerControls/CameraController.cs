@@ -51,11 +51,11 @@ namespace Scripts.PlayerControls
             }
 
             // Using mouse to move camera
-            if (Input.mousePosition.y > _moveHeight)
+            if (Input.mousePosition.y > _moveHeight || Input.GetKey(KeyCode.W))
             {
                 transform.Translate(new Vector3(0, 1, 1) * Time.deltaTime * _cameraSpeed);
             }
-            else if (Input.mousePosition.y < 60)
+            else if (Input.mousePosition.y < 60 || Input.GetKey(KeyCode.S))
             {
                 transform.Translate(new Vector3(0, -1, -1) * Time.deltaTime * _cameraSpeed);
             }
@@ -72,9 +72,7 @@ namespace Scripts.PlayerControls
 
             // Using WSAD keys to move
             float xTrans = Input.GetAxis("Horizontal") * Time.deltaTime * _cameraSpeed;
-            float yTrans = Input.GetAxis("Vertical") * Time.deltaTime * _cameraSpeed; //work on y, has to be angled
-
-            transform.Translate(xTrans, yTrans, 0);
+            transform.Translate(xTrans, 0, 0);
         }
     }
 }
