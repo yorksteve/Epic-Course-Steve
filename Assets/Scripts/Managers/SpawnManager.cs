@@ -21,10 +21,6 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        private void Start()
-        {
-            StartWave();
-        }
 
         private void OnEnable()
         {
