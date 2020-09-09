@@ -9,12 +9,19 @@ namespace Scripts
     {
         private bool _isActive;
 
-        void PlaceTower()
+        private GameObject _towerType;
+
+        void SpotAvailable()
         {
             if (_isActive == false)
             {
                 // Play particle effects
             }
+        }
+
+        void SpotTaken()
+        {
+
         }
     }
 }
