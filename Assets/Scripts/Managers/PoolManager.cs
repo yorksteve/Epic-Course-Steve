@@ -79,7 +79,8 @@ namespace Scripts.Managers
 
         public void RecycleMech()
         {
-            //mech.SetActive(false);
+            // Question about this
+            gameObject.SetActive(false);
         }
     }
 }

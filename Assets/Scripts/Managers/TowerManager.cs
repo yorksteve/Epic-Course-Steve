@@ -42,12 +42,11 @@ namespace Scripts.Managers
             {
                 _decoyTower[0/* Of whatever tower is active*/].transform.position = hitInfo.point;
 
-                //if valid spot call PlaceTower();
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                PlaceTower();
+                //check spot 
+                if (Input.GetMouseButtonDown(0) && _canPlaceTower == true)
+                {
+                    PlaceTower();
+                }
             }
         }
 
@@ -55,6 +54,7 @@ namespace Scripts.Managers
         public void PlaceTower()
         {
             //Instantiate(_tower, hitInfo.point, Quaternion.identity);
+            _canPlaceTower = false;
             onTowerPlaced();
         }
 
