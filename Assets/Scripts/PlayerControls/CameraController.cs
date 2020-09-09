@@ -35,7 +35,7 @@ namespace Scripts.PlayerControls
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, _xMin, _xMax), Mathf.Clamp(transform.position.y, _yMin, _yMax), Mathf.Clamp(transform.position.z, _zMin, _zMax));
 
