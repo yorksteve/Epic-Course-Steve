@@ -12,6 +12,7 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _tower;
 
         private bool _canPlaceTower;
+        private int _towerID;
 
 
         public override void Init()
@@ -37,30 +38,33 @@ namespace Scripts.Managers
             Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
 
-
             if (Physics.Raycast(rayOrigin, out hitInfo))
             {
-                _decoyTower[0/* Of whatever tower is active*/].transform.position = hitInfo.point;
+                _decoyTower[_towerID].transform.position = hitInfo.point;
 
                 //check spot 
                 if (Input.GetMouseButtonDown(0) && _canPlaceTower == true)
                 {
-                    PlaceTower();
+                    PlaceTower(_towerID, hitInfo.point);
                 }
             }
         }
 
 
-        public void PlaceTower()
+        public void PlaceTower(int i, Vector3 pos)
         {
-            //Instantiate(_tower, hitInfo.point, Quaternion.identity);
+         
+            Instantiate(_tower[i], pos, Quaternion.identity);
             _canPlaceTower = false;
-            onTowerPlaced();
+            if (onTowerPlaced != null)
+            {
+                onTowerPlaced();
+            }
         }
 
         public void PlaceDecoyTower()
         {
-            Instantiate(_decoyTower[0], Input.mousePosition, Quaternion.identity);
+            Instantiate(_decoyTower[_towerID], Input.mousePosition, Quaternion.identity);
         }
 
         public void ValidSpot()

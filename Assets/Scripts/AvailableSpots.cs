@@ -39,7 +39,10 @@ namespace Scripts
             if (_isActive == false)
             {
                 _system.Play();
-                onFoundAvailableSpot();
+                if (onFoundAvailableSpot != null)
+                {
+                    onFoundAvailableSpot();
+                }
             }
         }
 
