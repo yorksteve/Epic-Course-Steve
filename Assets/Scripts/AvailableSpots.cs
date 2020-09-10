@@ -33,15 +33,21 @@ namespace Scripts
         {
             if (_system != null)
             {
-                _system = GetComponentInChildren<ParticleSystem>();
+                _system = GetComponent<ParticleSystem>();
+                Debug.Log("Successfully got particle system");
             }
+            else
+            {
+                Debug.Log("Failed to get the particle system");
+            }
+
         }
 
         void SpotAvailable()
         {
             if (_isActive == false)
             {
-                _system.Play();
+                //_system.Play();
                 if (onFoundAvailableSpot != null)
                 {
                     onFoundAvailableSpot(transform.position);

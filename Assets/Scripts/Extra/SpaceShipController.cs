@@ -7,22 +7,37 @@ namespace Scripts.Extra
 {
     public class SpaceShipController : MonoBehaviour
     {
-        [SerializeField] private Transform _destination;
         private int _speed = 3;
+        private float _destination = -5.09f;
+        private bool _isCalled;
 
         public static event Action onDreadnaught;
 
         public void Update()
         {
-            if (transform.position.x < -5.09f)
+            if (transform.position.x < _destination)
             {
                 transform.Translate(Time.deltaTime * _speed, 0, 0);
             }
 
-            if (transform.position.x == -5.09 && onDreadnaught != null)
+            else
             {
+                if (_isCalled == false)
+                {
+                    CompletedMovement();
+                }
+            }
+            
+        }
+
+        void CompletedMovement()
+        {
+            if (onDreadnaught != null)
+            { 
                 onDreadnaught();
             }
+
+            _isCalled = true;
         }
     }
 }

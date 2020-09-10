@@ -12,6 +12,8 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _tower;
         [SerializeField] private Material _materialRadius;
 
+        private GameObject _prefab;
+
         private bool _canPlaceTower;
         private int _towerID;
 
@@ -43,7 +45,7 @@ namespace Scripts.Managers
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
-                    Instantiate(_decoyTower[0], hitInfo.point, Quaternion.identity);
+                    _prefab = Instantiate(_decoyTower[0], hitInfo.point, Quaternion.identity);
                     _towerID = 0;
 
                     if (onPlacingTower != null)
@@ -54,7 +56,7 @@ namespace Scripts.Managers
 
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
-                    Instantiate(_decoyTower[1], hitInfo.point, Quaternion.identity);
+                    _prefab = Instantiate(_decoyTower[1], hitInfo.point, Quaternion.identity);
                     _towerID = 1;
 
                     if (onPlacingTower != null)
@@ -63,9 +65,9 @@ namespace Scripts.Managers
                     }
                 }
 
-                _decoyTower[_towerID].transform.position = hitInfo.point;
+                _prefab.transform.position = hitInfo.point;
 
-                if (_decoyTower[_towerID].transform.position == hitInfo.point)
+                if (_prefab.transform.position == hitInfo.point)
                 {
                     _materialRadius.color = Color.green;
 
@@ -79,7 +81,7 @@ namespace Scripts.Managers
                 {
                     _materialRadius.color = Color.red;
                 }
-        }
+            }
         }
 
 
