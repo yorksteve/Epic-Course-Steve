@@ -9,7 +9,7 @@ namespace Scripts
 {
     public class AvailableSpots : MonoBehaviour
     {
-        private bool _isActive;
+        [SerializeField] private bool _isActive;
 
         private GameObject _towerType;
         private ParticleSystem _system;
@@ -20,18 +20,20 @@ namespace Scripts
         private void OnEnable()
         {
             TowerManager.onTowerPlaced += SpotTaken;
+            TowerManager.onPlacingTower += SpotAvailable;
         }
 
         private void OnDisable()
         {
             TowerManager.onTowerPlaced -= SpotTaken;
+            TowerManager.onPlacingTower -= SpotAvailable;
         }
 
         private void Start()
         {
             if (_system != null)
             {
-                _system = GetComponent<ParticleSystem>();
+                _system = GetComponentInChildren<ParticleSystem>();
             }
         }
 

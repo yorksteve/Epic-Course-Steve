@@ -22,6 +22,7 @@ namespace Scripts.Managers
         }
 
         public static event Action onTowerPlaced;
+        public static event Action onPlacingTower;
 
         private void OnEnable()
         {
@@ -44,12 +45,22 @@ namespace Scripts.Managers
                 {
                     Instantiate(_decoyTower[0], hitInfo.point, Quaternion.identity);
                     _towerID = 0;
+
+                    if (onPlacingTower != null)
+                    {
+                        onPlacingTower();
+                    }
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     Instantiate(_decoyTower[1], hitInfo.point, Quaternion.identity);
                     _towerID = 1;
+
+                    if (onPlacingTower != null)
+                    {
+                        onPlacingTower();
+                    }
                 }
 
                 _decoyTower[_towerID].transform.position = hitInfo.point;
@@ -83,9 +94,15 @@ namespace Scripts.Managers
             }
         }
 
-        public void PlaceDecoyTower()
+        public void PlaceDecoyTower(int i)
         {
-            //Instantiate(_decoyTower[_towerID], Input.mousePosition, Quaternion.identity);
+            _towerID = i;
+            Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);     
+
+            if (onPlacingTower != null)
+            {
+                onPlacingTower();
+            }
         }
 
         public void ValidSpot(Vector3 pos)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Scripts.Extra;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using YorkSDK.Util;
@@ -22,21 +23,18 @@ namespace Scripts.Managers
         }
 
 
-        private void Start()
-        {
-            StartWave();
-        }
-
         private void OnEnable()
         {
             EndZone.onSuccess += SuccessfulMechs;
             EnemyAI.onMechDestroyed += DestroyedMechs;
+            SpaceShipController.onDreadnaught += StartWave;
         }
 
         private void OnDisable()
         {
             EndZone.onSuccess -= SuccessfulMechs;
             EnemyAI.onMechDestroyed -= DestroyedMechs;
+            SpaceShipController.onDreadnaught -= StartWave;
         }
 
         public void StartWave()
@@ -92,6 +90,12 @@ namespace Scripts.Managers
         {
             Debug.Log("SpawnManager :: NextWave()");
             yield return new WaitForSeconds(10);
+            StartWave();
+        }
+
+        public void RestartGame()
+        {
+            _waveCount = 1;
             StartWave();
         }
 
