@@ -9,7 +9,10 @@ namespace Scripts
 {
     public class EndZone : MonoBehaviour
     {
-        public static event Action onEndZoneReached;
+        public delegate void EndZoneReached(GameObject mech);
+        public static event EndZoneReached onEndZoneReached;
+
+        public static event Action onSuccess;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -19,7 +22,12 @@ namespace Scripts
             {
                 if (onEndZoneReached != null)
                 {
-                    onEndZoneReached();
+                    onEndZoneReached(other.gameObject);
+                }
+
+                if (onSuccess != null)
+                {
+                    onSuccess();
                 }
             }
            

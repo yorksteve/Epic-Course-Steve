@@ -14,7 +14,8 @@ namespace Scripts
         private GameObject _towerType;
         private ParticleSystem _system;
 
-        public static event Action onFoundAvailableSpot;
+        public delegate void FoundAvailableSpot(Vector3 pos);
+        public static event FoundAvailableSpot onFoundAvailableSpot;
 
         private void OnEnable()
         {
@@ -41,7 +42,7 @@ namespace Scripts
                 _system.Play();
                 if (onFoundAvailableSpot != null)
                 {
-                    onFoundAvailableSpot();
+                    onFoundAvailableSpot(transform.position);
                 }
             }
         }

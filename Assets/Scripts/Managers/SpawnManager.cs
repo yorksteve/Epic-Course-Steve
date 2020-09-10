@@ -22,15 +22,20 @@ namespace Scripts.Managers
         }
 
 
+        private void Start()
+        {
+            StartWave();
+        }
+
         private void OnEnable()
         {
-            EndZone.onEndZoneReached += SuccessfulMechs;
+            EndZone.onSuccess += SuccessfulMechs;
             EnemyAI.onMechDestroyed += DestroyedMechs;
         }
 
         private void OnDisable()
         {
-            EndZone.onEndZoneReached -= SuccessfulMechs;
+            EndZone.onSuccess -= SuccessfulMechs;
             EnemyAI.onMechDestroyed -= DestroyedMechs;
         }
 

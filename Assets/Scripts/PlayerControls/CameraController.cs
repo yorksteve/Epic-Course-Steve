@@ -9,8 +9,8 @@ namespace Scripts.PlayerControls
     {
         private float _width = Screen.width;
         private float _height = Screen.height;
-        private float _moveWidth;
-        private float _moveHeight;
+        //private float _moveWidth;
+        //private float _moveHeight;
 
         private float _xRestrict;
         private float _yRestrict;
@@ -27,8 +27,8 @@ namespace Scripts.PlayerControls
 
         private void Start()
         {
-            _moveWidth = _width - 60;
-            _moveHeight = _height - 60;
+            //_moveWidth = _width - 60;
+            //_moveHeight = _height - 60;
 
             _xRestrict = transform.position.x;
             _yRestrict = transform.position.y;
@@ -51,21 +51,21 @@ namespace Scripts.PlayerControls
             }
 
             // Using mouse to move camera
-            if (Input.mousePosition.y > _moveHeight || Input.GetKey(KeyCode.W))
+            if (Input.mousePosition.y > _height || Input.GetKey(KeyCode.W))
             {
                 transform.Translate(new Vector3(0, 1, 1) * Time.deltaTime * _cameraSpeed);
             }
-            else if (Input.mousePosition.y < 60 || Input.GetKey(KeyCode.S))
+            else if (Input.mousePosition.y < 0 || Input.GetKey(KeyCode.S))
             {
                 transform.Translate(new Vector3(0, -1, -1) * Time.deltaTime * _cameraSpeed);
             }
 
-            if (Input.mousePosition.x < 60)
+            if (Input.mousePosition.x < 0)
             {
                 transform.Translate(Vector3.left * Time.deltaTime * _cameraSpeed);
             }
 
-            else if (Input.mousePosition.x > _moveWidth)
+            else if (Input.mousePosition.x > _width)
             {
                 transform.Translate(Vector3.right * Time.deltaTime * _cameraSpeed);
             }

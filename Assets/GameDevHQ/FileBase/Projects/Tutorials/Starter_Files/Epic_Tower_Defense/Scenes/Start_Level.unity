@@ -9883,6 +9883,7 @@ MonoBehaviour:
   _startPoint: {fileID: 818718050}
   _destination: {fileID: 1207510476}
   mechsInWave: 0
+  _successfulMechs: 0
 --- !u!4 &1490091709
 Transform:
   m_ObjectHideFlags: 0
@@ -14328,6 +14329,7 @@ MonoBehaviour:
   _tower:
   - {fileID: 1425032208015248, guid: 75f3d166786e1cb40afc4396cd0bcc22, type: 3}
   - {fileID: 1821146363788296, guid: 23a8b9b94225d3845aed312b792882a9, type: 3}
+  _materialRadius: {fileID: 2100000, guid: 1f2b54722fadde84b8c7a1a3cf21b7f2, type: 2}
 --- !u!4 &2057498838
 Transform:
   m_ObjectHideFlags: 0

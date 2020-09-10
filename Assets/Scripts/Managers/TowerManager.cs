@@ -10,6 +10,7 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _decoyTower;
         [SerializeField] private GameObject[] _tower;
+        [SerializeField] private Material _materialRadius;
 
         private bool _canPlaceTower;
         private int _towerID;
@@ -32,7 +33,6 @@ namespace Scripts.Managers
             AvailableSpots.onFoundAvailableSpot -= ValidSpot;
         }
 
-
         public void Update()
         {
             Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -40,21 +40,42 @@ namespace Scripts.Managers
 
             if (Physics.Raycast(rayOrigin, out hitInfo))
             {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    Instantiate(_decoyTower[0], hitInfo.point, Quaternion.identity);
+                    _towerID = 0;
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    Instantiate(_decoyTower[1], hitInfo.point, Quaternion.identity);
+                    _towerID = 1;
+                }
+
                 _decoyTower[_towerID].transform.position = hitInfo.point;
 
-                //check spot 
-                if (Input.GetMouseButtonDown(0) && _canPlaceTower == true)
+                if (_decoyTower[_towerID].transform.position == hitInfo.point)
                 {
-                    PlaceTower(_towerID, hitInfo.point);
+                    _materialRadius.color = Color.green;
+
+                    if (Input.GetMouseButtonDown(0) && _canPlaceTower == true)
+                    {
+                        PlaceTower(hitInfo.point);
+                    }
                 }
-            }
+
+                else
+                {
+                    _materialRadius.color = Color.red;
+                }
+        }
         }
 
 
-        public void PlaceTower(int i, Vector3 pos)
+        public void PlaceTower(Vector3 pos)
         {
          
-            Instantiate(_tower[i], pos, Quaternion.identity);
+            Instantiate(_tower[_towerID], pos, Quaternion.identity);
             _canPlaceTower = false;
             if (onTowerPlaced != null)
             {
@@ -64,12 +85,20 @@ namespace Scripts.Managers
 
         public void PlaceDecoyTower()
         {
-            Instantiate(_decoyTower[_towerID], Input.mousePosition, Quaternion.identity);
+            //Instantiate(_decoyTower[_towerID], Input.mousePosition, Quaternion.identity);
         }
 
-        public void ValidSpot()
+        public void ValidSpot(Vector3 pos)
         {
-            _canPlaceTower = true;
+            if (pos == Input.mousePosition)
+            {
+                _canPlaceTower = true;
+            }
+
+            else
+            {
+                _canPlaceTower = false;
+            }
         }
     }
 }

@@ -77,10 +77,9 @@ namespace Scripts.Managers
             return CreateMech();
         }
 
-        public void RecycleMech()
+        public void RecycleMech(GameObject mech)
         {
-            // Question about this
-            gameObject.SetActive(false);
+            mech.SetActive(false);
         }
     }
 }
