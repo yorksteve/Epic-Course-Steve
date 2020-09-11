@@ -41,13 +41,14 @@ namespace Scripts
                 Debug.Log("Failed to get the particle system");
             }
 
+            _system.Play();
         }
 
         void SpotAvailable()
         {
             if (_isActive == false)
             {
-                //_system.Play();
+                _system.Play();
                 if (onFoundAvailableSpot != null)
                 {
                     onFoundAvailableSpot(transform.position);
