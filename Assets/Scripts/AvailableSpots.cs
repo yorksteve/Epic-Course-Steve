@@ -13,6 +13,7 @@ namespace Scripts
 
         private GameObject _towerType;
         private ParticleSystem _system;
+        private GameObject _test;
 
         public delegate void FoundAvailableSpot(Vector3 pos);
         public static event FoundAvailableSpot onFoundAvailableSpot;
@@ -31,17 +32,9 @@ namespace Scripts
 
         private void Start()
         {
-            if (_system != null)
-            {
-                _system = GetComponent<ParticleSystem>();
-                Debug.Log("Successfully got particle system");
-            }
-            else
-            {
-                Debug.Log("Failed to get the particle system");
-            }
+            _test = this.gameObject;
 
-            _system.Play();
+            _system = _test.GetComponent<ParticleSystem>();
         }
 
         void SpotAvailable()

@@ -43,28 +43,6 @@ namespace Scripts.Managers
 
             if (Physics.Raycast(rayOrigin, out hitInfo))
             {
-                //if (Input.GetKeyDown(KeyCode.Alpha1))
-                //{
-                //    _prefab = Instantiate(_decoyTower[0], hitInfo.point, Quaternion.identity);
-                //    _towerID = 0;
-
-                //    if (onPlacingTower != null)
-                //    {
-                //        onPlacingTower();
-                //    }
-                //}
-
-                //if (Input.GetKeyDown(KeyCode.Alpha2))
-                //{
-                //    _prefab = Instantiate(_decoyTower[1], hitInfo.point, Quaternion.identity);
-                //    _towerID = 1;
-
-                //    if (onPlacingTower != null)
-                //    {
-                //        onPlacingTower();
-                //    }
-                //}
-
                 _prefab.transform.position = hitInfo.point;
 
                 if (_prefab.transform.position == hitInfo.point)
