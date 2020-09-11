@@ -101,7 +101,7 @@ namespace Scripts.Managers
 
         public void ValidSpot(Vector3 pos)
         {
-            if (pos == _prefab.transform.position)
+            if (pos == _prefab.transform.position)  // This doesn't work
             {
                 _canPlaceTower = true;
             }
