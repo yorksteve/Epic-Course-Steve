@@ -23,8 +23,11 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        public static event Action onTowerPlaced;
+        public delegate void TowerPlaced(Vector3 pos);
+        public static event TowerPlaced onTowerPlaced;
+
         public static event Action onPlacingTower;
+        public static event Action onCancelTower;
 
         private void OnEnable()
         {
@@ -47,17 +50,29 @@ namespace Scripts.Managers
 
                 if (_prefab.transform.position == hitInfo.point)
                 {
-                    _materialRadius.color = Color.green;
-
-                    if (Input.GetMouseButtonDown(0) && _canPlaceTower == true)
+                    if (_canPlaceTower == true)
                     {
-                        PlaceTower(hitInfo.point);
+                        _materialRadius.color = Color.green;
+
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            PlaceTower(hitInfo.point);
+                        }
+                    }
+
+                    else
+                    {
+                        _materialRadius.color = Color.red;
                     }
                 }
 
-                else
+                if (Input.GetMouseButtonDown(1))
                 {
-                    _materialRadius.color = Color.red;
+                    Destroy(_prefab);
+                    if (onCancelTower != null)
+                    {
+                        onCancelTower();
+                    }
                 }
             }
         }
@@ -69,7 +84,7 @@ namespace Scripts.Managers
             _canPlaceTower = false;
             if (onTowerPlaced != null)
             {
-                onTowerPlaced();
+                onTowerPlaced(pos);
             }
         }
 
@@ -86,14 +101,9 @@ namespace Scripts.Managers
 
         public void ValidSpot(Vector3 pos)
         {
-            if (pos == Input.mousePosition)
+            if (pos == _prefab.transform.position)
             {
                 _canPlaceTower = true;
-            }
-
-            else
-            {
-                _canPlaceTower = false;
             }
         }
     }

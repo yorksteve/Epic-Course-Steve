@@ -22,12 +22,14 @@ namespace Scripts
         {
             TowerManager.onTowerPlaced += SpotTaken;
             TowerManager.onPlacingTower += SpotAvailable;
+            TowerManager.onCancelTower += CancelAvailablity;
         }
 
         private void OnDisable()
         {
             TowerManager.onTowerPlaced -= SpotTaken;
             TowerManager.onPlacingTower -= SpotAvailable;
+            TowerManager.onCancelTower -= CancelAvailablity;
         }
 
         private void Start()
@@ -49,7 +51,12 @@ namespace Scripts
             }
         }
 
-        void SpotTaken()
+        void CancelAvailablity()
+        {
+            _system.Stop();
+        }
+
+        void SpotTaken(Vector3 pos)
         {
             _isActive = true;
             //_towerType = the tower placed in this collider
