@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.FileBase.Missile_Launcher.Missile;
+using Scripts.Interfaces;
 
 /*
  *@author GameDevHQ 
@@ -10,7 +11,7 @@ using GameDevHQ.FileBase.Missile_Launcher.Missile;
 
 namespace GameDevHQ.FileBase.Missile_Launcher
 {
-    public class Missile_Launcher : MonoBehaviour
+    public class Missile_Launcher : MonoBehaviour, ITower
     {
         public enum MissileType
         {
@@ -41,6 +42,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         [SerializeField]
         private Transform _target; //Who should the rocket fire at?
 
+        public int WarFundsRequired { get; set; } = 500;
 
         private void Update()
         {

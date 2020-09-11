@@ -10,26 +10,24 @@ namespace Scripts
     public class AvailableSpots : MonoBehaviour
     {
         [SerializeField] private bool _isActive;
+        [SerializeField] private Material _materialRadius;
 
-        private GameObject _towerType;
         private ParticleSystem _system;
         private GameObject _test;
-
-        public delegate void FoundAvailableSpot(Vector3 pos);
-        public static event FoundAvailableSpot onFoundAvailableSpot;
+        private bool _fundsAvailable;
 
         private void OnEnable()
         {
-            TowerManager.onTowerPlaced += SpotTaken;
             TowerManager.onPlacingTower += SpotAvailable;
             TowerManager.onCancelTower += CancelAvailablity;
+            WarFundManager.onLackingFunds += FundsAvailableReceiver;
         }
 
         private void OnDisable()
         {
-            TowerManager.onTowerPlaced -= SpotTaken;
             TowerManager.onPlacingTower -= SpotAvailable;
             TowerManager.onCancelTower -= CancelAvailablity;
+            WarFundManager.onLackingFunds -= FundsAvailableReceiver;
         }
 
         private void Start()
@@ -44,10 +42,6 @@ namespace Scripts
             if (_isActive == false)
             {
                 _system.Play();
-                if (onFoundAvailableSpot != null)
-                {
-                    onFoundAvailableSpot(transform.position);
-                }
             }
         }
 
@@ -56,10 +50,31 @@ namespace Scripts
             _system.Stop();
         }
 
-        void SpotTaken(Vector3 pos)
+        void FundsAvailableReceiver()
         {
-            _isActive = true;
-            //_towerType = the tower placed in this collider
+            _fundsAvailable = false;
+        }
+
+        private void OnMouseEnter()
+        {
+            if (_isActive == false)
+            {
+                _materialRadius.color = Color.green;
+            }
+        }
+
+        private void OnMouseDown()
+        {
+            if (_isActive == false && _fundsAvailable == true)
+            {
+                TowerManager.Instance.PlaceTower(transform.position);
+                _isActive = true;
+            }
+        }
+
+        private void OnMouseExit()
+        {
+            _materialRadius.color = Color.red;
         }
     }
 }

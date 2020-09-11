@@ -10,12 +10,10 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _decoyTower;
         [SerializeField] private GameObject[] _tower;
-        [SerializeField] private Material _materialRadius;
 
         private GameObject _prefab;
-
-        private bool _canPlaceTower;
         private int _towerID;
+        private int _warFundsRequired;
 
 
         public override void Init()
@@ -23,21 +21,11 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        public delegate void TowerPlaced(Vector3 pos);
-        public static event TowerPlaced onTowerPlaced;
-
         public static event Action onPlacingTower;
         public static event Action onCancelTower;
 
-        private void OnEnable()
-        {
-            AvailableSpots.onFoundAvailableSpot += ValidSpot;
-        }
-
-        private void OnDisable()
-        {
-            AvailableSpots.onFoundAvailableSpot -= ValidSpot;
-        }
+        public delegate void BoughtTower(int id);
+        public static BoughtTower onBoughtTower;
 
         public void Update()
         {
@@ -46,25 +34,7 @@ namespace Scripts.Managers
 
             if (Physics.Raycast(rayOrigin, out hitInfo))
             {
-                _prefab.transform.position = hitInfo.point;
-
-                if (_prefab.transform.position == hitInfo.point)
-                {
-                    if (_canPlaceTower == true)
-                    {
-                        _materialRadius.color = Color.green;
-
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            PlaceTower(hitInfo.point);
-                        }
-                    }
-
-                    else
-                    {
-                        _materialRadius.color = Color.red;
-                    }
-                }
+                _prefab.transform.position = hitInfo.point;                
 
                 if (Input.GetMouseButtonDown(1))
                 {
@@ -79,12 +49,11 @@ namespace Scripts.Managers
 
         public void PlaceTower(Vector3 pos)
         {
-         
             Instantiate(_tower[_towerID], pos, Quaternion.identity);
-            _canPlaceTower = false;
-            if (onTowerPlaced != null)
+
+            if (onBoughtTower != null)
             {
-                onTowerPlaced(pos);
+                onBoughtTower(_towerID);
             }
         }
 
@@ -96,14 +65,6 @@ namespace Scripts.Managers
             if (onPlacingTower != null)
             {
                 onPlacingTower();
-            }
-        }
-
-        public void ValidSpot(Vector3 pos)
-        {
-            if (pos == _prefab.transform.position)  // This doesn't work
-            {
-                _canPlaceTower = true;
             }
         }
     }
