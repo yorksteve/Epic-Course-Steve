@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Managers;
-
+using Scripts.Interfaces;
 
 namespace Scripts
 {
@@ -14,20 +14,11 @@ namespace Scripts
 
         private ParticleSystem _system;
         private GameObject _test;
-        private bool _fundsAvailable;
+        private ITower _towerPlaced;
 
         private void OnEnable()
         {
             TowerManager.onPlacingTower += SpotAvailable;
-            TowerManager.onCancelTower += CancelAvailablity;
-            WarFundManager.onLackingFunds += FundsAvailableReceiver;
-        }
-
-        private void OnDisable()
-        {
-            TowerManager.onPlacingTower -= SpotAvailable;
-            TowerManager.onCancelTower -= CancelAvailablity;
-            WarFundManager.onLackingFunds -= FundsAvailableReceiver;
         }
 
         private void Start()
@@ -37,22 +28,17 @@ namespace Scripts
             _system = _test.GetComponent<ParticleSystem>();
         }
 
-        void SpotAvailable()
+        void SpotAvailable(bool placingTower)
         {
-            if (_isActive == false)
+            if (_isActive == false && placingTower == true)
             {
                 _system.Play();
             }
-        }
 
-        void CancelAvailablity()
-        {
-            _system.Stop();
-        }
-
-        void FundsAvailableReceiver()
-        {
-            _fundsAvailable = false;
+            else
+            {
+                _system.Stop();
+            }
         }
 
         private void OnMouseEnter()
@@ -61,13 +47,15 @@ namespace Scripts
             {
                 _materialRadius.color = Color.green;
             }
+
+            TowerManager.Instance.SnapToPosition(transform.position);
         }
 
         private void OnMouseDown()
         {
-            if (_isActive == false && _fundsAvailable == true)
+            if (_isActive == false)
             {
-                TowerManager.Instance.PlaceTower(transform.position);
+                _towerPlaced = TowerManager.Instance.PlaceTower(transform.position);
                 _isActive = true;
             }
         }
@@ -75,6 +63,13 @@ namespace Scripts
         private void OnMouseExit()
         {
             _materialRadius.color = Color.red;
+            TowerManager.Instance.ReleaseSnap();
+        }
+
+
+        private void OnDisable()
+        {
+            TowerManager.onPlacingTower -= SpotAvailable;
         }
     }
 }

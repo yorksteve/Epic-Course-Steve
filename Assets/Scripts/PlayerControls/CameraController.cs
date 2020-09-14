@@ -37,7 +37,11 @@ namespace Scripts.PlayerControls
         // Update is called once per frame
         void FixedUpdate()
         {
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, _xMin, _xMax), Mathf.Clamp(transform.position.y, _yMin, _yMax), Mathf.Clamp(transform.position.z, _zMin, _zMax));
+            var clampPos = transform.position;
+            clampPos.x = Mathf.Clamp(clampPos.x, _xMin, _xMax);
+            clampPos.y = Mathf.Clamp(clampPos.y, _yMin, _yMax);
+            clampPos.z = Mathf.Clamp(clampPos.z, _zMin, _zMax);
+            transform.position = clampPos;
 
             // Using mousewheel to zoom in and out
             if (Input.mouseScrollDelta.y > 0)
@@ -69,6 +73,8 @@ namespace Scripts.PlayerControls
             {
                 transform.Translate(Vector3.right * Time.deltaTime * _cameraSpeed);
             }
+
+
 
             // Using WSAD keys to move
             float xTrans = Input.GetAxis("Horizontal") * Time.deltaTime * _cameraSpeed;

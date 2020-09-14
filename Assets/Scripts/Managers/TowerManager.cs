@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Scripts.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,12 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _decoyTower;
         [SerializeField] private GameObject[] _tower;
+        private ITower[] _towerData;
 
-        private GameObject _prefab;
+        private GameObject _prefabDecoy;
         private int _towerID;
         private int _warFundsRequired;
+        private bool _placingTower;
 
 
         public override void Init()
@@ -21,51 +24,97 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        public static event Action onPlacingTower;
-        public static event Action onCancelTower;
+        public static event Action<bool> onPlacingTower;
 
         public delegate void BoughtTower(int id);
         public static BoughtTower onBoughtTower;
 
+        private void Start()
+        {
+            _towerData = new ITower[_decoyTower.Length];
+
+            for (int i = 0; i < _decoyTower.Length; i++)
+            {
+                _towerData[i] = _decoyTower[i].GetComponent<ITower>();
+            }
+
+            
+        }
+
         public void Update()
         {
+            if (_placingTower == false)
+                return;
+
             Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
 
             if (Physics.Raycast(rayOrigin, out hitInfo))
             {
-                _prefab.transform.position = hitInfo.point;                
+                _prefabDecoy.transform.position = hitInfo.point;                
 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    Destroy(_prefab);
-                    if (onCancelTower != null)
+                    if (onPlacingTower != null)
                     {
-                        onCancelTower();
+                        onPlacingTower(false);
                     }
+                    Destroy(_prefabDecoy);
                 }
             }
         }
 
-        public void PlaceTower(Vector3 pos)
+        public ITower PlaceTower(Vector3 pos)
         {
-            Instantiate(_tower[_towerID], pos, Quaternion.identity);
+            // Get cost of tower
 
-            if (onBoughtTower != null)
+            //_towerData[_towerID].WarFundsRequired;
+            _warFundsRequired = _towerData[_towerID].WarFundsRequired;
+
+            if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())
             {
-                onBoughtTower(_towerID);
+                var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+
+                if (onBoughtTower != null)
+                {
+                    onBoughtTower(_warFundsRequired);
+                }
+
+                return initial.GetComponent<ITower>();
             }
+
+            else
+            {
+                Debug.Log("TowerManager::PlaceTower() : Not enough War Funds to buy this tower");
+            }
+
+
+            return null;
+
+            
         }
 
         public void PlaceDecoyTower(int i)
         {
+            _placingTower = true;
             _towerID = i;
-            _prefab = Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);     
+            _prefabDecoy = Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);
 
             if (onPlacingTower != null)
             {
-                onPlacingTower();
+                onPlacingTower(true);
             }
+        }
+
+        public void SnapToPosition(Vector3 pos)
+        {
+            _placingTower = false;
+            _prefabDecoy.transform.position = pos;
+        }
+
+        public void ReleaseSnap()
+        {
+            _placingTower = true;
         }
     }
 }

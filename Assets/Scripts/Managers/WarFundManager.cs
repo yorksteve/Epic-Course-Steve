@@ -13,20 +13,11 @@ namespace Scripts.Managers
     {
         [SerializeField] private int _warFunds;
 
-        private int[] _warFundsRequired;
-
         public static event Action onLackingFunds;
 
         private void OnEnable()
         {
-            TowerManager.onPlacingTower += CheckWarFunds;
             TowerManager.onBoughtTower += BuyTower;
-        }
-
-        private void OnDisable()
-        {
-            TowerManager.onPlacingTower -= CheckWarFunds;
-            TowerManager.onBoughtTower -= BuyTower;
         }
 
         public override void Init()
@@ -34,32 +25,30 @@ namespace Scripts.Managers
             base.Init();
         }
 
+        public int RequestWarFunds()
+        {
+            return _warFunds;
+        }
+
         public void DestroyedMech()
         {
             // Increase warFunds
         }
 
-        public void BuyTower(int id)
+        public void BuyTower(int fundsRequired)
         {
-            //_warFunds -= _warFundsRequired[id];
+            _warFunds -= fundsRequired;
+            UpdateFunds(_warFunds);
         }
 
-        public void CheckWarFunds()
+        public int UpdateFunds(int WarFunds)
         {
-            //if (_warFunds < _warFundsRequired[id])
-            //{
-            //    Debug.Log("Not enought WarFunds");
+            return WarFunds;
+        }
 
-            //    if (onLackingFunds != null)
-            //    {
-            //        onLackingFunds();
-            //    }
-            //}
-
-            //else
-            //{
-            //    Debug.Log("You're good to buy tower!");
-            //}
+        private void OnDisable()
+        {
+            TowerManager.onBoughtTower -= BuyTower;
         }
     }
 }

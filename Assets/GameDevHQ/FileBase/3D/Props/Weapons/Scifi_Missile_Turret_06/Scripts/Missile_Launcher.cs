@@ -42,7 +42,16 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         [SerializeField]
         private Transform _target; //Who should the rocket fire at?
 
-        public int WarFundsRequired { get; set; } = 500;
+        [SerializeField] private int _warFundsRequired;
+        [SerializeField] private GameObject _upgradeModel;
+        public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = 500; }
+        public GameObject CurrentModel { get; set; }
+        public GameObject UpgradeModel { get => _upgradeModel; }
+
+        private void Start()
+        {
+            CurrentModel = this.gameObject;
+        }
 
         private void Update()
         {
@@ -78,6 +87,16 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             }
 
             _launched = false; //set launch bool to false
+        }
+
+        public void Attack()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Damage()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
