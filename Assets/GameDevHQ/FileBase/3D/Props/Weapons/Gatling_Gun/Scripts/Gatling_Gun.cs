@@ -53,36 +53,6 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _towerSource = _towerBase.GetComponent<Transform>();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            // Add to the queue
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            if (other.gameObject.CompareTag("Enemy"))
-            {
-                Target(other.gameObject);
-                Attack();
-            }
-            
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
-            _audioSource.Stop(); //stop the sound effect from playing
-            _startWeaponNoise = true; //set the start weapon noise value to true
-
-            // Remove from queue
-        }
-
         // Method to rotate gun barrel 
         void RotateBarrel() 
         {
@@ -100,6 +70,10 @@ namespace GameDevHQ.FileBase.Gatling_Gun
                 _audioSource.Play(); //play audio clip attached to audio source
                 _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
             }
+
+            //Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
+            //_audioSource.Stop(); //stop the sound effect from playing
+            //_startWeaponNoise = true; //set the start weapon noise value to true
         }
 
         public int Damage()

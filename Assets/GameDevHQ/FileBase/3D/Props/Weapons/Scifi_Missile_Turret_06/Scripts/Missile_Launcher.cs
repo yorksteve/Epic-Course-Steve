@@ -58,27 +58,6 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             _towerSource = _towerBase.GetComponent<Transform>();
         }
 
-        private void Update()
-        {
-           
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            // Add to queue
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            Target(other.gameObject);
-            Attack();
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            // Remove from queue
-        }
-
         IEnumerator FireRocketsRoutine()
         {
             for (int i = 0; i < _misslePositions.Length; i++) //for loop to iterate through each missle position

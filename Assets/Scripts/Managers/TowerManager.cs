@@ -36,9 +36,7 @@ namespace Scripts.Managers
             for (int i = 0; i < _decoyTower.Length; i++)
             {
                 _towerData[i] = _decoyTower[i].GetComponent<ITower>();
-            }
-
-            
+            }            
         }
 
         public void Update()
@@ -66,36 +64,38 @@ namespace Scripts.Managers
 
         public ITower PlaceTower(Vector3 pos)
         {
-            _warFundsRequired = _towerData[_towerID].WarFundsRequired;
+            Debug.Log("TowerManager::PlaceTower()");
 
-            if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())
-            {
-                var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+            //_warFundsRequired = _towerData[_towerID].WarFundsRequired;
 
-                if (onBoughtTower != null)
-                {
-                    onBoughtTower(_warFundsRequired);
-                }
-
-                return initial.GetComponent<ITower>();
-            }
-
-            else
-            {
-                Debug.Log("TowerManager::PlaceTower() : Not enough War Funds to buy this tower");
-            }
-
-
-            return null;
-
-            //var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-
-            //if (onBoughtTower != null)
+            //if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())
             //{
-            //    onBoughtTower(_warFundsRequired);
+            //    var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+
+            //    if (onBoughtTower != null)
+            //    {
+            //        onBoughtTower(_warFundsRequired);
+            //    }
+
+            //    return initial.GetComponent<ITower>();
             //}
 
-            //return initial.GetComponent<ITower>();
+            //else
+            //{
+            //    Debug.Log("TowerManager::PlaceTower() : Not enough War Funds to buy this tower");
+            //}
+
+
+            //return null;
+
+            var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+
+            if (onBoughtTower != null)
+            {
+                onBoughtTower(_warFundsRequired);
+            }
+
+            return initial.GetComponent<ITower>();
         }
 
         public void PlaceDecoyTower(int i)

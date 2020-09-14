@@ -42,22 +42,6 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
             CurrentModel = this.gameObject;
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            Target(other.gameObject);
-            Attack();
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            
-        }
-
         IEnumerator FireRocketsRoutine()
         {
             for (int i = 0; i < _misslePositionsLeft.Length; i++) //for loop to iterate through each missle position

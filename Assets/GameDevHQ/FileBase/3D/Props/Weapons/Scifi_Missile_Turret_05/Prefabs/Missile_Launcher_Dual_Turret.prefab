@@ -1422,6 +1422,7 @@ GameObject:
   - component: {fileID: 8226071656335603680}
   - component: {fileID: 3309192031590985844}
   - component: {fileID: 496770015}
+  - component: {fileID: 1231568436687376697}
   m_Layer: 0
   m_Name: AttackRadius (3)
   m_TagString: Untagged
@@ -1519,3 +1520,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1231568436687376697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6988913142292499076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8118dd85e2b6bc48a36f9f6c83c702e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

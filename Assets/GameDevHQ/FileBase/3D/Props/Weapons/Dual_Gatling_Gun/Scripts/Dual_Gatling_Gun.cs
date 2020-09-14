@@ -57,28 +57,6 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
             _towerSource = _towerBase.GetComponent<Transform>();
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            Target(other.gameObject);
-            Attack();
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            ////for loop to iterate through all muzzle flash objects
-            //for (int i = 0; i < _muzzleFlash.Length; i++)
-            //{
-            //    _muzzleFlash[i].SetActive(false); //enable muzzle effect particle effect
-            //}
-            //_audioSource.Stop(); //stop the sound effect from playing
-            //_startWeaponNoise = true; //set the start weapon noise value to true
-        }
-
         // Method to rotate gun barrel 
         void RotateBarrel() 
         {
@@ -102,6 +80,14 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
                 _audioSource.Play(); //play audio clip attached to audio source
                 _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
             }
+
+            ////for loop to iterate through all muzzle flash objects
+            //for (int i = 0; i < _muzzleFlash.Length; i++)
+            //{
+            //    _muzzleFlash[i].SetActive(false); //enable muzzle effect particle effect
+            //}
+            //_audioSource.Stop(); //stop the sound effect from playing
+            //_startWeaponNoise = true; //set the start weapon noise value to true
         }
 
         public void Target(GameObject enemy)
