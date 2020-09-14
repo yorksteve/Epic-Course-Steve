@@ -66,9 +66,6 @@ namespace Scripts.Managers
 
         public ITower PlaceTower(Vector3 pos)
         {
-            // Get cost of tower
-
-            //_towerData[_towerID].WarFundsRequired;
             _warFundsRequired = _towerData[_towerID].WarFundsRequired;
 
             if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())

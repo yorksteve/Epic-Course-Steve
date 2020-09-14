@@ -11,7 +11,7 @@ using Scripts.Interfaces;
 
 namespace GameDevHQ.FileBase.Missile_Launcher
 {
-    public class Missile_Launcher : MonoBehaviour, ITower
+    public class Missile_Launcher : MonoBehaviour, ITower, IAttack
     {
         public enum MissileType
         {
@@ -48,18 +48,35 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         public GameObject CurrentModel { get; set; }
         public GameObject UpgradeModel { get => _upgradeModel; }
 
+        [SerializeField] private GameObject _towerBase;
+        private Transform _towerSource;
+
         private void Start()
         {
             CurrentModel = this.gameObject;
+
+            _towerSource = _towerBase.GetComponent<Transform>();
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space) && _launched == false) //check for space key and if we launched the rockets
-            {
-                _launched = true; //set the launch bool to true
-                StartCoroutine(FireRocketsRoutine()); //start a coroutine that fires the rockets. 
-            }
+           
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            // Add to queue
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            Target(other.gameObject);
+            Attack();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            // Remove from queue
         }
 
         IEnumerator FireRocketsRoutine()
@@ -91,12 +108,23 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
         public void Attack()
         {
-            throw new System.NotImplementedException();
+            if (_launched == false)
+            {
+                _launched = true; //set the launch bool to true
+                StartCoroutine(FireRocketsRoutine()); //start a coroutine that fires the rockets. 
+            }
         }
 
         public void Damage()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void Target(GameObject enemy)
+        {
+            Vector3 direction = enemy.transform.position - _towerSource.position;
+
+            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
     }
 }

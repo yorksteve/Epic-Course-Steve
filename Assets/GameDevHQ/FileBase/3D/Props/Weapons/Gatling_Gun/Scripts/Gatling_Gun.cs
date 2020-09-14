@@ -20,7 +20,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
     /// </summary>
 
     [RequireComponent(typeof(AudioSource))] //Require Audio Source component
-    public class Gatling_Gun : MonoBehaviour, ITower
+    public class Gatling_Gun : MonoBehaviour, ITower, IAttack
     {
         private Transform _gunBarrel; //Reference to hold the gun barrel
         public GameObject Muzzle_Flash; //reference to the muzzle flash effect to play when firing
@@ -36,6 +36,9 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         public GameObject CurrentModel { get; set; }
         public GameObject UpgradeModel { get => _upgradeModel; }
 
+        [SerializeField] private GameObject _towerBase;
+        private Transform _towerSource;
+
         // Use this for initialization
         void Start()
         {
@@ -46,47 +49,64 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _audioSource.playOnAwake = false; //disabling play on awake
             _audioSource.loop = true; //making sure our sound effect loops
             _audioSource.clip = fireSound; //assign the clip to play
+
+            _towerSource = _towerBase.GetComponent<Transform>();
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetMouseButton(0)) //Check for left click (held) user input
-            { 
-                RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
-                Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
-                bulletCasings.Emit(1); //Emit the bullet casing particle effect  
+            
+        }
 
-                if (_startWeaponNoise == true) //checking if we need to start the gun sound
-                {
-                    _audioSource.Play(); //play audio clip attached to audio source
-                    _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
-                }
+        private void OnTriggerEnter(Collider other)
+        {
+            // Add to the queue
+        }
 
-            }
-            else if (Input.GetMouseButtonUp(0)) //Check for left click (release) user input
-            {      
-                Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
-                _audioSource.Stop(); //stop the sound effect from playing
-                _startWeaponNoise = true; //set the start weapon noise value to true
-            }
+        private void OnTriggerStay(Collider other)
+        {
+            Target(other.gameObject);
+            Attack();
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            //Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
+            //_audioSource.Stop(); //stop the sound effect from playing
+            //_startWeaponNoise = true; //set the start weapon noise value to true
+
+            // Remove from queue
         }
 
         // Method to rotate gun barrel 
         void RotateBarrel() 
         {
             _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
-
         }
 
         public void Attack()
         {
-            throw new System.NotImplementedException();
+            RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
+            Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
+            bulletCasings.Emit(1); //Emit the bullet casing particle effect  
+
+            if (_startWeaponNoise == true) //checking if we need to start the gun sound
+            {
+                _audioSource.Play(); //play audio clip attached to audio source
+                _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
+            }
         }
 
         public void Damage()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void Target(GameObject enemy)
+        {
+            Vector3 direction = enemy.transform.position - _towerSource.position;
+            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
     }
 
