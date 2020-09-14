@@ -98,9 +98,10 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             }
         }
 
-        public void Damage()
+        public int Damage()
         {
-            throw new System.NotImplementedException();
+            int damageAmount = 2;
+            return damageAmount;
         }
 
         public void Target(GameObject enemy)

@@ -87,8 +87,6 @@ namespace Scripts.Managers
 
 
             return null;
-
-            
         }
 
         public void PlaceDecoyTower(int i)
@@ -112,6 +110,12 @@ namespace Scripts.Managers
         public void ReleaseSnap()
         {
             _placingTower = true;
+        }
+
+        public int RequestDamage(int i)
+        {
+            int damage = _towerData[i].Damage();
+            return damage;
         }
     }
 }

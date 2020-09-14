@@ -18,6 +18,7 @@ namespace Scripts.Managers
         private void OnEnable()
         {
             TowerManager.onBoughtTower += BuyTower;
+            EnemyAI.onMechDestroyed += DestroyedMech;
         }
 
         public override void Init()
@@ -49,6 +50,7 @@ namespace Scripts.Managers
         private void OnDisable()
         {
             TowerManager.onBoughtTower -= BuyTower;
+            EnemyAI.onMechDestroyed -= DestroyedMech;
         }
     }
 }

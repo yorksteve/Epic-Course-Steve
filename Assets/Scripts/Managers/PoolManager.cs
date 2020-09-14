@@ -35,11 +35,6 @@ namespace Scripts.Managers
             EndZone.onEndZoneReached += RecycleMech;
         }
 
-        private void OnDisable()
-        {
-            EndZone.onEndZoneReached -= RecycleMech;
-        }
-
         GameObject CreateMech()
         {
             GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity);
@@ -80,6 +75,12 @@ namespace Scripts.Managers
         public void RecycleMech(GameObject mech)
         {
             mech.SetActive(false);
+        }
+
+
+        private void OnDisable()
+        {
+            EndZone.onEndZoneReached -= RecycleMech;
         }
     }
 }

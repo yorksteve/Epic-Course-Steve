@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Scripts.Managers;
 using System;
-
+using Scripts.Interfaces;
 
 namespace Scripts
 {
@@ -13,6 +13,7 @@ namespace Scripts
         private NavMeshAgent _agent;
         private Transform _destination;
         private Animator _anim;
+        
 
         public int health;
         [SerializeField] private int _mechWarFund;
@@ -43,10 +44,13 @@ namespace Scripts
         {
             //health -= damageAmount; (dependant upon the weapon)
 
+            
+
             if (health <= 0 && onMechDestroyed != null)
             {
                 onMechDestroyed();
                 health = 0;
+                _agent.isStopped = true;
                 // Increase War Fund based on value of mech destroyed
             }
         }

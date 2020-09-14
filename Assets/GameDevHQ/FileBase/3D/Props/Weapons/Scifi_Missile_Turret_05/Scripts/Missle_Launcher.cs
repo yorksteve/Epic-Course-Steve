@@ -6,7 +6,7 @@ using Scripts.Interfaces;
 
 namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 {
-    public class Missle_Launcher : MonoBehaviour, IAttack
+    public class Missle_Launcher : MonoBehaviour, IAttack, ITower
     {
         [SerializeField]
         private GameObject _missilePrefab; //holds the missle gameobject to clone
@@ -31,9 +31,15 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
 
+        public int WarFundsRequired { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public GameObject CurrentModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        public GameObject UpgradeModel => throw new System.NotImplementedException();
+
         private void Start()
         {
             _towerSource = _towerBase.GetComponent<Transform>();
+            CurrentModel = this.gameObject;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -104,6 +110,12 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
             Vector3 direction = enemy.transform.position - _towerSource.position;
 
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        }
+
+        public int Damage()
+        {
+            int damageAmount = 8;
+            return damageAmount;
         }
     }
 }

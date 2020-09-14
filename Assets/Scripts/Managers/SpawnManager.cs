@@ -30,13 +30,6 @@ namespace Scripts.Managers
             SpaceShipController.onDreadnaught += StartWave;
         }
 
-        private void OnDisable()
-        {
-            EndZone.onSuccess -= SuccessfulMechs;
-            EnemyAI.onMechDestroyed -= DestroyedMechs;
-            SpaceShipController.onDreadnaught -= StartWave;
-        }
-
         public void StartWave()
         {
             Debug.Log("SpawnManager :: StartWave() : Starting Wave");
@@ -112,6 +105,14 @@ namespace Scripts.Managers
         public int RequestWave()
         {
             return _waveCount;
+        }
+
+
+        private void OnDisable()
+        {
+            EndZone.onSuccess -= SuccessfulMechs;
+            EnemyAI.onMechDestroyed -= DestroyedMechs;
+            SpaceShipController.onDreadnaught -= StartWave;
         }
     }
 

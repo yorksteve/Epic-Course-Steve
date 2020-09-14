@@ -115,9 +115,10 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             }
         }
 
-        public void Damage()
+        public int Damage()
         {
-            throw new System.NotImplementedException();
+            int damageAmount = 4;
+            return damageAmount;
         }
 
         public void Target(GameObject enemy)

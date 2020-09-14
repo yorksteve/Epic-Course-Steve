@@ -20,7 +20,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
     /// </summary>
 
     [RequireComponent(typeof(AudioSource))] //Require Audio Source component
-    public class Dual_Gatling_Gun : MonoBehaviour, IAttack
+    public class Dual_Gatling_Gun : MonoBehaviour, IAttack, ITower
     {
         [SerializeField]
         private Transform[] _gunBarrel; //Reference to hold the gun barrel
@@ -37,9 +37,16 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
 
+        public int WarFundsRequired { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public GameObject CurrentModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        public GameObject UpgradeModel => throw new System.NotImplementedException();
+
         // Use this for initialization
         void Start()
         {
+            CurrentModel = this.gameObject;
+
             _muzzleFlash[0].SetActive(false); //setting the initial state of the muzzle flash effect to off
             _muzzleFlash[1].SetActive(false); //setting the initial state of the muzzle flash effect to off
             _audioSource = GetComponent<AudioSource>(); //ssign the Audio Source to the reference variable
@@ -102,6 +109,12 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
             Vector3 direction = enemy.transform.position - _towerSource.position;
 
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        }
+
+        public int Damage()
+        {
+            int damageAmount = 5;
+            return damageAmount;
         }
     }
 
