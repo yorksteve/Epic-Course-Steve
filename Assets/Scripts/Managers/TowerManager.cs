@@ -87,6 +87,15 @@ namespace Scripts.Managers
 
 
             return null;
+
+            //var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+
+            //if (onBoughtTower != null)
+            //{
+            //    onBoughtTower(_warFundsRequired);
+            //}
+
+            //return initial.GetComponent<ITower>();
         }
 
         public void PlaceDecoyTower(int i)

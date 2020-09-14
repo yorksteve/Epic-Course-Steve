@@ -15,6 +15,7 @@ namespace Scripts
         private ParticleSystem _system;
         private GameObject _test;
         private ITower _towerPlaced;
+        private bool _placingTower;
 
         private void OnEnable()
         {
@@ -33,11 +34,13 @@ namespace Scripts
             if (_isActive == false && placingTower == true)
             {
                 _system.Play();
+                _placingTower = true;
             }
 
             else
             {
                 _system.Stop();
+                _placingTower = false;
             }
         }
 
@@ -53,7 +56,7 @@ namespace Scripts
 
         private void OnMouseDown()
         {
-            if (_isActive == false)
+            if (_isActive == false && _placingTower == true)
             {
                 _towerPlaced = TowerManager.Instance.PlaceTower(transform.position);
                 _isActive = true;

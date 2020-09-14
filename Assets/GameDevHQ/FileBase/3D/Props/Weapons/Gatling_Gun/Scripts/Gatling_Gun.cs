@@ -32,7 +32,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
 
         [SerializeField] private int _warFundsRequired;
         [SerializeField] private GameObject _upgradeModel;
-        public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = 200; }
+        public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
         public GameObject CurrentModel { get; set; }
         public GameObject UpgradeModel { get => _upgradeModel; }
 
@@ -66,15 +66,19 @@ namespace GameDevHQ.FileBase.Gatling_Gun
 
         private void OnTriggerStay(Collider other)
         {
-            Target(other.gameObject);
-            Attack();
+            if (other.gameObject.CompareTag("Enemy"))
+            {
+                Target(other.gameObject);
+                Attack();
+            }
+            
         }
 
         private void OnTriggerExit(Collider other)
         {
-            //Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
-            //_audioSource.Stop(); //stop the sound effect from playing
-            //_startWeaponNoise = true; //set the start weapon noise value to true
+            Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
+            _audioSource.Stop(); //stop the sound effect from playing
+            _startWeaponNoise = true; //set the start weapon noise value to true
 
             // Remove from queue
         }

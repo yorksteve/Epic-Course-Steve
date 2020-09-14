@@ -11,7 +11,7 @@ namespace Scripts.Managers
 {
     public class WarFundManager : MonoSingleton<WarFundManager>
     {
-        [SerializeField] private int _warFunds;
+        private int _warFunds = 500;
 
         public static event Action onLackingFunds;
 
@@ -28,6 +28,7 @@ namespace Scripts.Managers
 
         public int RequestWarFunds()
         {
+            Debug.Log("WarFundManager::RequestWarFunds() : " + _warFunds);
             return _warFunds;
         }
 
