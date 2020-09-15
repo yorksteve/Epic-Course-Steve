@@ -22,10 +22,10 @@ namespace Scripts
 
         private void OnEnable()
         {
-            _towerData = GetComponent<ITower>();
-            _attackData = GetComponent<IAttack>();
             _towerPos = transform.parent;
             _towerParent = _towerPos.gameObject;
+            _towerData = _towerParent.GetComponent<ITower>();
+            _attackData = _towerParent.GetComponent<IAttack>();
             _damageAmount = _attackData.Damage();
         }
 
@@ -39,13 +39,18 @@ namespace Scripts
         private void OnTriggerStay(Collider other)
         {
             _attackData.Target(_targetEnemy);
-            _attackData.Attack();
+            _attackData.Attack(true);
         }
 
         private void OnTriggerExit(Collider other)
         {
             mechs.Dequeue();
             _inRange = false;
+
+            if (_targetEnemy == null)
+            {
+                _attackData.Attack(false);
+            }
         }
 
         private IEnumerator DamageMech()

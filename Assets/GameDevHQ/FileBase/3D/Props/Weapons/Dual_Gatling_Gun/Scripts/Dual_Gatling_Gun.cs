@@ -64,30 +64,36 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
             _gunBarrel[1].transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
         }
 
-        public void Attack()
+        public void Attack(bool attack)
         {
-            RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
-
-            //for loop to iterate through all muzzle flash objects
-            for (int i = 0; i < _muzzleFlash.Length; i++)
+            if (attack == true)
             {
-                _muzzleFlash[i].SetActive(true); //enable muzzle effect particle effect
-                _bulletCasings[i].Emit(1); //Emit the bullet casing particle effect   
+                RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
+
+                //for loop to iterate through all muzzle flash objects
+                for (int i = 0; i < _muzzleFlash.Length; i++)
+                {
+                    _muzzleFlash[i].SetActive(true); //enable muzzle effect particle effect
+                    _bulletCasings[i].Emit(1); //Emit the bullet casing particle effect   
+                }
+
+                if (_startWeaponNoise == true) //checking if we need to start the gun sound
+                {
+                    _audioSource.Play(); //play audio clip attached to audio source
+                    _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
+                }
             }
 
-            if (_startWeaponNoise == true) //checking if we need to start the gun sound
+            else
             {
-                _audioSource.Play(); //play audio clip attached to audio source
-                _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
+                //for loop to iterate through all muzzle flash objects
+                for (int i = 0; i < _muzzleFlash.Length; i++)
+                {
+                    _muzzleFlash[i].SetActive(false); //enable muzzle effect particle effect
+                }
+                _audioSource.Stop(); //stop the sound effect from playing
+                _startWeaponNoise = true; //set the start weapon noise value to true
             }
-
-            ////for loop to iterate through all muzzle flash objects
-            //for (int i = 0; i < _muzzleFlash.Length; i++)
-            //{
-            //    _muzzleFlash[i].SetActive(false); //enable muzzle effect particle effect
-            //}
-            //_audioSource.Stop(); //stop the sound effect from playing
-            //_startWeaponNoise = true; //set the start weapon noise value to true
         }
 
         public void Target(GameObject enemy)

@@ -59,21 +59,27 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
         }
 
-        public void Attack()
+        public void Attack(bool attack)
         {
-            RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
-            Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
-            bulletCasings.Emit(1); //Emit the bullet casing particle effect  
-
-            if (_startWeaponNoise == true) //checking if we need to start the gun sound
+            if (attack == true)
             {
-                _audioSource.Play(); //play audio clip attached to audio source
-                _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
+                RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
+                Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
+                bulletCasings.Emit(1); //Emit the bullet casing particle effect  
+
+                if (_startWeaponNoise == true) //checking if we need to start the gun sound
+                {
+                    _audioSource.Play(); //play audio clip attached to audio source
+                    _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
+                }
             }
 
-            //Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
-            //_audioSource.Stop(); //stop the sound effect from playing
-            //_startWeaponNoise = true; //set the start weapon noise value to true
+            else
+            {
+                Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
+                _audioSource.Stop(); //stop the sound effect from playing
+                _startWeaponNoise = true; //set the start weapon noise value to true
+            }
         }
 
         public int Damage()

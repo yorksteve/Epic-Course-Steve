@@ -6,7 +6,7 @@ namespace Scripts.Interfaces
 {
     public interface IAttack
     {
-        void Attack();
+        void Attack(bool attack);
         void Target(GameObject enemy);
         int Damage();
     }

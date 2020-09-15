@@ -64,7 +64,7 @@ namespace Scripts
             health = 0;
             _explosion.Play();
             _anim.SetBool("Die", true);
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(5f);
 
             if (onRecycleMech != null)
             {
@@ -73,7 +73,7 @@ namespace Scripts
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
-        void IAttack.Attack()
+        void IAttack.Attack(bool attack)
         {
             _anim.SetBool("Attack", true);
         }

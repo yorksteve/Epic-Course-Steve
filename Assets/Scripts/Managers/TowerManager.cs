@@ -67,38 +67,38 @@ namespace Scripts.Managers
 
         public ITower PlaceTower(Vector3 pos)
         {
-            Debug.Log("TowerManager::PlaceTower()");
+            //Debug.Log("TowerManager::PlaceTower()");
 
-            _warFundsRequired = _towerData[_towerID].WarFundsRequired;
+            //_warFundsRequired = _towerData[_towerID].WarFundsRequired;
 
-            if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())
-            {
-                var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-
-                if (onBoughtTower != null)
-                {
-                    onBoughtTower(_warFundsRequired);
-                }
-
-                return initial.GetComponent<ITower>();
-            }
-
-            else
-            {
-                Debug.Log("TowerManager::PlaceTower() : Not enough War Funds to buy this tower");
-            }
-
-
-            return null;
-
-            //var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-
-            //if (onBoughtTower != null)
+            //if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())
             //{
-            //    onBoughtTower(_warFundsRequired);
+            //    var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+
+            //    if (onBoughtTower != null)
+            //    {
+            //        onBoughtTower(_warFundsRequired);
+            //    }
+
+            //    return initial.GetComponent<ITower>();
             //}
 
-            //return initial.GetComponent<ITower>();
+            //else
+            //{
+            //    Debug.Log("TowerManager::PlaceTower() : Not enough War Funds to buy this tower");
+            //}
+
+
+            //return null;
+
+            var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+
+            if (onBoughtTower != null)
+            {
+                onBoughtTower(_warFundsRequired);
+            }
+
+            return initial.GetComponent<ITower>();
         }
 
         public void PlaceDecoyTower(int i)

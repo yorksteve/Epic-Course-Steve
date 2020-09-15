@@ -80,12 +80,15 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
             _launched = false; //set launch bool to false
         }
 
-        public void Attack()
+        public void Attack(bool attack)
         {
-            if (_launched == false)
+            if (attack == true)
             {
-                _launched = true; //set the launch bool to true
-                StartCoroutine(FireRocketsRoutine()); //start a coroutine that fires the rockets. 
+                if (_launched == false)
+                {
+                    _launched = true; //set the launch bool to true
+                    StartCoroutine(FireRocketsRoutine()); //start a coroutine that fires the rockets. 
+                }
             }
         }
 
