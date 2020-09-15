@@ -12,6 +12,7 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _decoyTower;
         [SerializeField] private GameObject[] _tower;
         private ITower[] _towerData;
+        private IAttack[] _attackData;
 
         private GameObject _prefabDecoy;
         private int _towerID;
@@ -31,11 +32,13 @@ namespace Scripts.Managers
 
         private void Start()
         {
-            _towerData = new ITower[_decoyTower.Length];
+            _towerData = new ITower[_tower.Length];
+            _attackData = new IAttack[_tower.Length];
 
-            for (int i = 0; i < _decoyTower.Length; i++)
+            for (int i = 0; i < _tower.Length; i++)
             {
-                _towerData[i] = _decoyTower[i].GetComponent<ITower>();
+                _towerData[i] = _tower[i].GetComponent<ITower>();
+                _attackData[i] = _tower[i].GetComponent<IAttack>();
             }            
         }
 
@@ -66,36 +69,36 @@ namespace Scripts.Managers
         {
             Debug.Log("TowerManager::PlaceTower()");
 
-            //_warFundsRequired = _towerData[_towerID].WarFundsRequired;
+            _warFundsRequired = _towerData[_towerID].WarFundsRequired;
 
-            //if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())
-            //{
-            //    var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-
-            //    if (onBoughtTower != null)
-            //    {
-            //        onBoughtTower(_warFundsRequired);
-            //    }
-
-            //    return initial.GetComponent<ITower>();
-            //}
-
-            //else
-            //{
-            //    Debug.Log("TowerManager::PlaceTower() : Not enough War Funds to buy this tower");
-            //}
-
-
-            //return null;
-
-            var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-
-            if (onBoughtTower != null)
+            if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())
             {
-                onBoughtTower(_warFundsRequired);
+                var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+
+                if (onBoughtTower != null)
+                {
+                    onBoughtTower(_warFundsRequired);
+                }
+
+                return initial.GetComponent<ITower>();
             }
 
-            return initial.GetComponent<ITower>();
+            else
+            {
+                Debug.Log("TowerManager::PlaceTower() : Not enough War Funds to buy this tower");
+            }
+
+
+            return null;
+
+            //var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+
+            //if (onBoughtTower != null)
+            //{
+            //    onBoughtTower(_warFundsRequired);
+            //}
+
+            //return initial.GetComponent<ITower>();
         }
 
         public void PlaceDecoyTower(int i)
@@ -123,7 +126,7 @@ namespace Scripts.Managers
 
         public int RequestDamage(int i)
         {
-            int damage = _towerData[i].Damage();
+            int damage = _attackData[i].Damage();
             return damage;
         }
     }

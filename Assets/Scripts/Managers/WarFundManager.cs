@@ -35,6 +35,7 @@ namespace Scripts.Managers
         public void DestroyedMech()
         {
             // Increase warFunds
+            UpdateFunds(_warFunds);
         }
 
         public void BuyTower(int fundsRequired)

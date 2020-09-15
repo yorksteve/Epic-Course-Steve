@@ -8,7 +8,7 @@ using Scripts.Interfaces;
 
 namespace Scripts
 {
-    public class EnemyAI : MonoBehaviour
+    public class EnemyAI : MonoBehaviour, IAttack, IHealth
     {
         private NavMeshAgent _agent;
         private Transform _destination;
@@ -19,6 +19,11 @@ namespace Scripts
         [SerializeField] private int _mechWarFund;
 
         public static event Action onMechDestroyed;
+
+        private void OnEnable()
+        {
+            //EnemyDetection.onDamage += Health;
+        }
 
         private void Start()
         {
@@ -40,11 +45,33 @@ namespace Scripts
             }
         }
 
-        void Health()
+        IEnumerator DestroyMech()
         {
-            //health -= damageAmount; (dependant upon the weapon)
+            health = 0;
+            _anim.SetBool("Die", true);
+            yield return new WaitForSeconds(1.5f);
+            this.gameObject.SetActive(false);
+        }
 
-            
+        // Mechs can attack soldiers placed in the field (to be added later...probably)
+        void IAttack.Attack()
+        {
+            _anim.SetBool("Attack", true);
+        }
+
+        public void Target(GameObject enemy)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Damage()
+        {
+            throw new NotImplementedException();
+        }
+
+        float IHealth.Health(int damage)
+        {
+            //health -= damageAmount; (dependant upon the weapon)            
 
             if (health <= 0 && onMechDestroyed != null)
             {
@@ -53,21 +80,8 @@ namespace Scripts
                 _agent.isStopped = true;
                 // Increase War Fund based on value of mech destroyed
             }
-        }
 
-
-        // Mechs can attack soldiers placed in the field (to be added later...probably)
-        void Attack()
-        {
-            _anim.SetBool("Attack", true);
-        }
-
-        IEnumerator DestroyMech()
-        {
-            health = 0;
-            _anim.SetBool("Die", true);
-            yield return new WaitForSeconds(1.5f);
-            this.gameObject.SetActive(false);
+            return health;
         }
     }
 }

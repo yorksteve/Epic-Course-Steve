@@ -4,12 +4,9 @@ using UnityEngine;
 
 namespace Scripts.Interfaces
 {
-    public interface IAttack
+    public interface IHealth
     {
-        void Attack();
-        void Target(GameObject enemy);
-        int Damage();
+        float Health(int damage);
     }
 }
-  
 
