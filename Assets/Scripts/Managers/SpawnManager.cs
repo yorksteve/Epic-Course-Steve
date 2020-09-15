@@ -71,7 +71,7 @@ namespace Scripts.Managers
             CheckWave();
         }
 
-        public void DestroyedMechs()
+        public void DestroyedMechs(int uselessValue)
         {
             _destroyedMechs++;
             Debug.Log("SpawnManager::DestroyedMechs()");

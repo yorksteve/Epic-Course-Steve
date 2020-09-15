@@ -33,6 +33,7 @@ namespace Scripts.Managers
         private void OnEnable()
         {
             EndZone.onEndZoneReached += RecycleMech;
+            EnemyAI.onRecycleMech += RecycleMech;
         }
 
         GameObject CreateMech()
@@ -81,6 +82,7 @@ namespace Scripts.Managers
         private void OnDisable()
         {
             EndZone.onEndZoneReached -= RecycleMech;
+            EnemyAI.onRecycleMech -= RecycleMech;
         }
     }
 }

@@ -32,9 +32,9 @@ namespace Scripts.Managers
             return _warFunds;
         }
 
-        public void DestroyedMech()
+        public void DestroyedMech(int mechWarFunds)
         {
-            // Increase warFunds
+            _warFunds += mechWarFunds;
             UpdateFunds(_warFunds);
         }
 
@@ -46,7 +46,8 @@ namespace Scripts.Managers
 
         public int UpdateFunds(int WarFunds)
         {
-            return WarFunds;
+            WarFunds = _warFunds;
+            return _warFunds;
         }
 
         private void OnDisable()
