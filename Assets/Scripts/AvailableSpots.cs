@@ -49,9 +49,9 @@ namespace Scripts
             if (_isActive == false)
             {
                 _materialRadius.color = Color.green;
+                TowerManager.Instance.SnapToPosition(transform.position);
             }
 
-            TowerManager.Instance.SnapToPosition(transform.position);
         }
 
         private void OnMouseDown()

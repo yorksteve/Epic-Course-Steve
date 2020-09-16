@@ -37,9 +37,13 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
         private Missile_Launcher.MissileType _missileType;
         private Transform _target;
 
+        private GameObject[] _mech;
+
         // Use this for initialization
         IEnumerator Start()
         {
+            _mech = GameObject.FindGameObjectsWithTag("Enemy");
+
             _rigidbody = GetComponent<Rigidbody>(); //assign the rigidbody component 
             _audioSource = GetComponent<AudioSource>(); //assign the audiosource component
             _audioSource.pitch = Random.Range(0.7f, 1.9f); //randomize the pitch of the rocket audio
@@ -123,7 +127,10 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
 
         private void OnCollisionEnter(Collision other)
         {
-            Destroy(other.gameObject); //destroy collided object
+            if (other.gameObject.Equals(_mech))
+            {
+                Destroy(other.gameObject); //destroy collided object
+            }
 
             if (_explosionPrefab != null)
                 Instantiate(_explosionPrefab, transform.position, Quaternion.identity); //instantiate explosion

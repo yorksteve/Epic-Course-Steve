@@ -43,7 +43,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         [SerializeField]
         private Transform _target; //Who should the rocket fire at?
 
-        [SerializeField] private int _warFundsRequired;
+        [SerializeField] private int _warFundsRequired = 500;
         [SerializeField] private GameObject _upgradeModel;
         public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = 500; }
         public GameObject CurrentModel { get; set; }
@@ -52,7 +52,6 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
 
-        public event Action onTarget;
 
         private void Start()
         {

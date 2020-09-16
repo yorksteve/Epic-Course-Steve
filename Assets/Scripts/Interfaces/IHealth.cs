@@ -6,7 +6,7 @@ namespace Scripts.Interfaces
 {
     public interface IHealth
     {
-        float Health(int damage);
+        void Health(int damage);
     }
 }
 

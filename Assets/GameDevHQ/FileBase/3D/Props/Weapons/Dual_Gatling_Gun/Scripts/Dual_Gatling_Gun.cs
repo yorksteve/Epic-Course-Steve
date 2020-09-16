@@ -38,7 +38,6 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
 
-        public event Action onTarget;
 
         public int WarFundsRequired { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public GameObject CurrentModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

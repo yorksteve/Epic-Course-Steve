@@ -12,12 +12,12 @@ namespace Scripts
         private Transform _towerPos;
         private GameObject _towerParent;
         private GameObject _targetEnemy;
-        Queue<GameObject> mechs = new Queue<GameObject>();
+        List<GameObject> mechs = new List<GameObject>();
         private int _damageAmount;
         private bool _inRange;
 
         public delegate void Damage(int damage);
-        public static Damage onDamage;
+        public static event Damage onDamage;
 
 
         private void OnEnable()
@@ -33,8 +33,8 @@ namespace Scripts
         {
             if (other.gameObject.tag == "Enemy")
             {
-                mechs.Enqueue(other.gameObject);
-                _targetEnemy = mechs.Peek();
+                mechs.Add(other.gameObject);
+                _targetEnemy = mechs[0];
                 _inRange = true;
             }     
         }
@@ -50,7 +50,7 @@ namespace Scripts
 
         private void OnTriggerExit(Collider other)
         {
-            mechs.Dequeue();
+            mechs.Remove(other.gameObject);
             _inRange = false;
 
             if (_targetEnemy == null)

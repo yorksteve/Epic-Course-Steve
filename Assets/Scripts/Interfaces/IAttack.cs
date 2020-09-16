@@ -10,7 +10,6 @@ namespace Scripts.Interfaces
         void Attack(bool attack);
         void Target(GameObject enemy);
         int Damage();
-        event Action onTarget;
     }
 }
   

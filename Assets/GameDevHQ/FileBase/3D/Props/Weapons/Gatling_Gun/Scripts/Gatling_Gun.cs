@@ -22,7 +22,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
     [RequireComponent(typeof(AudioSource))] //Require Audio Source component
     public class Gatling_Gun : MonoBehaviour, ITower, IAttack
     {
-        private Transform _gunBarrel; //Reference to hold the gun barrel
+        [SerializeField] private Transform _gunBarrel; //Reference to hold the gun barrel
         public GameObject Muzzle_Flash; //reference to the muzzle flash effect to play when firing
         public ParticleSystem bulletCasings; //reference to the bullet casing effect to play when firing
         public AudioClip fireSound; //Reference to the audio clip
@@ -39,13 +39,11 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
 
-        public event Action onTarget;
 
         // Use this for initialization
         void Start()
         {
             CurrentModel = this.gameObject;
-            _gunBarrel = GameObject.Find("Barrel_to_Spin").GetComponent<Transform>(); //assigning the transform of the gun barrel to the variable
             Muzzle_Flash.SetActive(false); //setting the initial state of the muzzle flash effect to off
             _audioSource = GetComponent<AudioSource>(); //ssign the Audio Source to the reference variable
             _audioSource.playOnAwake = false; //disabling play on awake
@@ -53,12 +51,16 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _audioSource.clip = fireSound; //assign the clip to play
 
             _towerSource = _towerBase.GetComponent<Transform>();
+            Damage();
         }
 
         // Method to rotate gun barrel 
         void RotateBarrel() 
         {
-            _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
+            if (_gunBarrel != null)
+            {
+                _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
+            }
         }
 
         public void Attack(bool attack)
@@ -94,10 +96,6 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         {
             Vector3 direction = enemy.transform.position - _towerSource.position;
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
-            if (onTarget != null)
-            {
-                onTarget();
-            }
         }
     }
 

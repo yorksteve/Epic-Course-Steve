@@ -30,7 +30,7 @@ namespace Scripts
 
         private void OnEnable()
         {
-            //EnemyDetection.onDamage += Health;
+            EnemyDetection.onDamage += Health;
         }
 
         private void Start()
@@ -75,7 +75,7 @@ namespace Scripts
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
-        void IAttack.Attack(bool attack)
+        public void Attack(bool attack)
         {
             _anim.SetBool("Attack", true);
         }
@@ -90,17 +90,16 @@ namespace Scripts
             throw new NotImplementedException();
         }
 
-        float IHealth.Health(int damage)
+        public void Health(int damage)
         {
-            //health -= damageAmount; (dependant upon the weapon)            
+            // Finsih damage system by adding health to mechs
+            health -= damage;            
 
             if (health <= 0 && onMechDestroyed != null)
             {
                 onMechDestroyed(_mechWarFund);
                 StartCoroutine(DestroyMech());
             }
-
-            return health;
         }
     }
 }
