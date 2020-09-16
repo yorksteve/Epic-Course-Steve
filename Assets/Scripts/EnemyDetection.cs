@@ -31,15 +31,21 @@ namespace Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            mechs.Enqueue(other.gameObject);
-            _targetEnemy = mechs.Peek();
-            _inRange = true;
+            if (other.gameObject.tag == "Enemy")
+            {
+                mechs.Enqueue(other.gameObject);
+                _targetEnemy = mechs.Peek();
+                _inRange = true;
+            }     
         }
 
         private void OnTriggerStay(Collider other)
         {
-            _attackData.Target(_targetEnemy);
-            _attackData.Attack(true);
+            if (_inRange == true)
+            {
+                _attackData.Target(_targetEnemy);
+                _attackData.Attack(true);
+            }       
         }
 
         private void OnTriggerExit(Collider other)
