@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.FileBase.Missle_Launcher_Dual_Turret.Missle;
 using Scripts.Interfaces;
+using System;
 
 namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 {
@@ -30,6 +31,8 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
+
+        public event Action onTarget;
 
         public int WarFundsRequired { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public GameObject CurrentModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

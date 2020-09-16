@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.FileBase.Missile_Launcher.Missile;
 using Scripts.Interfaces;
+using System;
 
 /*
  *@author GameDevHQ 
@@ -50,6 +51,8 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
+
+        public event Action onTarget;
 
         private void Start()
         {

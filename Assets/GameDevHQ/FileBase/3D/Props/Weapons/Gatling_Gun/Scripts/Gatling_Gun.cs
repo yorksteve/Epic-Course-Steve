@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Interfaces;
-
+using System;
 
 namespace GameDevHQ.FileBase.Gatling_Gun
 {
@@ -38,6 +38,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
 
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
+
+        public event Action onTarget;
 
         // Use this for initialization
         void Start()
@@ -92,6 +94,10 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         {
             Vector3 direction = enemy.transform.position - _towerSource.position;
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            if (onTarget != null)
+            {
+                onTarget();
+            }
         }
     }
 

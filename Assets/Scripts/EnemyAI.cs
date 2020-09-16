@@ -26,6 +26,8 @@ namespace Scripts
         public delegate void RecycleMech(GameObject mech);
         public static RecycleMech onRecycleMech;
 
+        public event Action onTarget;
+
         private void OnEnable()
         {
             //EnemyDetection.onDamage += Health;
