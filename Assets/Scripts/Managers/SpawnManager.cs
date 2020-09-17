@@ -49,12 +49,12 @@ namespace Scripts.Managers
         {
             for (int i = 0; i <= mechsInWave; i++)
             {
-                yield return new WaitForSeconds(5);
-                if (onNewWave != null)
-                {
-                    onNewWave();
-                }
+                yield return new WaitForSeconds(2);
                 PoolManager.Instance.GetMech();
+                //if (onNewWave != null)
+                //{
+                //    onNewWave();
+                //}
             }
 
             Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
@@ -74,7 +74,6 @@ namespace Scripts.Managers
         {
             _successfulMechs++;
             Debug.Log("SpawnManager::SuccessfulMechs()");
-
             CheckWave();
         }
 

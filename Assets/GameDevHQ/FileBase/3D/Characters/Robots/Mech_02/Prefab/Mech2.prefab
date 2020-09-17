@@ -416,6 +416,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbff045b59fe9dd42a1d11e27f3e64de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _anim: {fileID: 3091765334721737276}
+  _explosion: {fileID: 4688366796816071958, guid: 0bd59304b034bee4e939420e993113e1,
+    type: 3}
   _health: 50
   _mechWarFund: 50
 --- !u!195 &-7168904304040241426

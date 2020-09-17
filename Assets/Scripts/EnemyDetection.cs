@@ -15,7 +15,7 @@ namespace Scripts
         List<GameObject> mechs = new List<GameObject>();
         private int _damageAmount;
 
-        public delegate void Damage(int damage);
+        public delegate void Damage(int damage, GameObject mech);
         public static event Damage onDamage;
 
 
@@ -35,7 +35,7 @@ namespace Scripts
                 mechs.Add(other.gameObject);
                 _targetEnemy = mechs[0];
 
-                //StartCoroutine(DamageMech());
+                StartCoroutine(DamageMech());
             }
         }
 
@@ -64,13 +64,12 @@ namespace Scripts
 
         private IEnumerator DamageMech()
         {
-            // I only want this to be called on the targeted mech
             if (_targetEnemy != null)
             {
                 yield return new WaitForSeconds(.5f);
                 if (onDamage != null)
                 {
-                    onDamage(_damageAmount);
+                    onDamage(_damageAmount, _targetEnemy);
                 }
             }
         }

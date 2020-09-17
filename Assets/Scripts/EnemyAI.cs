@@ -12,8 +12,8 @@ namespace Scripts
     {
         private NavMeshAgent _agent;
         private Transform _destination;
-        private Animator _anim;
-        private ParticleSystem _explosion;
+        [SerializeField] private Animator _anim;
+        [SerializeField] private ParticleSystem _explosion;
         private GameObject _mech;
         
 
@@ -32,11 +32,6 @@ namespace Scripts
         {
             _destination = SpawnManager.Instance.RequestDestination();
 
-            if (_anim != null)
-            {
-                _anim = GetComponent<Animator>();
-            }
-
             if (_agent != null)
             {
                 _agent.SetDestination(_destination.position);
@@ -51,17 +46,25 @@ namespace Scripts
 
             if (_explosion != null)
             {
-                _explosion = _mech.GetComponent<ParticleSystem>();
+                _explosion = _mech.GetComponentInChildren<ParticleSystem>();
             }
         }
         
         private void OnEnable()
         {
             EnemyDetection.onDamage += Health;
-            SpawnManager.onNewWave += ResetDestination;
+            SpawnManager.onNewWave += ResetMech;
         }
 
-        private void ResetDestination()
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Health(5, _mech);
+            }
+        }
+
+        private void ResetMech()
         {
             if (_agent != null)
             {
@@ -72,6 +75,8 @@ namespace Scripts
                 _agent = GetComponent<NavMeshAgent>();
                 _agent.SetDestination(_destination.position);
             }
+
+            _anim.SetBool("Die", false);
         }
 
         IEnumerator DestroyMech()
@@ -104,10 +109,10 @@ namespace Scripts
             throw new NotImplementedException();
         }
 
-        public void Health(int damage)
+        public void Health(int damage, GameObject mech)
         {
-            Debug.Log("EnemyAI::)Health()");
-            // Finsih damage system by adding health to mechs
+            mech = _mech;
+            Debug.Log("EnemyAI::Health()");
             _health -= damage;
 
             Debug.Log(_health);
@@ -122,7 +127,7 @@ namespace Scripts
         private void OnDisable()
         {
             EnemyDetection.onDamage -= Health;
-            SpawnManager.onNewWave -= ResetDestination;
+            SpawnManager.onNewWave -= ResetMech;
         }
     }
 }

@@ -104,6 +104,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
         public void Target(GameObject enemy)
         {
+            _target = enemy.transform;
             Vector3 direction = enemy.transform.position - _towerSource.position;
 
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);

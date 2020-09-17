@@ -64,12 +64,12 @@ namespace Scripts.PlayerControls
                 transform.Translate(new Vector3(0, -1, -1) * Time.deltaTime * _cameraSpeed);
             }
 
-            if (Input.mousePosition.x < 0)
+            if (Input.mousePosition.x <= 0)
             {
                 transform.Translate(Vector3.left * Time.deltaTime * _cameraSpeed);
             }
 
-            else if (Input.mousePosition.x > _width)
+            else if (Input.mousePosition.x >= _width)
             {
                 transform.Translate(Vector3.right * Time.deltaTime * _cameraSpeed);
             }
