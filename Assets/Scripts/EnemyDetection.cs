@@ -34,8 +34,8 @@ namespace Scripts
             if (other.gameObject.tag == "Enemy")
             {
                 mechs.Add(other.gameObject);
-                _targetEnemy = mechs[0];
                 _inRange = true;
+                //StartCoroutine(DamageMech());
             }     
         }
 
@@ -43,6 +43,7 @@ namespace Scripts
         {
             if (_inRange == true)
             {
+                _targetEnemy = mechs[0];
                 _attackData.Target(_targetEnemy);
                 _attackData.Attack(true);
             }       
@@ -53,18 +54,18 @@ namespace Scripts
             mechs.Remove(other.gameObject);
             _inRange = false;
 
-            if (_targetEnemy == null)
-            {
-                _attackData.Attack(false);
-            }
+            //if (_targetEnemy == null)
+            //{
+            _attackData.Attack(false);
+            //}
         }
 
         private IEnumerator DamageMech()
         {
             // I only want this to be called on the targeted mech
-            while (_inRange == true)
+            if (_inRange == true && _targetEnemy != null)
             {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(.5f);
                 if (onDamage != null)
                 {
                     onDamage(_damageAmount);

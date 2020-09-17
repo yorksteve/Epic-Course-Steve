@@ -51,7 +51,6 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _audioSource.clip = fireSound; //assign the clip to play
 
             _towerSource = _towerBase.GetComponent<Transform>();
-            Damage();
         }
 
         // Method to rotate gun barrel 

@@ -1582,8 +1582,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbff045b59fe9dd42a1d11e27f3e64de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
-  _mechWarFund: 0
+  _health: 2
+  _mechWarFund: 25
 --- !u!65 &-3099949395931670192
 BoxCollider:
   m_ObjectHideFlags: 0

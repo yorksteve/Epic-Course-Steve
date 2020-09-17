@@ -875,7 +875,7 @@ MonoBehaviour:
   _reloadTime: 0
   _destroyTime: 10
   _target: {fileID: 0}
-  _warFundsRequired: 0
+  _warFundsRequired: 500
   _upgradeModel: {fileID: 1815566672332072, guid: 7576f8495ea90394ca92d5b8828f516b,
     type: 3}
   _towerBase: {fileID: 1530330881940990}

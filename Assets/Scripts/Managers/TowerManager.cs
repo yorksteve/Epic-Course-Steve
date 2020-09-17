@@ -74,9 +74,8 @@ namespace Scripts.Managers
             Debug.Log("TowerManager::PlaceTower()");
 
             _warFundsRequired = _towerData[_towerID].WarFundsRequired;
-            Debug.Log(_warFundsRequired);
 
-            if (_warFundsRequired < WarFundManager.Instance.RequestWarFunds())
+            if (_warFundsRequired <= WarFundManager.Instance.RequestWarFunds())
             {
                 var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
 
@@ -95,15 +94,6 @@ namespace Scripts.Managers
 
 
             return null;
-
-            //var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-
-            //if (onBoughtTower != null)
-            //{
-            //    onBoughtTower(_warFundsRequired);
-            //}
-
-            //return initial.GetComponent<ITower>();
         }
 
         public void PlaceDecoyTower(int i)

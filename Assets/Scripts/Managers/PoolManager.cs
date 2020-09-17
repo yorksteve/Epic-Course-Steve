@@ -64,8 +64,8 @@ namespace Scripts.Managers
             {
                 if (mech.activeInHierarchy == false)
                 {
-                    mech.SetActive(true);
                     mech.transform.position = _startPoint.position;
+                    mech.SetActive(true);
                     return mech;
                 }
             }

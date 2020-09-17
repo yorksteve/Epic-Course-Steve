@@ -1,4 +1,5 @@
 ﻿using Scripts.Extra;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Scripts.Managers
         private int _amountOfMechs = 10;
         private int _successfulMechs;
         private int _destroyedMechs;
+
+        public static event Action onNewWave;
 
         public override void Init()
         {
@@ -47,6 +50,10 @@ namespace Scripts.Managers
             for (int i = 0; i <= mechsInWave; i++)
             {
                 yield return new WaitForSeconds(5);
+                if (onNewWave != null)
+                {
+                    onNewWave();
+                }
                 PoolManager.Instance.GetMech();
             }
 

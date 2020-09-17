@@ -17,7 +17,7 @@ namespace Scripts
         private GameObject _mech;
         
 
-        public int health;
+        [SerializeField] private int _health;
         [SerializeField] private int _mechWarFund;
 
         public delegate void MechDestroyed(int warFunds);
@@ -28,10 +28,6 @@ namespace Scripts
 
         public event Action onTarget;
 
-        private void OnEnable()
-        {
-            EnemyDetection.onDamage += Health;
-        }
 
         private void Start()
         {
@@ -59,11 +55,30 @@ namespace Scripts
                 _explosion = _mech.GetComponent<ParticleSystem>();
             }
         }
+        
+        private void OnEnable()
+        {
+            EnemyDetection.onDamage += Health;
+            SpawnManager.onNewWave += ResetDestination;
+        }
+
+        private void ResetDestination()
+        {
+            if (_agent != null)
+            {
+                _agent.SetDestination(_destination.position);
+            }
+            else
+            {
+                _agent = GetComponent<NavMeshAgent>();
+                _agent.SetDestination(_destination.position);
+            }
+        }
 
         IEnumerator DestroyMech()
         {
             _agent.isStopped = true;
-            health = 0;
+            _health = 0;
             _explosion.Play();
             _anim.SetBool("Die", true);
             yield return new WaitForSeconds(5f);
@@ -92,14 +107,23 @@ namespace Scripts
 
         public void Health(int damage)
         {
+            Debug.Log("EnemyAI::)Health()");
             // Finsih damage system by adding health to mechs
-            health -= damage;            
+            _health -= damage;
 
-            if (health <= 0 && onMechDestroyed != null)
+            Debug.Log(_health);
+
+            if (_health <= 0 && onMechDestroyed != null)
             {
                 onMechDestroyed(_mechWarFund);
                 StartCoroutine(DestroyMech());
             }
+        }
+
+        private void OnDisable()
+        {
+            EnemyDetection.onDamage -= Health;
+            SpawnManager.onNewWave -= ResetDestination;
         }
     }
 }

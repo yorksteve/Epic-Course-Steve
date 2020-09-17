@@ -45,7 +45,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
         [SerializeField] private int _warFundsRequired = 500;
         [SerializeField] private GameObject _upgradeModel;
-        public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = 500; }
+        public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
         public GameObject CurrentModel { get; set; }
         public GameObject UpgradeModel { get => _upgradeModel; }
 
