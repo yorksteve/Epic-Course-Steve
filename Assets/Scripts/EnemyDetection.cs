@@ -14,7 +14,6 @@ namespace Scripts
         private GameObject _targetEnemy;
         List<GameObject> mechs = new List<GameObject>();
         private int _damageAmount;
-        private bool _inRange;
 
         public delegate void Damage(int damage);
         public static event Damage onDamage;
@@ -34,36 +33,39 @@ namespace Scripts
             if (other.gameObject.tag == "Enemy")
             {
                 mechs.Add(other.gameObject);
-                _inRange = true;
+                _targetEnemy = mechs[0];
+
                 //StartCoroutine(DamageMech());
-            }     
+            }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            if (_inRange == true)
-            {
-                _targetEnemy = mechs[0];
-                _attackData.Target(_targetEnemy);
-                _attackData.Attack(true);
-            }       
+            _attackData.Target(_targetEnemy);
+            _attackData.Attack(true);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            mechs.Remove(other.gameObject);
-            _inRange = false;
+            if (other.gameObject.tag == "Enemy")
+            {
+                mechs.Remove(other.gameObject);
+                if (mechs != null)
+                {
+                    _targetEnemy = mechs[0];
+                }
 
-            //if (_targetEnemy == null)
-            //{
-            _attackData.Attack(false);
-            //}
+                if (_targetEnemy == null)
+                {
+                    _attackData.Attack(false);
+                }
+            }
         }
 
         private IEnumerator DamageMech()
         {
             // I only want this to be called on the targeted mech
-            if (_inRange == true && _targetEnemy != null)
+            if (_targetEnemy != null)
             {
                 yield return new WaitForSeconds(.5f);
                 if (onDamage != null)
