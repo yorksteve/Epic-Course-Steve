@@ -26,6 +26,9 @@ namespace Scripts
         public delegate void RecycleMech(GameObject mech);
         public static RecycleMech onRecycleMech;
 
+        public delegate void TargetNew(Collider mechCollider);
+        public static TargetNew onTargetNew;
+
 
 
         private void Start()
@@ -56,14 +59,6 @@ namespace Scripts
             SpawnManager.onNewWave += ResetMech;
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Health(5, _mech);
-            }
-        }
-
         private void ResetMech()
         {
             if (_agent != null)
@@ -75,8 +70,6 @@ namespace Scripts
                 _agent = GetComponent<NavMeshAgent>();
                 _agent.SetDestination(_destination.position);
             }
-
-            _anim.SetBool("Die", false);
         }
 
         IEnumerator DestroyMech()
@@ -91,6 +84,8 @@ namespace Scripts
             {
                 onRecycleMech(_mech);
             }
+
+            _anim.WriteDefaultValues();
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
@@ -111,16 +106,17 @@ namespace Scripts
 
         public void Health(int damage, GameObject mech)
         {
-            mech = _mech;
-            Debug.Log("EnemyAI::Health()");
-            _health -= damage;
-
-            Debug.Log(_health);
-
-            if (_health <= 0 && onMechDestroyed != null)
+            if (mech = this.gameObject)
             {
-                onMechDestroyed(_mechWarFund);
-                StartCoroutine(DestroyMech());
+                Debug.Log("EnemyAI::Health()");
+                _health -= damage;
+
+                if (_health <= 0 && onMechDestroyed != null)
+                {
+                    onMechDestroyed(_mechWarFund);
+                    onTargetNew(mech.GetComponent<Collider>());
+                    StartCoroutine(DestroyMech());
+                }
             }
         }
 

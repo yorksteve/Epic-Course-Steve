@@ -26,6 +26,8 @@ namespace Scripts
             _towerData = _towerParent.GetComponent<ITower>();
             _attackData = _towerParent.GetComponent<IAttack>();
             _damageAmount = _attackData.Damage();
+
+            EnemyAI.onTargetNew += RemoveDestroyedMechs;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -34,15 +36,17 @@ namespace Scripts
             {
                 mechs.Add(other.gameObject);
                 _targetEnemy = mechs[0];
-
-                StartCoroutine(DamageMech());
             }
         }
 
         private void OnTriggerStay(Collider other)
         {
-            _attackData.Target(_targetEnemy);
-            _attackData.Attack(true);
+            if (_targetEnemy != null)
+            {
+                _attackData.Target(_targetEnemy);
+                _attackData.Attack(true);
+                //StartCoroutine(DamageMech());
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -50,7 +54,7 @@ namespace Scripts
             if (other.gameObject.tag == "Enemy")
             {
                 mechs.Remove(other.gameObject);
-                if (mechs != null)
+                if (mechs.Count > 0)
                 {
                     _targetEnemy = mechs[0];
                 }
@@ -62,11 +66,20 @@ namespace Scripts
             }
         }
 
+        private void RemoveDestroyedMechs(Collider mechCollider)
+        {
+            mechs.Remove(mechCollider.gameObject);
+            if (mechs.Count > 0)
+            {
+                _targetEnemy = mechs[0];
+            }
+        }
+
         private IEnumerator DamageMech()
         {
             if (_targetEnemy != null)
             {
-                yield return new WaitForSeconds(.5f);
+                yield return new WaitForSeconds(1f);
                 if (onDamage != null)
                 {
                     onDamage(_damageAmount, _targetEnemy);
