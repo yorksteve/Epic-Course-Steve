@@ -26,7 +26,7 @@ namespace Scripts
         public delegate void RecycleMech(GameObject mech);
         public static RecycleMech onRecycleMech;
 
-        public delegate void TargetNew(Collider mechCollider);
+        public delegate void TargetNew(GameObject mech);
         public static TargetNew onTargetNew;
 
 
@@ -114,7 +114,7 @@ namespace Scripts
                 if (_health <= 0 && onMechDestroyed != null)
                 {
                     onMechDestroyed(_mechWarFund);
-                    onTargetNew(mech.GetComponent<Collider>());
+                    onTargetNew(mech);
                     StartCoroutine(DestroyMech());
                 }
             }

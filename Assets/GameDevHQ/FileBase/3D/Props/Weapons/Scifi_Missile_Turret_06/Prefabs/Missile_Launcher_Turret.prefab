@@ -860,7 +860,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _missilePrefab: {fileID: 1408549652012730, guid: 6f244204e60f45647b263f4edda01147,
     type: 3}
-  _missileType: 0
+  _missileType: 1
   _misslePositions:
   - {fileID: 1873951908610878}
   - {fileID: 1139054131123058}

@@ -42,12 +42,9 @@ namespace Scripts
 
         private void OnTriggerStay(Collider other)
         {
-            if (_targetEnemy != null)
-            {
-                _attackData.Target(_targetEnemy);
-                _attackData.Attack(true);
-                StartCoroutine(DamageMech());
-            }
+            _attackData.Target(_targetEnemy);
+            _attackData.Attack(true);
+            StartCoroutine(DamageMech(_targetEnemy));
         }
 
         private void OnTriggerExit(Collider other)
@@ -67,26 +64,23 @@ namespace Scripts
             }
         }
 
-        private void RemoveDestroyedMechs(Collider mechCollider)
+        private void RemoveDestroyedMechs(GameObject mech)
         {
-            mechs.Remove(mechCollider.gameObject);
+            mechs.Remove(mech);
             if (mechs.Count > 0)
             {
                 _targetEnemy = mechs[0];
             }
         }
 
-        private IEnumerator DamageMech()
+        private IEnumerator DamageMech(GameObject mech)
         {
-            if (_targetEnemy != null)
-            {
-                yield return new WaitForSeconds(1f);
-                //EventManager.Fire("onDamage", _damageAmount, _targetEnemy);
+            yield return new WaitForSeconds(1f);
+            //EventManager.Fire("onDamage", _damageAmount, _targetEnemy);
 
-                if (onDamage != null)
-                {
-                    onDamage(_damageAmount, _targetEnemy);
-                }
+            if (onDamage != null)
+            {
+                onDamage(_damageAmount, mech);
             }
         }
     }
