@@ -3,6 +3,7 @@ using Scripts.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace Scripts
 {
@@ -29,6 +30,7 @@ namespace Scripts
             _damageAmount = _attackData.Damage();
 
             EnemyAI.onTargetNew += RemoveDestroyedMechs;
+            //EventManager.Listen("onTargetNew", RemoveDestroyedMechs(GameObject mech));
         }
 
         private void OnTriggerEnter(Collider other)
@@ -42,9 +44,12 @@ namespace Scripts
 
         private void OnTriggerStay(Collider other)
         {
-            _attackData.Target(_targetEnemy);
-            _attackData.Attack(true);
-            StartCoroutine(DamageMech(_targetEnemy));
+            if (_targetEnemy != null)
+            {
+                _attackData.Target(_targetEnemy);
+                _attackData.Attack(true);
+                StartCoroutine(DamageMech(_targetEnemy));
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -57,7 +62,7 @@ namespace Scripts
                     _targetEnemy = mechs[0];
                 }
 
-                if (_targetEnemy == null)
+                if (mechs.Count == 0)
                 {
                     _attackData.Attack(false);
                 }
@@ -71,17 +76,26 @@ namespace Scripts
             {
                 _targetEnemy = mechs[0];
             }
+            else
+            {
+                _attackData.Attack(false);
+            }
         }
 
         private IEnumerator DamageMech(GameObject mech)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
             //EventManager.Fire("onDamage", _damageAmount, _targetEnemy);
 
             if (onDamage != null)
             {
                 onDamage(_damageAmount, mech);
             }
+        }
+
+        private void OnDisable()
+        {
+            //EventManager.UnsubscribeEvent("onTargetNew", RemoveDestroyedMechs);
         }
     }
 }

@@ -419,7 +419,7 @@ MonoBehaviour:
   _anim: {fileID: 3091765334721737276}
   _explosion: {fileID: 4688366796816071958, guid: 0bd59304b034bee4e939420e993113e1,
     type: 3}
-  _health: 50
+  _health: 100
   _mechWarFund: 50
 --- !u!195 &-7168904304040241426
 NavMeshAgent:

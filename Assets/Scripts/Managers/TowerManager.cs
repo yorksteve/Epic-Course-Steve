@@ -30,6 +30,7 @@ namespace Scripts.Managers
         public delegate void BoughtTower(int id);
         public static BoughtTower onBoughtTower;
 
+
         private void Start()
         {
             _towerData = new ITower[_tower.Length];
@@ -41,6 +42,11 @@ namespace Scripts.Managers
                 _attackData[i] = _tower[i].GetComponent<IAttack>();
                 Debug.Log(_towerData[i].WarFundsRequired);
             }            
+        }
+
+        private void OnEnable()
+        {
+            //EventManager.Listen("onUpgradeTower", CheckUpgrade(tower));
         }
 
         public void Update()
@@ -60,10 +66,9 @@ namespace Scripts.Managers
 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    if (onPlacingTower != null)
-                    {
-                        onPlacingTower(false);
-                    }
+                    //EventManager.Fire("onPlacingTower", false);
+                    onPlacingTower?.Invoke(false);
+                    
                     Destroy(_prefabDecoy);
                 }
             }
@@ -79,10 +84,8 @@ namespace Scripts.Managers
             {
                 var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
 
-                if (onBoughtTower != null)
-                {
-                    onBoughtTower(_warFundsRequired);
-                }
+                //EventManager.Fire("onBoughtTower", _warFundsRequired);
+                onBoughtTower?.Invoke(_warFundsRequired);
 
                 return initial.GetComponent<ITower>();
             }
@@ -102,10 +105,8 @@ namespace Scripts.Managers
             _towerID = i;
             _prefabDecoy = Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);
 
-            if (onPlacingTower != null)
-            {
-                onPlacingTower(true);
-            }
+            //EventManager.Fire("onPlacingTower", true);
+            onPlacingTower?.Invoke(true);
         }
 
         public void SnapToPosition(Vector3 pos)
@@ -122,10 +123,29 @@ namespace Scripts.Managers
             _placingTower = true;
         }
 
-        public int RequestDamage(int i)
+
+        public void CheckUpgrade(ITower tower)
         {
-            int damage = _attackData[i].Damage();
-            return damage;
+            GameObject towerUpgrade = tower.UpgradeModel;
+
+            if (tower.WarFundsRequired <= WarFundManager.Instance.RequestWarFunds())
+            {
+                UIManager.Instance.TowerUpgradeAbility(false, null);
+            }
+            else
+            {
+                UIManager.Instance.TowerUpgradeAbility(true, towerUpgrade);
+            }
+        }
+
+        public void SellTower()
+        {
+
+        }
+
+        public void UpgradeTower(GameObject upgradedTower)
+        {
+            //Instantiate(upgradedTower, )
         }
     }
 }

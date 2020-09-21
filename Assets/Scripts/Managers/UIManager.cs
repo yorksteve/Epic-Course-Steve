@@ -12,37 +12,28 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        public void Pause()
+        public void TowerUpgradeAbility(bool enoughFunds, GameObject towerUpgrade)
         {
-            Time.timeScale = 0;
-            Debug.Log("Game is paused");
-        }
+            // Gray out unrelated tower
 
-        public void Resume()
-        {
-            Time.timeScale = 1;
-            Debug.Log("Game has been resumed");
-        }
-
-        public void Restart()
-        {
-            SpawnManager.Instance.RestartGame();
-            Debug.Log("Game restarted");
-        }
-
-        public void SpeedControls()
-        {
-            if (Time.timeScale == 1)
+            if (enoughFunds == false)
             {
-                Time.timeScale = 1.5f;
-                Debug.Log("Increased speed");
+                // Gray out and prevent upgrade
             }
-
-            else if (Time.timeScale == 1.5f)
+            else
             {
-                Time.timeScale = 1f;
-                Debug.Log("Decreased speed");
+                // Allow upgrade purchase
             }
+        }
+
+        public void SellTower()
+        {
+            TowerManager.Instance.SellTower();
+        }
+
+        public void PurchaseUpgrade(GameObject upgrade)
+        {
+            TowerManager.Instance.UpgradeTower(upgrade);
         }
     }
 }

@@ -87,7 +87,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
 
         public int Damage()
         {
-            int damageAmount = 2;
+            int damageAmount = 1;
             return damageAmount;
         }
 

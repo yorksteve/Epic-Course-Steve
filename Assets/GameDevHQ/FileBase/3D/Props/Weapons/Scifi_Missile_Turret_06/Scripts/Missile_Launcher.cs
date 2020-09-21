@@ -98,7 +98,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
         public int Damage()
         {
-            int damageAmount = 4;
+            int damageAmount = 2;
             return damageAmount;
         }
 

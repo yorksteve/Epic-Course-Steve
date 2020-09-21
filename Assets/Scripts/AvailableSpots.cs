@@ -44,6 +44,11 @@ namespace Scripts
             }
         }
 
+        private void TowerDestroyed(Vector3 pos)
+        {
+            _isActive = false;
+        }
+
         private void OnMouseEnter()
         {
             if (_isActive == false)
@@ -60,6 +65,11 @@ namespace Scripts
             {
                 _towerPlaced = TowerManager.Instance.PlaceTower(transform.position);
                 _isActive = true;
+            }
+
+            if (_isActive == true && _placingTower == false)
+            {
+                EventManager.Fire("onUpgradeTower", _towerPlaced);
             }
         }
 

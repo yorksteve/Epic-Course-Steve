@@ -55,7 +55,10 @@ namespace Scripts
         
         private void OnEnable()
         {
+            //EventManager.Listen("onDamage", Health(int, GameObject));
             EnemyDetection.onDamage += Health;
+
+            //EventManager.Listen("onNewWave", ResetMech);
             SpawnManager.onNewWave += ResetMech;
         }
 
@@ -80,12 +83,10 @@ namespace Scripts
             _anim.SetBool("Die", true);
             yield return new WaitForSeconds(5f);
 
-            if (onRecycleMech != null)
-            {
-                onRecycleMech(_mech);
-            }
-
             _anim.WriteDefaultValues();
+
+            //EventManager.Fire("onRecycleMech", _mech);
+            onRecycleMech?.Invoke(_mech);           
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
@@ -106,15 +107,17 @@ namespace Scripts
 
         public void Health(int damage, GameObject mech)
         {
-            if (mech = this.gameObject)
+            if (mech == this.gameObject)
             {
                 Debug.Log("EnemyAI::Health()");
                 _health -= damage;
 
-                if (_health <= 0 && onMechDestroyed != null)
+                if (_health <= 0)
                 {
+                    //EventManager.Fire("onMechDestroyed", _mechWarFund);
                     onMechDestroyed(_mechWarFund);
-                    onTargetNew(mech);
+                    //EventManager.Fire("onTargetNew", mech);
+                    onTargetNew?.Invoke(mech);
                     StartCoroutine(DestroyMech());
                 }
             }
@@ -122,7 +125,10 @@ namespace Scripts
 
         private void OnDisable()
         {
+            //EventManager.UnsubscribeEvent("onDamage", Health(damage, mech));
             EnemyDetection.onDamage -= Health;
+
+            //EventManager.UnsubscribeEvent("onNewWave", ResetMech);
             SpawnManager.onNewWave -= ResetMech;
         }
     }

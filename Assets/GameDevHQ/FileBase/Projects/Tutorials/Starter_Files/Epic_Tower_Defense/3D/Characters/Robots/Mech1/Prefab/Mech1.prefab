@@ -1585,7 +1585,7 @@ MonoBehaviour:
   _anim: {fileID: 95831276238310704}
   _explosion: {fileID: 4688366796816071958, guid: 0bd59304b034bee4e939420e993113e1,
     type: 3}
-  _health: 2
+  _health: 20
   _mechWarFund: 25
 --- !u!65 &-3099949395931670192
 BoxCollider:

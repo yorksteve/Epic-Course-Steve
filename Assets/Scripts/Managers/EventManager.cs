@@ -50,13 +50,13 @@ namespace Scripts.Managers
             raiseEvent?.Invoke(parem);
         }
 
-        public static void Fire<T>(string eventName, T parem, T parem2)
+        public static void Fire<T, Q>(string eventName, T parem, Q parem2)
         {
-            var raiseEvent = _eventDictionary[eventName] as Action<T, T>;
+            var raiseEvent = _eventDictionary[eventName] as Action<T, Q>;
             raiseEvent?.Invoke(parem, parem2);
         }
 
-        public void UnsubscribeEvent(string eventName, Action method)
+        public static void UnsubscribeEvent(string eventName, Action method)
         {
             if (_eventDictionary.ContainsKey(eventName))
             {
@@ -66,7 +66,7 @@ namespace Scripts.Managers
             }
         }
 
-        public void UnsubscribeEvent<T>(string eventName, Action<T> method)
+        public static void UnsubscribeEvent<T>(string eventName, Action<T> method)
         {
             if (_eventDictionary.ContainsKey(eventName))
             {
