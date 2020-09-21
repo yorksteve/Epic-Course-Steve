@@ -143,7 +143,7 @@ namespace Scripts.Managers
 
         }
 
-        public void UpgradeTower(GameObject upgradedTower)
+        public void UpgradeTower(int id)
         {
             //Instantiate(upgradedTower, )
         }

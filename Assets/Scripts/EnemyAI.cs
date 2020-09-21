@@ -15,6 +15,7 @@ namespace Scripts
         [SerializeField] private Animator _anim;
         [SerializeField] private ParticleSystem _explosion;
         private GameObject _mech;
+        private Collider _mechColl;
         
 
         [SerializeField] private int _health;
@@ -50,6 +51,11 @@ namespace Scripts
             if (_explosion != null)
             {
                 _explosion = _mech.GetComponentInChildren<ParticleSystem>();
+            }
+
+            if (_mechColl != null)
+            {
+                _mechColl = this.gameObject.GetComponent<Collider>();
             }
         }
         
@@ -118,6 +124,7 @@ namespace Scripts
                     onMechDestroyed(_mechWarFund);
                     //EventManager.Fire("onTargetNew", mech);
                     onTargetNew?.Invoke(mech);
+                    //_mechColl
                     StartCoroutine(DestroyMech());
                 }
             }

@@ -31,9 +31,9 @@ namespace Scripts.Managers
             TowerManager.Instance.SellTower();
         }
 
-        public void PurchaseUpgrade(GameObject upgrade)
+        public void PurchaseUpgrade(int upgradeIndex)
         {
-            TowerManager.Instance.UpgradeTower(upgrade);
+            TowerManager.Instance.UpgradeTower(upgradeIndex);
         }
     }
 }
