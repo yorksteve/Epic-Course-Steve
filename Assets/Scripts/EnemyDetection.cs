@@ -1,4 +1,5 @@
 ﻿using Scripts.Interfaces;
+using Scripts.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,7 +46,7 @@ namespace Scripts
             {
                 _attackData.Target(_targetEnemy);
                 _attackData.Attack(true);
-                //StartCoroutine(DamageMech());
+                StartCoroutine(DamageMech());
             }
         }
 
@@ -80,6 +81,8 @@ namespace Scripts
             if (_targetEnemy != null)
             {
                 yield return new WaitForSeconds(1f);
+                //EventManager.Fire("onDamage", _damageAmount, _targetEnemy);
+
                 if (onDamage != null)
                 {
                     onDamage(_damageAmount, _targetEnemy);
