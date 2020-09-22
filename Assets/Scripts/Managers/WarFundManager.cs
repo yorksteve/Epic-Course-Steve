@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using YorkSDK.Util;
-using GameDevHQ.FileBase.Missile_Launcher;
-using GameDevHQ.FileBase.Gatling_Gun;
-using Scripts.Interfaces;
 using System;
 
 namespace Scripts.Managers
@@ -51,6 +48,7 @@ namespace Scripts.Managers
         public int UpdateFunds(int WarFunds)
         {
             WarFunds = _warFunds;
+            UIManager.Instance.ChangeFunds(_warFunds);
             return _warFunds;
         }
 

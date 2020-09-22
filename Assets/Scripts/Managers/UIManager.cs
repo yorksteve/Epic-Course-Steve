@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using YorkSDK.Util;
+using UnityEngine.UI;
 
 namespace Scripts.Managers
 {
@@ -9,6 +10,7 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _towers;
         [SerializeField] private GameObject[] _upgradeDisplay;
+        [SerializeField] private Text _warFunds;
 
         public override void Init()
         {
@@ -44,6 +46,17 @@ namespace Scripts.Managers
         public void PurchaseUpgrade(int upgradeIndex)
         {
             TowerManager.Instance.UpgradeTower(upgradeIndex);
+            _upgradeDisplay[upgradeIndex].SetActive(false);
+        }
+
+        public void CancelUpgrade(int i)
+        {
+            _upgradeDisplay[i].SetActive(false);
+        }
+
+        public void ChangeFunds(int amount)
+        {
+            _warFunds.text = amount.ToString();
         }
     }
 }

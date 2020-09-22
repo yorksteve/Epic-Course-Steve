@@ -15,8 +15,8 @@ namespace Scripts
         [SerializeField] private Animator _anim;
         [SerializeField] private ParticleSystem _explosion;
         [SerializeField] private GameObject _mechRotation;
+        [SerializeField] private Collider _mechColl;
         private GameObject _mech;
-        private Collider _mechColl;
         
 
         [SerializeField] private int _health;
@@ -44,11 +44,6 @@ namespace Scripts
             if (_explosion != null)
             {
                 _explosion = _mech.GetComponentInChildren<ParticleSystem>();
-            }
-
-            if (_mechColl != null)
-            {
-                _mechColl = this.gameObject.GetComponent<Collider>();
             }
 
             _rotationPoint = _mechRotation.GetComponent<Transform>();

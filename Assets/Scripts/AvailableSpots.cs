@@ -29,6 +29,15 @@ namespace Scripts
             _system = _test.GetComponent<ParticleSystem>();
         }
 
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0) && _isActive == true && _placingTower == false)
+            {
+                Debug.Log("AvailableSpots::OnMouseDown() : Inside if()");
+                EventManager.Fire("onUpgradeTower", _towerPlaced, this.transform.position);
+            }
+        }
+
         void SpotAvailable(bool placingTower)
         {
             if (_isActive == false && placingTower == true)

@@ -11,11 +11,6 @@ namespace Scripts.Managers
         {
             base.Init();
         }
-
-        public void StartGame()
-        {
-            SpawnManager.Instance.StartWave();
-        }
     }
 }
 
