@@ -27,10 +27,6 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        public static event Action<bool> onPlacingTower;
-
-        public delegate void BoughtTower(int id);
-        public static BoughtTower onBoughtTower;
 
 
         private void Start()
@@ -48,7 +44,7 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            //EventManager.Listen("onUpgradeTower", CheckUpgrade(tower));
+            EventManager.Listen("onUpgradeTower", (Action<ITower>)CheckUpgrade);
         }
 
         public void Update()
@@ -68,9 +64,7 @@ namespace Scripts.Managers
 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    //EventManager.Fire("onPlacingTower", false);
-                    onPlacingTower?.Invoke(false);
-                    
+                    EventManager.Fire("onPlacingTower", false);                    
                     Destroy(_prefabDecoy);
                 }
             }
@@ -86,8 +80,7 @@ namespace Scripts.Managers
             {
                 var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
 
-                //EventManager.Fire("onBoughtTower", _warFundsRequired);
-                onBoughtTower?.Invoke(_warFundsRequired);
+                EventManager.Fire("onBoughtTower", _warFundsRequired);
 
                 return initial.GetComponent<ITower>();
             }
@@ -107,8 +100,7 @@ namespace Scripts.Managers
             _towerID = i;
             _prefabDecoy = Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);
 
-            //EventManager.Fire("onPlacingTower", true);
-            onPlacingTower?.Invoke(true);
+            EventManager.Fire("onPlacingTower", true);
         }
 
         public void SnapToPosition(Vector3 pos)
@@ -152,6 +144,11 @@ namespace Scripts.Managers
         {
             Instantiate(_towerUpgrades[id], _towerPos.position, Quaternion.identity); //tower position should come from stored data passed into CheckUpgrade()
             WarFundManager.Instance.BuyTower(_towerData[id].WarFundsRequiredUpgrade);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.UnsubscribeEvent("onUpgradeTower", (Action<ITower>)CheckUpgrade);
         }
     }
 }

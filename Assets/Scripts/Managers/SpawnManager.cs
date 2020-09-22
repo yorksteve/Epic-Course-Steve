@@ -18,8 +18,6 @@ namespace Scripts.Managers
         private int _successfulMechs;
         private int _destroyedMechs;
 
-        public static event Action onNewWave;
-
         public override void Init()
         {
             base.Init();
@@ -28,9 +26,9 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            EndZone.onSuccess += SuccessfulMechs;
-            EnemyAI.onMechDestroyed += DestroyedMechs;
-            SpaceShipController.onDreadnaught += StartWave;
+            EventManager.Listen("onSuccess", SuccessfulMechs);
+            EventManager.Listen("onMechDestroyed", (Action<int>)DestroyedMechs);
+            EventManager.Listen("onDreadnaught", StartWave);
         }
 
         public void StartWave()
@@ -50,10 +48,7 @@ namespace Scripts.Managers
             for (int i = 0; i <= mechsInWave; i++)
             {
                 yield return new WaitForSeconds(2);
-                if (onNewWave != null)
-                {
-                    onNewWave();
-                }
+                EventManager.Fire("onNewWave");
                 PoolManager.Instance.GetMech();
             }
 
@@ -116,9 +111,9 @@ namespace Scripts.Managers
 
         private void OnDisable()
         {
-            EndZone.onSuccess -= SuccessfulMechs;
-            EnemyAI.onMechDestroyed -= DestroyedMechs;
-            SpaceShipController.onDreadnaught -= StartWave;
+            EventManager.UnsubscribeEvent("onSuccess", SuccessfulMechs);
+            EventManager.UnsubscribeEvent("onMechDestroyed", (Action<int>)DestroyedMechs);
+            EventManager.UnsubscribeEvent("onDreadnaught", StartWave);
         }
     }
 

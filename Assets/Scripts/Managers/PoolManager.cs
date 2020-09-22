@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using YorkSDK.Util;
+using System;
 
 
 namespace Scripts.Managers
@@ -32,13 +33,13 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            EndZone.onEndZoneReached += RecycleMech;
-            EnemyAI.onRecycleMech += RecycleMech;
+            EventManager.Listen("onEndZoneReached", (Action<GameObject>)RecycleMech);
+            EventManager.Listen("onRecycleMech", (Action<GameObject>)RecycleMech);
         }
 
         GameObject CreateMech()
         {
-            GameObject mech = Instantiate(_mechs[Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity);
+            GameObject mech = Instantiate(_mechs[UnityEngine.Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity);
             mech.transform.parent = _mechContainer.transform;
             mech.SetActive(false);
             _mechPool.Add(mech);
@@ -81,8 +82,8 @@ namespace Scripts.Managers
 
         private void OnDisable()
         {
-            EndZone.onEndZoneReached -= RecycleMech;
-            EnemyAI.onRecycleMech -= RecycleMech;
+            EventManager.UnsubscribeEvent("onEndZoneReached", (Action<GameObject>)RecycleMech);
+            EventManager.UnsubscribeEvent("onRecycleMech", (Action<GameObject>)RecycleMech);
         }
     }
 }

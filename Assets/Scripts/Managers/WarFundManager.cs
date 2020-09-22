@@ -13,12 +13,10 @@ namespace Scripts.Managers
     {
         [SerializeField] private int _warFunds;
 
-        public static event Action onLackingFunds;
-
         private void OnEnable()
         {
-            TowerManager.onBoughtTower += BuyTower;
-            EnemyAI.onMechDestroyed += DestroyedMech;
+            EventManager.Listen("onBoughtTower", (Action<int>)BuyTower);
+            EventManager.Listen("onMechDestroyed", (Action<int>)DestroyedMech);
         }
 
         public override void Init()
@@ -58,8 +56,8 @@ namespace Scripts.Managers
 
         private void OnDisable()
         {
-            TowerManager.onBoughtTower -= BuyTower;
-            EnemyAI.onMechDestroyed -= DestroyedMech;
+            EventManager.UnsubscribeEvent("onBoughtTower", (Action<int>)BuyTower);
+            EventManager.UnsubscribeEvent("onMechDestroyed", (Action<int>)DestroyedMech);
         }
     }
 }

@@ -17,9 +17,6 @@ namespace Scripts
         List<GameObject> mechs = new List<GameObject>();
         private int _damageAmount;
 
-        public delegate void Damage(int damage, GameObject mech);
-        public static event Damage onDamage;
-
 
         private void OnEnable()
         {
@@ -29,8 +26,7 @@ namespace Scripts
             _attackData = _towerParent.GetComponent<IAttack>();
             _damageAmount = _attackData.Damage();
 
-            EnemyAI.onTargetNew += RemoveDestroyedMechs;
-            //EventManager.Listen("onTargetNew", RemoveDestroyedMechs(GameObject mech));
+            EventManager.Listen("onTargetNew", (Action<GameObject>)RemoveDestroyedMechs);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -85,17 +81,12 @@ namespace Scripts
         private IEnumerator DamageMech(GameObject mech)
         {
             yield return new WaitForSeconds(2f);
-            //EventManager.Fire("onDamage", _damageAmount, _targetEnemy);
-
-            if (onDamage != null)
-            {
-                onDamage(_damageAmount, mech);
-            }
+            EventManager.Fire("onDamage", _damageAmount, _targetEnemy);
         }
 
         private void OnDisable()
         {
-            //EventManager.UnsubscribeEvent("onTargetNew", RemoveDestroyedMechs);
+            EventManager.UnsubscribeEvent("onTargetNew", (Action<GameObject>)RemoveDestroyedMechs);
         }
     }
 }

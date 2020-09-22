@@ -24,16 +24,6 @@ namespace Scripts
         [SerializeField] private GameObject _mechRotation;
         private Transform _rotationPoint;
 
-        public delegate void MechDestroyed(int warFunds);
-        public static MechDestroyed onMechDestroyed;
-
-        public delegate void RecycleMech(GameObject mech);
-        public static RecycleMech onRecycleMech;
-
-        public delegate void TargetNew(GameObject mech);
-        public static TargetNew onTargetNew;
-
-
 
         private void Start()
         {
@@ -66,11 +56,9 @@ namespace Scripts
         
         private void OnEnable()
         {
-            //EventManager.Listen("onDamage", Health(int, GameObject));
-            EnemyDetection.onDamage += Health;
+            EventManager.Listen("onDamage", (Action<int, GameObject>)Health);
 
-            //EventManager.Listen("onNewWave", ResetMech);
-            SpawnManager.onNewWave += ResetMech;
+            EventManager.Listen("onNewWave", ResetMech);
         }
 
         private void ResetMech()
@@ -97,8 +85,7 @@ namespace Scripts
             _anim.WriteDefaultValues();
             _mechColl.enabled = true;
 
-            //EventManager.Fire("onRecycleMech", _mech);
-            onRecycleMech?.Invoke(_mech);           
+            EventManager.Fire("onRecycleMech", _mech);
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
@@ -128,10 +115,8 @@ namespace Scripts
 
                 if (_health <= 0)
                 {
-                    //EventManager.Fire("onMechDestroyed", _mechWarFund);
-                    onMechDestroyed(_mechWarFund);
-                    //EventManager.Fire("onTargetNew", mech);
-                    onTargetNew?.Invoke(mech);
+                    EventManager.Fire("onMechDestroyed", _mechWarFund);
+                    EventManager.Fire("onTargetNew", mech);
                     _mechColl.enabled = false;
                     StartCoroutine(DestroyMech());
                 }
@@ -140,11 +125,8 @@ namespace Scripts
 
         private void OnDisable()
         {
-            //EventManager.UnsubscribeEvent("onDamage", Health(damage, mech));
-            EnemyDetection.onDamage -= Health;
-
-            //EventManager.UnsubscribeEvent("onNewWave", ResetMech);
-            SpawnManager.onNewWave -= ResetMech;
+            EventManager.UnsubscribeEvent("onDamage", (Action<int, GameObject>)Health);
+            EventManager.UnsubscribeEvent("onNewWave", ResetMech);
         }
     }
 }

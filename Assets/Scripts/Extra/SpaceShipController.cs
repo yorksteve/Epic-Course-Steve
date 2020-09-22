@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Scripts.Managers;
 
 namespace Scripts.Extra
 {
@@ -10,8 +11,6 @@ namespace Scripts.Extra
         private int _speed = 3;
         private float _destination = -5.09f;
         private bool _isCalled;
-
-        public static event Action onDreadnaught;
 
         public void Update()
         {
@@ -32,10 +31,7 @@ namespace Scripts.Extra
 
         void CompletedMovement()
         {
-            if (onDreadnaught != null)
-            { 
-                onDreadnaught();
-            }
+            EventManager.Fire("onDreadnaught");
 
             _isCalled = true;
         }

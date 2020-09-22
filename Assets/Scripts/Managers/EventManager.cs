@@ -38,6 +38,20 @@ namespace Scripts.Managers
             }
         }
 
+        public static void Listen<T, Q>(string eventName, Action<T, Q> method)
+        {
+            if (_eventDictionary.ContainsKey(eventName))
+            {
+                Action<T, Q> eventToUse = _eventDictionary[eventName];
+                eventToUse += method;
+                _eventDictionary[eventName] = eventToUse;
+            }
+            else
+            {
+                _eventDictionary.Add(eventName, method);
+            }
+        }
+
         public static void Fire(string eventName)
         {
             var raiseEvent = _eventDictionary[eventName] as Action;
@@ -67,6 +81,16 @@ namespace Scripts.Managers
         }
 
         public static void UnsubscribeEvent<T>(string eventName, Action<T> method)
+        {
+            if (_eventDictionary.ContainsKey(eventName))
+            {
+                var subscribers = _eventDictionary[eventName];
+                subscribers -= method;
+                _eventDictionary[eventName] = subscribers;
+            }
+        }
+
+        public static void UnsubscribeEvent<T, Q>(string eventName, Action<T, Q> method)
         {
             if (_eventDictionary.ContainsKey(eventName))
             {

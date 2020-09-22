@@ -19,7 +19,7 @@ namespace Scripts
 
         private void OnEnable()
         {
-            TowerManager.onPlacingTower += SpotAvailable;
+            EventManager.Listen("onPlacingTower", (Action<bool>)SpotAvailable);
         }
 
         private void Start()
@@ -68,7 +68,7 @@ namespace Scripts
                 _isActive = true;
             }
 
-            if (_placingTower == false)
+            if (_isActive == true && _placingTower == false)
             {
                 Debug.Log("AvailableSpots::OnMouseDown() : Inside if()");
                 EventManager.Fire("onUpgradeTower", _towerPlaced);
@@ -84,7 +84,7 @@ namespace Scripts
 
         private void OnDisable()
         {
-            TowerManager.onPlacingTower -= SpotAvailable;
+            EventManager.UnsubscribeEvent("onPlacingTower", (Action<bool>)SpotAvailable);
         }
     }
 }
