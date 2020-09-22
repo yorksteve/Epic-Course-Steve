@@ -12,22 +12,21 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _decoyTower;
         [SerializeField] private GameObject[] _tower;
         [SerializeField] private GameObject[] _towerUpgrades;
+        private GameObject _prefabDecoy;
+        private Vector3 _towerPos;
+
         private ITower[] _towerData;
         private IAttack[] _attackData;
 
-        private GameObject _prefabDecoy;
         private int _towerID;
         private int _warFundsRequired;
         private bool _placingTower;
-        private Transform _towerPos;
 
 
         public override void Init()
         {
             base.Init();
         }
-
-
 
         private void Start()
         {
@@ -44,7 +43,7 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            EventManager.Listen("onUpgradeTower", (Action<ITower>)CheckUpgrade);
+            EventManager.Listen("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
         }
 
         public void Update()
@@ -118,11 +117,12 @@ namespace Scripts.Managers
         }
 
 
-        public void CheckUpgrade(ITower tower)
+        public void CheckUpgrade(ITower tower, Vector3 pos)
         {
             Debug.Log("TowerManager::CheckUpgrade()");
 
             GameObject towerUpgrade = tower.UpgradeModel;
+            _towerPos = pos;
 
             if (tower.WarFundsRequiredUpgrade <= WarFundManager.Instance.RequestWarFunds())
             {
@@ -142,13 +142,13 @@ namespace Scripts.Managers
 
         public void UpgradeTower(int id)
         {
-            Instantiate(_towerUpgrades[id], _towerPos.position, Quaternion.identity); //tower position should come from stored data passed into CheckUpgrade()
+            Instantiate(_towerUpgrades[id], _towerPos, Quaternion.identity); //tower position should come from stored data passed into CheckUpgrade()
             WarFundManager.Instance.BuyTower(_towerData[id].WarFundsRequiredUpgrade);
         }
 
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onUpgradeTower", (Action<ITower>)CheckUpgrade);
+            EventManager.UnsubscribeEvent("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
         }
     }
 }

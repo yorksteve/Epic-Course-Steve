@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameDevHQ.FileBase.Missile_Launcher.Missile;
 using Scripts.Interfaces;
+using Scripts.Managers;
 using System;
 
 /*
@@ -110,6 +111,31 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             Vector3 direction = enemy.transform.position - _towerSource.position;
 
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        }
+
+        private void OnEnable()
+        {
+            EventManager.Listen("onDamageTowers", (Action<int, GameObject>)Health);
+        }
+
+        public void Health(int damage, GameObject obj)
+        {
+            if (obj == this.gameObject)
+            {
+                int health = 50;
+                health -= damage;
+                if (health <= 0)
+                {
+                    health = 0;
+                    Destroy(this.gameObject);
+                    EventManager.Fire("onTowerDestroyed", this.transform.position);
+                }
+            }
+        }
+
+        private void OnDisable()
+        {
+            EventManager.UnsubscribeEvent("onDamageTowers", (Action<int, GameObject>)Health);
         }
     }
 }

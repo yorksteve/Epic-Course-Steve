@@ -14,6 +14,7 @@ namespace Scripts
         private Transform _destination;
         [SerializeField] private Animator _anim;
         [SerializeField] private ParticleSystem _explosion;
+        [SerializeField] private GameObject _mechRotation;
         private GameObject _mech;
         private Collider _mechColl;
         
@@ -21,7 +22,6 @@ namespace Scripts
         [SerializeField] private int _health;
         [SerializeField] private int _mechWarFund;
         [SerializeField] private int _damageAmount;
-        [SerializeField] private GameObject _mechRotation;
         private Transform _rotationPoint;
 
 
@@ -103,12 +103,14 @@ namespace Scripts
 
         public int Damage()
         {
+            // Fire event to damage towers
+            EventManager.Fire("onDamageTowers", _damageAmount); // target tower needs to be passed in
             return _damageAmount;
         }
 
-        public void Health(int damage, GameObject mech)
+        public void Health(int damage, GameObject obj)
         {
-            if (mech == this.gameObject)
+            if (obj == this.gameObject)
             {
                 Debug.Log("EnemyAI::Health()");
                 _health -= damage;
@@ -116,7 +118,7 @@ namespace Scripts
                 if (_health <= 0)
                 {
                     EventManager.Fire("onMechDestroyed", _mechWarFund);
-                    EventManager.Fire("onTargetNew", mech);
+                    EventManager.Fire("onTargetNew", obj);
                     _mechColl.enabled = false;
                     StartCoroutine(DestroyMech());
                 }

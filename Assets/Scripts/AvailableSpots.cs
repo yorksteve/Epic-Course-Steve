@@ -20,12 +20,12 @@ namespace Scripts
         private void OnEnable()
         {
             EventManager.Listen("onPlacingTower", (Action<bool>)SpotAvailable);
+            EventManager.Listen("onTowerDestroyed", (Action<Vector3>)TowerDestroyed);
         }
 
         private void Start()
         {
             _test = this.gameObject;
-
             _system = _test.GetComponent<ParticleSystem>();
         }
 
@@ -71,7 +71,7 @@ namespace Scripts
             if (_isActive == true && _placingTower == false)
             {
                 Debug.Log("AvailableSpots::OnMouseDown() : Inside if()");
-                EventManager.Fire("onUpgradeTower", _towerPlaced);
+                EventManager.Fire("onUpgradeTower", _towerPlaced, this.transform.position);
             }
         }
 
@@ -85,6 +85,7 @@ namespace Scripts
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onPlacingTower", (Action<bool>)SpotAvailable);
+            EventManager.UnsubscribeEvent("onTowerDestroyed", (Action<Vector3>)TowerDestroyed);
         }
     }
 }

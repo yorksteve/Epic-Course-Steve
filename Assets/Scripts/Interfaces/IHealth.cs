@@ -6,7 +6,7 @@ namespace Scripts.Interfaces
 {
     public interface IHealth
     {
-        void Health(int damage, GameObject mech);
+        void Health(int damage, GameObject obj);
     }
 }
 
