@@ -11,6 +11,7 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _decoyTower;
         [SerializeField] private GameObject[] _tower;
+        [SerializeField] private GameObject[] _towerUpgrades;
         private ITower[] _towerData;
         private IAttack[] _attackData;
 
@@ -18,6 +19,7 @@ namespace Scripts.Managers
         private int _towerID;
         private int _warFundsRequired;
         private bool _placingTower;
+        private Transform _towerPos;
 
 
         public override void Init()
@@ -126,11 +128,13 @@ namespace Scripts.Managers
 
         public void CheckUpgrade(ITower tower)
         {
+            Debug.Log("TowerManager::CheckUpgrade()");
+
             GameObject towerUpgrade = tower.UpgradeModel;
 
-            if (tower.WarFundsRequired <= WarFundManager.Instance.RequestWarFunds())
+            if (tower.WarFundsRequiredUpgrade <= WarFundManager.Instance.RequestWarFunds())
             {
-                UIManager.Instance.TowerUpgradeAbility(false, null);
+                UIManager.Instance.TowerUpgradeAbility(false, towerUpgrade);
             }
             else
             {
@@ -138,14 +142,16 @@ namespace Scripts.Managers
             }
         }
 
-        public void SellTower()
+        public void SellTower(int id)
         {
-
+            Destroy(_tower[id]);
+            WarFundManager.Instance.SellTower(_towerData[id].WarFundsRequired);
         }
 
         public void UpgradeTower(int id)
         {
-            //Instantiate(upgradedTower, )
+            Instantiate(_towerUpgrades[id], _towerPos.position, Quaternion.identity); //tower position should come from stored data passed into CheckUpgrade()
+            WarFundManager.Instance.BuyTower(_towerData[id].WarFundsRequiredUpgrade);
         }
     }
 }

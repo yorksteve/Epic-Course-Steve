@@ -44,6 +44,12 @@ namespace Scripts.Managers
             UpdateFunds(_warFunds);
         }
 
+        public void SellTower(int funds)
+        {
+            _warFunds += funds;
+            UpdateFunds(_warFunds);
+        }
+
         public int UpdateFunds(int WarFunds)
         {
             WarFunds = _warFunds;

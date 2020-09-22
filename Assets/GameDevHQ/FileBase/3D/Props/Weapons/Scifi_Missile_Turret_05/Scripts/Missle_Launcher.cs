@@ -38,6 +38,8 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 
         public GameObject UpgradeModel => throw new System.NotImplementedException();
 
+        public int WarFundsRequiredUpgrade { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         private void Start()
         {
             _towerSource = _towerBase.GetComponent<Transform>();

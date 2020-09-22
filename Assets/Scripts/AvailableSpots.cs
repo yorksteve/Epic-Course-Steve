@@ -39,8 +39,8 @@ namespace Scripts
 
             else
             {
-                _system.Stop();
                 _placingTower = false;
+                _system.Stop();
             }
         }
 
@@ -61,14 +61,16 @@ namespace Scripts
 
         private void OnMouseDown()
         {
+            Debug.Log("AvailableSpots::OnMouseDown()");
             if (_isActive == false && _placingTower == true)
             {
                 _towerPlaced = TowerManager.Instance.PlaceTower(transform.position);
                 _isActive = true;
             }
 
-            if (_isActive == true && _placingTower == false)
+            if (_placingTower == false)
             {
+                Debug.Log("AvailableSpots::OnMouseDown() : Inside if()");
                 EventManager.Fire("onUpgradeTower", _towerPlaced);
             }
         }
