@@ -825,7 +825,7 @@ GameObject:
   - component: {fileID: 114764317976684078}
   m_Layer: 0
   m_Name: Missile_Launcher_Turret
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -876,6 +876,7 @@ MonoBehaviour:
   _destroyTime: 10
   _target: {fileID: 0}
   _warFundsRequired: 500
+  _warFundsRequiredUpgrade: 750
   _upgradeModel: {fileID: 1815566672332072, guid: 7576f8495ea90394ca92d5b8828f516b,
     type: 3}
   _towerBase: {fileID: 1530330881940990}

@@ -421,6 +421,7 @@ MonoBehaviour:
     type: 3}
   _health: 100
   _mechWarFund: 50
+  _mechRotation: {fileID: 1917370851618318}
 --- !u!195 &-7168904304040241426
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3112,14 +3113,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1917370851618318}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.0362987, z: -0, w: 0.999341}
   m_LocalPosition: {x: 0, y: 3.4957888, z: -0.3253311}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4082074969387248}
   m_Father: {fileID: 2073136748236800086}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -4.1600003, z: 0}
 --- !u!114 &3992706755002019531
 MonoBehaviour:
   m_ObjectHideFlags: 0

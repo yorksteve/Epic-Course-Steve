@@ -20,6 +20,9 @@ namespace Scripts
 
         [SerializeField] private int _health;
         [SerializeField] private int _mechWarFund;
+        [SerializeField] private int _damageAmount;
+        [SerializeField] private GameObject _mechRotation;
+        private Transform _rotationPoint;
 
         public delegate void MechDestroyed(int warFunds);
         public static MechDestroyed onMechDestroyed;
@@ -57,6 +60,8 @@ namespace Scripts
             {
                 _mechColl = this.gameObject.GetComponent<Collider>();
             }
+
+            _rotationPoint = _mechRotation.GetComponent<Transform>();
         }
         
         private void OnEnable()
@@ -90,6 +95,7 @@ namespace Scripts
             yield return new WaitForSeconds(5f);
 
             _anim.WriteDefaultValues();
+            _mechColl.enabled = true;
 
             //EventManager.Fire("onRecycleMech", _mech);
             onRecycleMech?.Invoke(_mech);           
@@ -98,17 +104,19 @@ namespace Scripts
         // Mechs can attack soldiers placed in the field (to be added later...probably)
         public void Attack(bool attack)
         {
-            _anim.SetBool("Attack", true);
+            _anim.SetTrigger("Fire");
+            Damage();
         }
 
         public void Target(GameObject enemy)
         {
-            throw new NotImplementedException();
+            Vector3 direction = enemy.transform.position - _rotationPoint.position;
+            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
         public int Damage()
         {
-            throw new NotImplementedException();
+            return _damageAmount;
         }
 
         public void Health(int damage, GameObject mech)
@@ -124,7 +132,7 @@ namespace Scripts
                     onMechDestroyed(_mechWarFund);
                     //EventManager.Fire("onTargetNew", mech);
                     onTargetNew?.Invoke(mech);
-                    //_mechColl
+                    _mechColl.enabled = false;
                     StartCoroutine(DestroyMech());
                 }
             }
