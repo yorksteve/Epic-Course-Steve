@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Managers;
+using System;
 
 public class Dissolve : MonoBehaviour
 {
@@ -13,8 +14,8 @@ public class Dissolve : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Listen("onDissolve", StartDissolve);
-        EventManager.Listen("onStopDissolve", StopDissovle);
+        EventManager.Listen("onDissolve", (Action<GameObject>)StartDissolve);
+        EventManager.Listen("onStopDissolve", (Action<GameObject>)StopDissovle);
     }
 
     void Update()
@@ -27,21 +28,27 @@ public class Dissolve : MonoBehaviour
         }
     }
 
-    void StartDissolve()
+    void StartDissolve(GameObject mech)
     {
-        _isDissolving = true;
+        if (mech == this.gameObject)
+        {
+            _isDissolving = true;
+        }
     }
 
-    void StopDissovle()
+    void StopDissovle(GameObject mech)
     {
-        _isDissolving = false;
-        _materialBottom.SetFloat("_fillAmount", 0);
-        _materialTop.SetFloat("_fillAmount", 0);
+        if (mech == this.gameObject)
+        {
+            _isDissolving = false;
+            _materialBottom.SetFloat("_fillAmount", 0);
+            _materialTop.SetFloat("_fillAmount", 0);
+        }
     }
 
     private void OnDisable()
     {
-        EventManager.UnsubscribeEvent("onDissolve", StartDissolve);
-        EventManager.UnsubscribeEvent("onStopDissolve", StopDissovle);
+        EventManager.UnsubscribeEvent("onDissolve", (Action<GameObject>)StartDissolve);
+        EventManager.UnsubscribeEvent("onStopDissolve", (Action<GameObject>)StopDissovle);
     }
 }

@@ -76,7 +76,7 @@ namespace Scripts
             _health = 0;
             //_explosion.Play();
             _anim.SetBool("Die", true);
-            EventManager.Fire("onDissolve");
+            EventManager.Fire("onDissolve", this.gameObject);
             yield return new WaitForSeconds(5f);
 
             EventManager.Fire("onMechDestroyed", _mechWarFund);
@@ -84,20 +84,35 @@ namespace Scripts
             _mechColl.enabled = true;
 
             EventManager.Fire("onRecycleMech", _mech);
-            EventManager.Fire("onStopDissolve");
+            EventManager.Fire("onStopDissolve", this.gameObject);
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
         public void Attack(bool attack)
         {
-            _anim.SetTrigger("Fire");
-            Damage();
+            if (attack == true)
+            {
+                _anim.SetTrigger("Fire");
+                Damage();
+            }
+            else
+            {
+                _anim.ResetTrigger("Fire");
+            }
         }
 
         public void Target(GameObject enemy)
         {
             Vector3 direction = enemy.transform.position - _rotationPoint.position;
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            if (enemy != null)
+            {
+                Attack(true);
+            }
+            else
+            {
+                Attack(false);
+            }
         }
 
         public int Damage()
