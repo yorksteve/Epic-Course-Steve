@@ -29412,6 +29412,7 @@ MonoBehaviour:
   - {fileID: 198195836669371088}
   - {fileID: 198825845797523540}
   _fireSound: {fileID: 8300000, guid: ebcd7ceac90454c1e9dc458cb87b6f75, type: 3}
+  _warFundsRequired: 500
   _towerBase: {fileID: 1427593964865674}
 --- !u!82 &82127826341503972
 AudioSource:

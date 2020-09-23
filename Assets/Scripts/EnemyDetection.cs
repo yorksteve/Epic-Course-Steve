@@ -68,19 +68,17 @@ namespace Scripts
         private void RemoveDestroyedMechs(GameObject mech)
         {
             mechs.Remove(mech);
+            _attackData.Attack(false);
             if (mechs.Count > 0)
             {
                 _targetEnemy = mechs[0];
-            }
-            else
-            {
-                _attackData.Attack(false);
+                _attackData.Attack(true);
             }
         }
 
         private IEnumerator DamageMech(GameObject mech)
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(2.5f);
             EventManager.Fire("onDamage", _damageAmount, _targetEnemy);
         }
 

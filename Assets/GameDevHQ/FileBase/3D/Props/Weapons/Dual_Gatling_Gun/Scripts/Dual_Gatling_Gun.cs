@@ -35,12 +35,13 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         private AudioSource _audioSource; //reference to the audio source component
         private bool _startWeaponNoise = true;
 
+        [SerializeField] private int _warFundsRequired = 500;
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
 
 
-        public int WarFundsRequired { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public GameObject CurrentModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
+        public GameObject CurrentModel { get; set; }
 
         public GameObject UpgradeModel => throw new System.NotImplementedException();
 

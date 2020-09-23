@@ -71,16 +71,20 @@ namespace Scripts
 
         IEnumerator DestroyMech()
         {
+            _mechColl.enabled = false;
             _agent.isStopped = true;
             _health = 0;
-            _explosion.Play();
+            //_explosion.Play();
             _anim.SetBool("Die", true);
             yield return new WaitForSeconds(5f);
 
+            EventManager.Fire("onDissolve");
+            EventManager.Fire("onMechDestroyed", _mechWarFund);
             _anim.WriteDefaultValues();
             _mechColl.enabled = true;
 
             EventManager.Fire("onRecycleMech", _mech);
+            EventManager.Fire("onStopDissolve");
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
@@ -107,14 +111,11 @@ namespace Scripts
         {
             if (obj == this.gameObject)
             {
-                Debug.Log("EnemyAI::Health()");
                 _health -= damage;
 
                 if (_health <= 0)
                 {
-                    EventManager.Fire("onMechDestroyed", _mechWarFund);
-                    EventManager.Fire("onTargetNew", obj);
-                    _mechColl.enabled = false;
+                    EventManager.Fire("onTargetNew", this.gameObject);
                     StartCoroutine(DestroyMech());
                 }
             }
