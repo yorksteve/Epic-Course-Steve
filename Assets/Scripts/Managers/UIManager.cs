@@ -22,19 +22,26 @@ namespace Scripts.Managers
             if (tower == _towers[0])
             {
                 _upgradeDisplay[0].SetActive(true);
+                if (enoughFunds == false)
+                {
+                    _upgradeDisplay[0].GetComponent<Image>().color = Color.gray;
+                }
+                else
+                {
+                    _upgradeDisplay[0].GetComponent<Image>().color = Color.white;
+                }
             }
             else
             {
                 _upgradeDisplay[1].SetActive(true);
-            }
-
-            if (enoughFunds == false)
-            {
-                // Gray out and prevent upgrade
-            }
-            else
-            {
-                // Allow upgrade purchase
+                if (enoughFunds == false)
+                {
+                    _upgradeDisplay[1].GetComponent<Image>().color = Color.gray;
+                }
+                else
+                {
+                    _upgradeDisplay[1].GetComponent<Image>().color = Color.white;
+                }
             }
         }
 

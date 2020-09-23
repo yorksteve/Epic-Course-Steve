@@ -76,9 +76,9 @@ namespace Scripts
             _health = 0;
             //_explosion.Play();
             _anim.SetBool("Die", true);
+            EventManager.Fire("onDissolve");
             yield return new WaitForSeconds(5f);
 
-            EventManager.Fire("onDissolve");
             EventManager.Fire("onMechDestroyed", _mechWarFund);
             _anim.WriteDefaultValues();
             _mechColl.enabled = true;

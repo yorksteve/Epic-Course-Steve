@@ -35,6 +35,8 @@ public class Dissolve : MonoBehaviour
     void StopDissovle()
     {
         _isDissolving = false;
+        _materialBottom.SetFloat("_fillAmount", 0);
+        _materialTop.SetFloat("_fillAmount", 0);
     }
 
     private void OnDisable()

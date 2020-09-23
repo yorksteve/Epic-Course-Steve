@@ -48,11 +48,11 @@ namespace Scripts.Managers
 
         public void Update()
         {
-            if (_placingTower == false)
-                return;
-
             Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
+
+            if (_placingTower == false)
+                return;
 
             if (Physics.Raycast(rayOrigin, out hitInfo))
             {

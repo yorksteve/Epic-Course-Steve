@@ -85,6 +85,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
                 Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
                 _audioSource.Stop(); //stop the sound effect from playing
                 _startWeaponNoise = true; //set the start weapon noise value to true
+                bulletCasings.Stop();
             }
         }
 
