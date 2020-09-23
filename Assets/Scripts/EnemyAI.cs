@@ -23,6 +23,7 @@ namespace Scripts
         [SerializeField] private int _mechWarFund;
         [SerializeField] private int _damageAmount;
         private Transform _rotationPoint;
+        private bool _isChecked;
 
 
         private void Start()
@@ -52,8 +53,9 @@ namespace Scripts
         private void OnEnable()
         {
             EventManager.Listen("onDamage", (Action<int, GameObject>)Health);
-
             EventManager.Listen("onNewWave", ResetMech);
+            EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
+            EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
         }
 
         private void ResetMech()
@@ -103,16 +105,20 @@ namespace Scripts
 
         public void Target(GameObject enemy)
         {
-            Vector3 direction = enemy.transform.position - _rotationPoint.position;
-            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
-            if (enemy != null)
+            if (_isChecked == true)
             {
-                Attack(true);
+                Vector3 direction = enemy.transform.position - _rotationPoint.position;
+                transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+                if (enemy != null)
+                {
+                    Attack(true);
+                }
+                else
+                {
+                    Attack(false);
+                }
             }
-            else
-            {
-                Attack(false);
-            }
+            // Use events to check enemies from OnTriggerExit, and reset position to forward facing
         }
 
         public int Damage()
@@ -136,10 +142,20 @@ namespace Scripts
             }
         }
 
+        private void CheckMech(GameObject mech)
+        {
+            if (mech == this.gameObject)
+            {
+                _isChecked = true;
+            }
+        }
+
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onDamage", (Action<int, GameObject>)Health);
             EventManager.UnsubscribeEvent("onNewWave", ResetMech);
+            EventManager.UnsubscribeEvent("onTargetTower", (Action<GameObject>)Target);
+            EventManager.UnsubscribeEvent("onCheckMech", (Action<GameObject>)CheckMech);
         }
     }
 }

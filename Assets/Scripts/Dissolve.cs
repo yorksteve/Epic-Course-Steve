@@ -28,6 +28,8 @@ public class Dissolve : MonoBehaviour
         }
     }
 
+    // Research all dissolving instead of specific ones
+
     void StartDissolve(GameObject mech)
     {
         if (mech == this.gameObject)

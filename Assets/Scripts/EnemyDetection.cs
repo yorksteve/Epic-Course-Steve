@@ -35,6 +35,8 @@ namespace Scripts
             {
                 mechs.Add(other.gameObject);
                 _targetEnemy = mechs[0];
+                EventManager.Fire("onTargetTower", this.gameObject);
+                EventManager.Fire("onCheckMech", other.gameObject);
             }
         }
 

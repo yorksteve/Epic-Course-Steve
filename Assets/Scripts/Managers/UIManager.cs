@@ -26,7 +26,7 @@ namespace Scripts.Managers
                 {
                     _upgradeDisplay[0].GetComponent<Image>().color = Color.gray;
                 }
-                else
+                else if (enoughFunds == true)
                 {
                     _upgradeDisplay[0].GetComponent<Image>().color = Color.white;
                 }
@@ -38,7 +38,7 @@ namespace Scripts.Managers
                 {
                     _upgradeDisplay[1].GetComponent<Image>().color = Color.gray;
                 }
-                else
+                else if (enoughFunds == true)
                 {
                     _upgradeDisplay[1].GetComponent<Image>().color = Color.white;
                 }
@@ -52,7 +52,7 @@ namespace Scripts.Managers
 
         public void PurchaseUpgrade(int upgradeIndex)
         {
-            TowerManager.Instance.UpgradeTower(upgradeIndex);
+            TowerManager.Instance.UpgradeTower();
             _upgradeDisplay[upgradeIndex].SetActive(false);
         }
 

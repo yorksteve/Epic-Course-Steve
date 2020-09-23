@@ -973,7 +973,7 @@ GameObject:
   - component: {fileID: 3235858131893140832}
   - component: {fileID: 1723833144}
   - component: {fileID: 2561393649020463991}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AttackRadius (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

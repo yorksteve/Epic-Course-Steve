@@ -11,7 +11,8 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _decoyTower;
         [SerializeField] private GameObject[] _tower;
-        [SerializeField] private GameObject[] _towerUpgrades;
+        private GameObject _currentTower;
+        private GameObject _towerUpgrade;
         private GameObject _prefabDecoy;
         private Vector3 _towerPos;
 
@@ -20,6 +21,7 @@ namespace Scripts.Managers
 
         private int _towerID;
         private int _warFundsRequired;
+        private int _upgradeCost;
         private bool _placingTower;
 
 
@@ -121,16 +123,18 @@ namespace Scripts.Managers
         {
             Debug.Log("TowerManager::CheckUpgrade()");
 
-            GameObject towerUpgrade = tower.UpgradeModel;
+            _towerUpgrade = tower.UpgradeModel;
+            _currentTower = tower.CurrentModel;
+            _upgradeCost = tower.WarFundsRequiredUpgrade;
             _towerPos = pos;
 
             if (tower.WarFundsRequiredUpgrade <= WarFundManager.Instance.RequestWarFunds())
             {
-                UIManager.Instance.TowerUpgradeAbility(false, towerUpgrade);
+                UIManager.Instance.TowerUpgradeAbility(false, _towerUpgrade);
             }
             else
             {
-                UIManager.Instance.TowerUpgradeAbility(true, towerUpgrade);
+                UIManager.Instance.TowerUpgradeAbility(true, _towerUpgrade);
             }
         }
 
@@ -140,10 +144,12 @@ namespace Scripts.Managers
             WarFundManager.Instance.SellTower(_towerData[id].WarFundsRequired);
         }
 
-        public void UpgradeTower(int id)
+        public void UpgradeTower()
         {
-            Instantiate(_towerUpgrades[id], _towerPos, Quaternion.identity); //tower position should come from stored data passed into CheckUpgrade()
-            WarFundManager.Instance.BuyTower(_towerData[id].WarFundsRequiredUpgrade);
+            Instantiate(_towerUpgrade, _towerPos, Quaternion.identity);
+            WarFundManager.Instance.BuyTower(_upgradeCost);
+            EventManager.Fire("onUpdateTower", _towerUpgrade, _towerPos);
+            Destroy(_currentTower);
         }
 
         private void OnDisable()
