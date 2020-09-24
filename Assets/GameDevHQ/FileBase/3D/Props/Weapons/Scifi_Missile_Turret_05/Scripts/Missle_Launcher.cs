@@ -4,10 +4,11 @@ using UnityEngine;
 using GameDevHQ.FileBase.Missle_Launcher_Dual_Turret.Missle;
 using Scripts.Interfaces;
 using System;
+using Scripts.Managers;
 
 namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 {
-    public class Missle_Launcher : MonoBehaviour, IAttack, ITower
+    public class Missle_Launcher : MonoBehaviour, IAttack, ITower, IHealth
     {
         [SerializeField]
         private GameObject _missilePrefab; //holds the missle gameobject to clone
@@ -39,6 +40,8 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         public GameObject UpgradeModel => throw new System.NotImplementedException();
 
         public int WarFundsRequiredUpgrade { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        [SerializeField] private ParticleSystem _explosion;
 
         private void Start()
         {
@@ -107,6 +110,22 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         {
             int damageAmount = 8;
             return damageAmount;
+        }
+
+        public void Health(int damage, GameObject obj)
+        {
+            if (obj == this.gameObject)
+            {
+                int health = 100;
+                health -= damage;
+                if (health <= 0)
+                {
+                    _explosion.Play();
+                    health = 0;
+                    Destroy(this.gameObject);
+                    EventManager.Fire("onTowerDestroyed", this.transform.position);
+                }
+            }
         }
     }
 }

@@ -29414,6 +29414,8 @@ MonoBehaviour:
   _fireSound: {fileID: 8300000, guid: ebcd7ceac90454c1e9dc458cb87b6f75, type: 3}
   _warFundsRequired: 500
   _towerBase: {fileID: 1427593964865674}
+  _explosion: {fileID: 4688366796816071958, guid: 0bd59304b034bee4e939420e993113e1,
+    type: 3}
 --- !u!82 &82127826341503972
 AudioSource:
   m_ObjectHideFlags: 0

@@ -12,7 +12,6 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            EventManager.Listen("onBoughtTower", (Action<int>)BuyTower);
             EventManager.Listen("onMechDestroyed", (Action<int>)DestroyedMech);
         }
 
@@ -54,7 +53,6 @@ namespace Scripts.Managers
 
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onBoughtTower", (Action<int>)BuyTower);
             EventManager.UnsubscribeEvent("onMechDestroyed", (Action<int>)DestroyedMech);
         }
     }

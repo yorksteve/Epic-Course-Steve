@@ -5082,6 +5082,8 @@ MonoBehaviour:
   _upgradeModel: {fileID: 1873819670802014, guid: 4565034b2cea2354aa1991c60bc1cd44,
     type: 3}
   _towerBase: {fileID: 1065626707769684}
+  _explosion: {fileID: 4688366796816071958, guid: 0bd59304b034bee4e939420e993113e1,
+    type: 3}
 --- !u!82 &82825197453988258
 AudioSource:
   m_ObjectHideFlags: 0

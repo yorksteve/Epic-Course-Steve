@@ -8,9 +8,17 @@ public class Dissolve : MonoBehaviour
 {
     [SerializeField] private Material _materialTop;
     [SerializeField] private Material _materialBottom;
+    private Renderer[] _renderers;
     private bool _isDissolving;
     private float _dissolve = 0;
     private float _speed = .1f;
+
+
+
+    private void Start()
+    {
+        _renderers = this.gameObject.GetComponentsInChildren<MeshRenderer>();
+    }
 
     private void OnEnable()
     {
@@ -23,8 +31,16 @@ public class Dissolve : MonoBehaviour
         if (_isDissolving == true)
         {
             _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
-            _materialTop.SetFloat("_fillAmount", _dissolve);
-            _materialBottom.SetFloat("_fillAmount", _dissolve);
+            //_materialTop.SetFloat("_fillAmount", _dissolve);
+            //_materialBottom.SetFloat("_fillAmount", _dissolve);
+            foreach (var rend in _renderers)
+            {
+                rend.material.SetFloat("_fillAmount", _dissolve);
+            }
+            if (_dissolve == 1f)
+            {
+                EventManager.Fire("onCleaningMech");
+            }
         }
     }
 

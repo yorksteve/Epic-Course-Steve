@@ -1,4 +1,5 @@
 ﻿using Scripts.Interfaces;
+using Scripts.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
     /// </summary>
 
     [RequireComponent(typeof(AudioSource))] //Require Audio Source component
-    public class Dual_Gatling_Gun : MonoBehaviour, IAttack, ITower
+    public class Dual_Gatling_Gun : MonoBehaviour, IAttack, ITower, IHealth
     {
         [SerializeField]
         private Transform[] _gunBarrel; //Reference to hold the gun barrel
@@ -38,6 +39,8 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         [SerializeField] private int _warFundsRequired = 500;
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
+
+        [SerializeField] private ParticleSystem _explosion;
 
 
         public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
@@ -112,6 +115,22 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         {
             int damageAmount = 5;
             return damageAmount;
+        }
+
+        public void Health(int damage, GameObject obj)
+        {
+            if (obj == this.gameObject)
+            {
+                int health = 100;
+                health -= damage;
+                if (health <= 0)
+                {
+                    _explosion.Play();
+                    health = 0;
+                    Destroy(this.gameObject);
+                    EventManager.Fire("onTowerDestroyed", this.transform.position);
+                }
+            }
         }
     }
 

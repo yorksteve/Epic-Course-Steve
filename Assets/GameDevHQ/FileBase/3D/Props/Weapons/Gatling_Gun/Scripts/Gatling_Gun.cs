@@ -42,6 +42,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
 
+        [SerializeField] private ParticleSystem _explosion;
+
 
         // Use this for initialization
         void Start()
@@ -114,6 +116,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
                 health -= damage;
                 if (health <= 0)
                 {
+                    _explosion.Play();
                     health = 0;
                     Destroy(this.gameObject);
                     EventManager.Fire("onTowerDestroyed", this.transform.position);

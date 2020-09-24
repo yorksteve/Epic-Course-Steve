@@ -46,6 +46,7 @@ namespace Scripts.Managers
         private void OnEnable()
         {
             EventManager.Listen("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
+            EventManager.Listen("onDamageTowers", (Action<int, GameObject>)TowerDamaged);
         }
 
         public void Update()
@@ -80,9 +81,7 @@ namespace Scripts.Managers
             if (_warFundsRequired <= WarFundManager.Instance.RequestWarFunds())
             {
                 var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-
-                EventManager.Fire("onBoughtTower", _warFundsRequired);
-
+                WarFundManager.Instance.BuyTower(_warFundsRequired);
                 return initial.GetComponent<ITower>();
             }
 
@@ -152,9 +151,16 @@ namespace Scripts.Managers
             Destroy(_currentTower);
         }
 
+        public void TowerDamaged(int damageAmount, GameObject tower)
+        {
+            tower.GetComponent<IHealth>().Health(damageAmount, tower);
+        }
+
+
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
+            EventManager.UnsubscribeEvent("onDamageTowers", (Action<int, GameObject>)TowerDamaged);
         }
     }
 }

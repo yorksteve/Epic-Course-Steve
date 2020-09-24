@@ -48,6 +48,8 @@ namespace Scripts
                 _attackData.Attack(true);
                 StartCoroutine(DamageMech(_targetEnemy));
             }
+
+            EventManager.Fire("onMechAttack", this.gameObject);
         }
 
         private void OnTriggerExit(Collider other)
@@ -64,6 +66,8 @@ namespace Scripts
                 {
                     _attackData.Attack(false);
                 }
+
+                EventManager.Fire("onMechExit", other.gameObject);
             }
         }
 

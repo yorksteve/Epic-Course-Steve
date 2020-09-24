@@ -13,7 +13,7 @@ using System;
 
 namespace GameDevHQ.FileBase.Missile_Launcher
 {
-    public class Missile_Launcher : MonoBehaviour, ITower, IAttack
+    public class Missile_Launcher : MonoBehaviour, ITower, IAttack, IHealth
     {
         public enum MissileType
         {
@@ -43,6 +43,8 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         private bool _launched; //bool to check if we launched the rockets
         [SerializeField]
         private Transform _target; //Who should the rocket fire at?
+
+        [SerializeField] private ParticleSystem _explosion;
 
         [SerializeField] private int _warFundsRequired = 500;
         [SerializeField] private int _warFundsRequiredUpgrade = 750;
@@ -126,6 +128,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
                 health -= damage;
                 if (health <= 0)
                 {
+                    _explosion.Play();
                     health = 0;
                     Destroy(this.gameObject);
                     EventManager.Fire("onTowerDestroyed", this.transform.position);
