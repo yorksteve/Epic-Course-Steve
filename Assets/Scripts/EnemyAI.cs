@@ -14,9 +14,7 @@ namespace Scripts
         private Transform _destination;
         [SerializeField] private Animator _anim;
         [SerializeField] private GameObject _mechRotation;
-        [SerializeField] private Collider _mechColl;
-        private GameObject _mech;
-        
+        [SerializeField] private Collider _mechColl;        
 
         [SerializeField] private int _health;
         [SerializeField] private int _mechWarFund;
@@ -38,9 +36,6 @@ namespace Scripts
                 _agent = GetComponent<NavMeshAgent>();
                 _agent.SetDestination(_destination.position);
             }
-
-            _mech = this.gameObject;
-
             _rotationPoint = _mechRotation.GetComponent<Transform>();
         }
         
@@ -54,7 +49,7 @@ namespace Scripts
             }
             EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
-            EventManager.Listen("onCleaningMech", CleanUpMech);
+            EventManager.Listen("onCleaningMech", (Action<GameObject>)CleanUpMech);
         }
 
         private void ResetMech()
@@ -70,22 +65,22 @@ namespace Scripts
             }
         }
 
-        void DestroyMech()
+        void DestroyMech(GameObject mech)
         {
             _mechColl.enabled = false;
             _agent.isStopped = true;
             _health = 0;
             _anim.SetBool("Die", true);
-            EventManager.Fire("onDissolve", this.gameObject);
+            EventManager.Fire("onDissolve", mech);
         }
 
-        void CleanUpMech()
+        void CleanUpMech(GameObject mech)
         {
             EventManager.Fire("onMechDestroyed", _mechWarFund);
             _anim.WriteDefaultValues();
             _mechColl.enabled = true;
-            EventManager.Fire("onRecycleMech", _mech);
-            EventManager.Fire("onStopDissolve", this.gameObject);
+            EventManager.Fire("onRecycleMech", mech);
+            EventManager.Fire("onStopDissolve", mech);
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
@@ -149,7 +144,7 @@ namespace Scripts
                 if (_health <= 0)
                 {
                     EventManager.Fire("onTargetNew", this.gameObject);
-                    DestroyMech();
+                    DestroyMech(obj);
                 }
             }
         }
@@ -177,7 +172,7 @@ namespace Scripts
             EventManager.UnsubscribeEvent("onTargetTower", (Action<GameObject>)Target);
             EventManager.UnsubscribeEvent("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.UnsubscribeEvent("onMechExit", (Action<GameObject>)MechExit);
-            EventManager.UnsubscribeEvent("onCleaningMech", CleanUpMech);
+            EventManager.UnsubscribeEvent("onCleaningMech", (Action<GameObject>)CleanUpMech);
         }
     }
 }

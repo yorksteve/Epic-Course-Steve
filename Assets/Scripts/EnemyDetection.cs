@@ -49,7 +49,7 @@ namespace Scripts
                 StartCoroutine(DamageMech(_targetEnemy));
             }
 
-            EventManager.Fire("onMechAttack", this.gameObject);
+            //EventManager.Fire("onMechAttack", this.gameObject);
         }
 
         private void OnTriggerExit(Collider other)

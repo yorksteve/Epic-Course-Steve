@@ -39,7 +39,6 @@ namespace Scripts.Managers
             {
                 _towerData[i] = _tower[i].GetComponent<ITower>();
                 _attackData[i] = _tower[i].GetComponent<IAttack>();
-                Debug.Log(_towerData[i].WarFundsRequired);
             }            
         }
 
@@ -153,7 +152,10 @@ namespace Scripts.Managers
 
         public void TowerDamaged(int damageAmount, GameObject tower)
         {
-            tower.GetComponent<IHealth>().Health(damageAmount, tower);
+            if (tower != null && damageAmount != 0)
+            {
+                tower.GetComponent<IHealth>().Health(damageAmount, tower);  // WHY DOES THIS NOT WORK??
+            }
         }
 
 
