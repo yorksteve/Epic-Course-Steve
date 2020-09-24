@@ -6,7 +6,8 @@ using System;
 
 public class Dissolve : MonoBehaviour
 {
-    private Renderer[] _renderers;
+    private List<GameObject> _children;
+    private List<MeshRenderer> _renderers;
     private bool _isDissolving;
     private float _dissolve = 0;
     private float _speed = .1f;
@@ -15,8 +16,16 @@ public class Dissolve : MonoBehaviour
 
     private void Start()
     {
-        _renderers = this.gameObject.GetComponentsInChildren<MeshRenderer>();
-        _dissolve = 0;
+        //GetChildren(this.gameObject);
+
+        //if (_renderers.Count > 0)
+        //{
+        //    Debug.Log("Collected renderers");
+        //}
+        //else
+        //{
+        //    Debug.Log("Failed to get renderers");
+        //}
     }
 
     private void OnEnable()
@@ -38,6 +47,25 @@ public class Dissolve : MonoBehaviour
             {
                 EventManager.Fire("onCleaningMech", this.gameObject);
             }
+        }
+    }
+
+    private void GetChildren(GameObject obj)
+    {
+        if (obj == null)
+            return;
+
+        foreach (Transform child in obj.GetComponentInChildren<Transform>())
+        {
+            if (obj.transform == null)
+                continue;
+
+            _children.Add(child.gameObject);
+            if (child.gameObject.GetComponent<MeshRenderer>() != null)
+            {
+                _renderers.Add(child.gameObject.GetComponent<MeshRenderer>());
+            }
+            GetChildren(child.gameObject);
         }
     }
 

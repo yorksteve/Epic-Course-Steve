@@ -35,7 +35,6 @@ namespace Scripts
             {
                 mechs.Add(other.gameObject);
                 _targetEnemy = mechs[0];
-                EventManager.Fire("onTargetTower", this.gameObject);
                 EventManager.Fire("onCheckMech", other.gameObject);
             }
         }
@@ -45,11 +44,13 @@ namespace Scripts
             if (_targetEnemy != null)
             {
                 _attackData.Target(_targetEnemy);
-                _attackData.Attack(true);
-                StartCoroutine(DamageMech(_targetEnemy));
-            }
 
-            //EventManager.Fire("onMechAttack", this.gameObject);
+                // Commented out for testing mech tracking purposes
+
+                //_attackData.Attack(true);
+                //StartCoroutine(DamageMech(_targetEnemy));
+                EventManager.Fire("onTargetTower", this.gameObject);
+            }
         }
 
         private void OnTriggerExit(Collider other)

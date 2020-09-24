@@ -14249,7 +14249,6 @@ MonoBehaviour:
   _tower:
   - {fileID: 1425032208015248, guid: 75f3d166786e1cb40afc4396cd0bcc22, type: 3}
   - {fileID: 1821146363788296, guid: 23a8b9b94225d3845aed312b792882a9, type: 3}
-  _towerUpgrades: []
 --- !u!4 &2057498838
 Transform:
   m_ObjectHideFlags: 0

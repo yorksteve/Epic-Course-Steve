@@ -42,11 +42,8 @@ namespace Scripts
         private void OnEnable()
         {
             EventManager.Listen("onDamage", (Action<int, GameObject>)Health);
-            EventManager.Listen("onNewWave", ResetMech);
-            if (_isChecked == false)
-            {
-                EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
-            }
+            EventManager.Listen("onNewWave", ResetMech);           
+            EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
             EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
             EventManager.Listen("onCleaningMech", (Action<GameObject>)CleanUpMech);
@@ -88,12 +85,30 @@ namespace Scripts
         {
             if (attack == true)
             {
-                _anim.SetTrigger("Fire");
+                Debug.Log("EnemyAI :: Attack()");
+                _anim.SetBool("Fire", true);
                 Damage();
             }
             else
             {
-                _anim.ResetTrigger("Fire");
+                _anim.SetBool("Fire", false);
+            }
+        }
+
+        private void CheckMech(GameObject mech)
+        {
+            if (mech == this.gameObject)
+            {
+                _isChecked = true;
+                Debug.Log("EnemyAI :: CheckMech()");
+            }
+        }
+
+        private void MechExit(GameObject mech)
+        {
+            if (mech == this.gameObject)
+            {
+                _isChecked = false;
             }
         }
 
@@ -101,27 +116,23 @@ namespace Scripts
         {
             if (_isChecked == true)
             {
+                Debug.Log("EnemyAI :: Target()");
                 Vector3 direction = enemy.transform.position - _rotationPoint.position;
-                transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+                _rotationPoint.transform.rotation = Quaternion.LookRotation(direction);
                 if (enemy != null)
                 {
                     Attack(true);
+                    AttackData(enemy);
                 }
                 else
                 {
                     Attack(false);
                 }
-                AttackData(enemy);
             }
             else
             {
                 transform.rotation = Quaternion.identity;
             }
-        }
-
-        private void AttackTower(GameObject tower)
-        {
-            Target(tower);
         }
 
         public int Damage()
@@ -132,7 +143,7 @@ namespace Scripts
         private void AttackData(GameObject tower)
         {
             int damage = Damage();
-            EventManager.Fire("onDamageTowers", damage, tower);
+            EventManager.Fire("onDamageTowers", damage, tower); // Fire event to TowerManager
         }
 
         public void Health(int damage, GameObject obj)
@@ -143,25 +154,9 @@ namespace Scripts
 
                 if (_health <= 0)
                 {
-                    EventManager.Fire("onTargetNew", this.gameObject);
+                    EventManager.Fire("onTargetNew", this.gameObject); // Fire event to EnemyDetection
                     DestroyMech(obj);
                 }
-            }
-        }
-
-        private void CheckMech(GameObject mech)
-        {
-            if (mech == this.gameObject)
-            {
-                _isChecked = true;
-            }
-        }
-
-        private void MechExit(GameObject mech)
-        {
-            if (mech == this.gameObject)
-            {
-                _isChecked = false;
             }
         }
 
