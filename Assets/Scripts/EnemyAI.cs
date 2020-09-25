@@ -119,7 +119,7 @@ namespace Scripts
             {
                 Debug.Log("EnemyAI :: Target()");
                 Vector3 direction = enemy.transform.position - _rotationPoint.position;
-                _rotationPoint.transform.rotation = Quaternion.LookRotation(direction);
+                _rotationPoint.rotation = Quaternion.LookRotation(direction);
                 if (enemy != null)
                 {
                     Attack(true);
@@ -128,11 +128,12 @@ namespace Scripts
                 else
                 {
                     Attack(false);
+                    _rotationPoint.rotation = Quaternion.identity;
                 }
             }
             else
             {
-                transform.rotation = Quaternion.identity;
+                _rotationPoint.rotation = Quaternion.identity;
             }
         }
 

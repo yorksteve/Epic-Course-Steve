@@ -1584,8 +1584,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _anim: {fileID: 95831276238310704}
-  _explosion: {fileID: 4688366796816071958, guid: 0bd59304b034bee4e939420e993113e1,
-    type: 3}
   _mechRotation: {fileID: 1807431960425264}
   _mechColl: {fileID: -3099949395931670192}
   _health: 100
@@ -1616,8 +1614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6daec0da77b496f418b3bd95f904ad38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _materialTop: {fileID: 2100000, guid: 71636ddaf886d804eb3774db2177efde, type: 2}
-  _materialBottom: {fileID: 2100000, guid: 63bf433c227337f45b63cbf0543057f1, type: 2}
+  _upperBody: {fileID: 2100000, guid: 71636ddaf886d804eb3774db2177efde, type: 2}
+  _lowerBody: {fileID: 2100000, guid: 63bf433c227337f45b63cbf0543057f1, type: 2}
 --- !u!1 &1695296882317140
 GameObject:
   m_ObjectHideFlags: 0

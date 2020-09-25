@@ -110,7 +110,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             _target = enemy.transform;
             Vector3 direction = enemy.transform.position - _towerSource.position;
 
-            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
         private void OnEnable()

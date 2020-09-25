@@ -106,7 +106,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         {
             Vector3 direction = enemy.transform.position - _towerSource.position;
 
-            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
         public int Damage()

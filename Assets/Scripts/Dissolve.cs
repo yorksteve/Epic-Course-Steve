@@ -6,8 +6,9 @@ using System;
 
 public class Dissolve : MonoBehaviour
 {
-    private List<GameObject> _children;
-    private List<MeshRenderer> _renderers;
+    [SerializeField] private Material _upperBody;
+    [SerializeField] private Material _lowerBody;
+    private MaterialPropertyBlock block;
     private bool _isDissolving;
     private float _dissolve = 0;
     private float _speed = .1f;
@@ -16,16 +17,7 @@ public class Dissolve : MonoBehaviour
 
     private void Start()
     {
-        //GetChildren(this.gameObject);
-
-        //if (_renderers.Count > 0)
-        //{
-        //    Debug.Log("Collected renderers");
-        //}
-        //else
-        //{
-        //    Debug.Log("Failed to get renderers");
-        //}
+        block = new MaterialPropertyBlock();
     }
 
     private void OnEnable()
@@ -39,33 +31,13 @@ public class Dissolve : MonoBehaviour
         if (_isDissolving == true)
         {
             _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
-            foreach (var rend in _renderers)
-            {
-                rend.material.SetFloat("_fillAmount", _dissolve);
-            }
+            block.SetFloat("_fillAmount", _dissolve);
+            //SetPropertyBlock(block);
+            
             if (_dissolve == 1f)
             {
                 EventManager.Fire("onCleaningMech", this.gameObject);
             }
-        }
-    }
-
-    private void GetChildren(GameObject obj)
-    {
-        if (obj == null)
-            return;
-
-        foreach (Transform child in obj.GetComponentInChildren<Transform>())
-        {
-            if (obj.transform == null)
-                continue;
-
-            _children.Add(child.gameObject);
-            if (child.gameObject.GetComponent<MeshRenderer>() != null)
-            {
-                _renderers.Add(child.gameObject.GetComponent<MeshRenderer>());
-            }
-            GetChildren(child.gameObject);
         }
     }
 
@@ -82,10 +54,6 @@ public class Dissolve : MonoBehaviour
         if (mech == this.gameObject)
         {
             _isDissolving = false;
-            foreach (var rend in _renderers)
-            {
-                rend.material.SetFloat("_fillAmount", 0);
-            }
         }
     }
 

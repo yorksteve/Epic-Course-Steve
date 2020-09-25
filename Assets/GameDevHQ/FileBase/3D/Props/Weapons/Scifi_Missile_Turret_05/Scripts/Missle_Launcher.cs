@@ -101,7 +101,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         {
             Vector3 direction = enemy.transform.position - _towerSource.position;
 
-            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
         public int Damage()

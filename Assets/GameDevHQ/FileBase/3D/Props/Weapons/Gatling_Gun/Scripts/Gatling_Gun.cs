@@ -98,7 +98,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         public void Target(GameObject enemy)
         {
             Vector3 direction = enemy.transform.position - _towerSource.position;
-            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
         private void OnEnable()
