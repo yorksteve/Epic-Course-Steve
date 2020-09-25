@@ -6,9 +6,7 @@ using System;
 
 public class Dissolve : MonoBehaviour
 {
-    [SerializeField] private Material _upperBody;
-    [SerializeField] private Material _lowerBody;
-    private MaterialPropertyBlock block;
+    private Renderer[] _rends;
     private bool _isDissolving;
     private float _dissolve = 0;
     private float _speed = .1f;
@@ -17,7 +15,14 @@ public class Dissolve : MonoBehaviour
 
     private void Start()
     {
-        block = new MaterialPropertyBlock();
+        if (_rends != null)
+        {
+            _rends = GetComponentsInChildren<MeshRenderer>();
+        }
+        else
+        {
+            Debug.Log("Failed to get renderers");
+        }
     }
 
     private void OnEnable()
@@ -31,10 +36,12 @@ public class Dissolve : MonoBehaviour
         if (_isDissolving == true)
         {
             _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
-            block.SetFloat("_fillAmount", _dissolve);
-            //SetPropertyBlock(block);
-            
-            if (_dissolve == 1f)
+            foreach (var rend in _rends)
+            {
+                rend.material.SetFloat("_fillAmount", _dissolve);
+            }    
+
+            if (_dissolve >= 1f)
             {
                 EventManager.Fire("onCleaningMech", this.gameObject);
             }
@@ -54,6 +61,10 @@ public class Dissolve : MonoBehaviour
         if (mech == this.gameObject)
         {
             _isDissolving = false;
+            foreach (var rend in _rends)
+            {
+                rend.material.SetFloat("_fillAmount", 0);
+            }
         }
     }
 

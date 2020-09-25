@@ -49,7 +49,7 @@ namespace Scripts
 
                 //_attackData.Attack(true);
                 //StartCoroutine(DamageMech(_targetEnemy));
-                EventManager.Fire("onTargetTower", this.gameObject);
+                EventManager.Fire("onTargetTower", this.gameObject.transform.parent.gameObject);
             }
         }
 

@@ -20,7 +20,7 @@ namespace Scripts
         [SerializeField] private int _mechWarFund;
         [SerializeField] private int _damageAmount;
         private Transform _rotationPoint;
-        private bool _isChecked;
+        [SerializeField] private bool _isChecked;
 
 
         private void Start()
@@ -119,7 +119,7 @@ namespace Scripts
             {
                 Debug.Log("EnemyAI :: Target()");
                 Vector3 direction = enemy.transform.position - _rotationPoint.position;
-                _rotationPoint.rotation = Quaternion.LookRotation(direction);
+                _rotationPoint.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 if (enemy != null)
                 {
                     Attack(true);
@@ -133,7 +133,7 @@ namespace Scripts
             }
             else
             {
-                _rotationPoint.rotation = Quaternion.identity;
+                //_rotationPoint.rotation = Quaternion.identity;
             }
         }
 
