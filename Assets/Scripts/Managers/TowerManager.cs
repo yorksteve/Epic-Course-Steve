@@ -22,6 +22,7 @@ namespace Scripts.Managers
         private int _towerID;
         private int _warFundsRequired;
         private int _upgradeCost;
+        private int _towerWorth;
         private bool _placingTower;
 
 
@@ -50,11 +51,11 @@ namespace Scripts.Managers
 
         public void Update()
         {
-            Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitInfo;
-
             if (_placingTower == false)
                 return;
+
+            Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
 
             if (Physics.Raycast(rayOrigin, out hitInfo))
             {
@@ -75,31 +76,27 @@ namespace Scripts.Managers
         {
             Debug.Log("TowerManager::PlaceTower()");
 
-            _warFundsRequired = _towerData[_towerID].WarFundsRequired;
-
-            if (_warFundsRequired <= WarFundManager.Instance.RequestWarFunds())
-            {
-                var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-                WarFundManager.Instance.BuyTower(_warFundsRequired);
-                return initial.GetComponent<ITower>();
-            }
-
-            else
-            {
-                Debug.Log("TowerManager::PlaceTower() : Not enough War Funds to buy this tower");
-            }
-
-
-            return null;
+            var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+            WarFundManager.Instance.BuyTower(_warFundsRequired);
+            return initial.GetComponent<ITower>();
         }
 
         public void PlaceDecoyTower(int i)
         {
-            _placingTower = true;
-            _towerID = i;
-            _prefabDecoy = Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);
+            _warFundsRequired = _towerData[i].WarFundsRequired;
 
-            EventManager.Fire("onPlacingTower", true);
+            if (_warFundsRequired <= WarFundManager.Instance.RequestWarFunds())
+            {
+                _placingTower = true;
+                _towerID = i;
+                _prefabDecoy = Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);
+
+                EventManager.Fire("onPlacingTower", true);
+            }
+            else
+            {
+                Debug.Log("TowerManager::PlaceDecoyTower() : Not enough War Funds to buy this tower");
+            }
         }
 
         public void SnapToPosition(Vector3 pos)
@@ -123,23 +120,34 @@ namespace Scripts.Managers
 
             _towerUpgrade = tower.UpgradeModel;
             _currentTower = tower.CurrentModel;
-            _upgradeCost = tower.WarFundsRequiredUpgrade;
             _towerPos = pos;
 
-            if (tower.WarFundsRequiredUpgrade <= WarFundManager.Instance.RequestWarFunds())
+            if (_towerUpgrade != null)
             {
-                UIManager.Instance.TowerUpgradeAbility(false, _towerUpgrade);
+                _upgradeCost = _towerUpgrade.GetComponent<ITower>().WarFundsRequired;
+
+                if (_upgradeCost >= WarFundManager.Instance.RequestWarFunds())
+                {
+                    UIManager.Instance.TowerUpgradeAbility(false, _towerUpgrade);
+                }
+                else
+                {
+                    UIManager.Instance.TowerUpgradeAbility(true, _towerUpgrade);
+                }
             }
             else
             {
-                UIManager.Instance.TowerUpgradeAbility(true, _towerUpgrade);
+                Debug.Log("Tower already upgraded");
+                _towerWorth = tower.WarFundsRequired;
+                UIManager.Instance.SellingTower(_towerWorth);
             }
         }
 
-        public void SellTower(int id)
+        public void SellTower()
         {
-            Destroy(_tower[id]);
-            WarFundManager.Instance.SellTower(_towerData[id].WarFundsRequired);
+            Destroy(_currentTower);
+            WarFundManager.Instance.SellTower(_towerWorth);
+            EventManager.Fire("onTowerSold", _towerPos);
         }
 
         public void UpgradeTower()

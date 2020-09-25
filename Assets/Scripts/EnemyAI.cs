@@ -37,8 +37,9 @@ namespace Scripts
                 _agent.SetDestination(_destination.position);
             }
             _rotationPoint = _mechRotation.GetComponent<Transform>();
+            transform.rotation = Quaternion.identity;
         }
-        
+
         private void OnEnable()
         {
             EventManager.Listen("onDamage", (Action<int, GameObject>)Health);

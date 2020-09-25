@@ -32,12 +32,10 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private bool _startWeaponNoise = true;
 
         [SerializeField] private int _warFundsRequired = 200;
-        [SerializeField] private int _warFundsRequiredUpgrade = 500;
         [SerializeField] private GameObject _upgradeModel;
         public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
         public GameObject CurrentModel { get; set; }
         public GameObject UpgradeModel { get => _upgradeModel; }
-        public int WarFundsRequiredUpgrade { get => _warFundsRequiredUpgrade; set => _warFundsRequiredUpgrade = value; }
 
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;

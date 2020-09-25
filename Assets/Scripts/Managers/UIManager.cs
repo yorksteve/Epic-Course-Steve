@@ -10,7 +10,10 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _towers;
         [SerializeField] private GameObject[] _upgradeDisplay;
+        [SerializeField] private GameObject _sellDisplay;
         [SerializeField] private Text _warFunds;
+        [SerializeField] private Text _sellAmount;
+        private Transform _purchaseButton;
 
         public override void Init()
         {
@@ -21,33 +24,62 @@ namespace Scripts.Managers
         {
             if (tower == _towers[0])
             {
-                _upgradeDisplay[0].SetActive(true);
-                if (enoughFunds == false)
+                var colorChange = _upgradeDisplay[0].GetComponent<Image>().color;
+                _purchaseButton = _upgradeDisplay[0].transform.Find("PurchaseButton");
+
+                if (colorChange != null && _purchaseButton != null)
                 {
-                    _upgradeDisplay[0].GetComponent<Image>().color = Color.gray;
+                    if (enoughFunds == false)
+                    {
+                        _purchaseButton.gameObject.GetComponent<Button>().enabled = false;
+                        colorChange.a = 1;
+                        _upgradeDisplay[0].SetActive(true);
+                        Debug.Log("Not enough WarFunds to upgrade tower");
+                    }
+                    else if (enoughFunds == true)
+                    {
+                        _purchaseButton.gameObject.GetComponent<Button>().enabled = true;
+                        colorChange.a = 0;
+                        _upgradeDisplay[0].SetActive(true);
+                    }
                 }
-                else if (enoughFunds == true)
-                {
-                    _upgradeDisplay[0].GetComponent<Image>().color = Color.white;
-                }
+                
             }
             else
             {
-                _upgradeDisplay[1].SetActive(true);
-                if (enoughFunds == false)
+                var colorChange = _upgradeDisplay[1].GetComponent<Image>().color;
+                _purchaseButton = _upgradeDisplay[1].transform.Find("PurchaseButton");
+
+                if (colorChange != null && _purchaseButton != null)
                 {
-                    _upgradeDisplay[1].GetComponent<Image>().color = Color.gray;
+                    if (enoughFunds == false)
+                    {
+                        _purchaseButton.gameObject.GetComponent<Button>().enabled = false;  // Disable the upgrade button
+                        colorChange.a = 1; // Gray out the upgrade button
+                        _upgradeDisplay[1].SetActive(true);
+                        Debug.Log("Not enough WarFunds to upgrade tower");
+                    }
+                    else if (enoughFunds == true)
+                    {
+                        _purchaseButton.gameObject.GetComponent<Button>().enabled = true;
+                        colorChange.a = 0;
+                        _upgradeDisplay[1].SetActive(true);
+                    }
                 }
-                else if (enoughFunds == true)
-                {
-                    _upgradeDisplay[1].GetComponent<Image>().color = Color.white;
-                }
+                
             }
         }
 
-        public void SellTower(int id)
+        public void SellingTower(int towerWorth)
         {
-            TowerManager.Instance.SellTower(id);
+            _sellAmount.text = towerWorth.ToString();
+            _sellDisplay.SetActive(true);
+        }
+
+        public void SellTower()
+        {
+            TowerManager.Instance.SellTower();
+            _sellDisplay.SetActive(false);
         }
 
         public void PurchaseUpgrade(int upgradeIndex)
@@ -59,6 +91,7 @@ namespace Scripts.Managers
         public void CancelUpgrade(int i)
         {
             _upgradeDisplay[i].SetActive(false);
+            Debug.Log("UIManager :: CancelUpgrade()");
         }
 
         public void ChangeFunds(int amount)

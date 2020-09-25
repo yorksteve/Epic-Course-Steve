@@ -48,8 +48,6 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
 
         public GameObject UpgradeModel => throw new System.NotImplementedException();
 
-        public int WarFundsRequiredUpgrade { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         // Use this for initialization
         void Start()
         {

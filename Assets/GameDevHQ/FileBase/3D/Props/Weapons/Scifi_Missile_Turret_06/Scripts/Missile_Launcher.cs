@@ -47,12 +47,10 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         [SerializeField] private ParticleSystem _explosion;
 
         [SerializeField] private int _warFundsRequired = 500;
-        [SerializeField] private int _warFundsRequiredUpgrade = 750;
         [SerializeField] private GameObject _upgradeModel;
         public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
         public GameObject CurrentModel { get; set; }
         public GameObject UpgradeModel { get => _upgradeModel; }
-        public int WarFundsRequiredUpgrade { get => _warFundsRequiredUpgrade; set => _warFundsRequiredUpgrade = value; }
 
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;

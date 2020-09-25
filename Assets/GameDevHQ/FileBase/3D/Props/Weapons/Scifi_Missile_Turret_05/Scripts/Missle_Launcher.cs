@@ -32,14 +32,12 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
+        private int _warFundsRequired = 750;
 
-
-        public int WarFundsRequired { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public GameObject CurrentModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
+        public GameObject CurrentModel { get; set; }
 
         public GameObject UpgradeModel => throw new System.NotImplementedException();
-
-        public int WarFundsRequiredUpgrade { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         [SerializeField] private ParticleSystem _explosion;
 

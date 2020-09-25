@@ -20,8 +20,9 @@ namespace Scripts
         private void OnEnable()
         {
             EventManager.Listen("onPlacingTower", (Action<bool>)SpotAvailable);
-            EventManager.Listen("onTowerDestroyed", (Action<Vector3>)TowerDestroyed);
+            EventManager.Listen("onTowerDestroyed", (Action<Vector3>)TowerRemoved);
             EventManager.Listen("onUpdateTower", (Action<GameObject, Vector3>)UpdateTower);
+            EventManager.Listen("onTowerSold", (Action<Vector3>)TowerRemoved);
         }
 
         private void Start()
@@ -45,7 +46,7 @@ namespace Scripts
             }
         }
 
-        private void TowerDestroyed(Vector3 pos)
+        private void TowerRemoved(Vector3 pos)
         {
             _isActive = false;
         }
@@ -94,8 +95,9 @@ namespace Scripts
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onPlacingTower", (Action<bool>)SpotAvailable);
-            EventManager.UnsubscribeEvent("onTowerDestroyed", (Action<Vector3>)TowerDestroyed);
+            EventManager.UnsubscribeEvent("onTowerDestroyed", (Action<Vector3>)TowerRemoved);
             EventManager.UnsubscribeEvent("onUpdateTower", (Action<GameObject, Vector3>)UpdateTower);
+            EventManager.UnsubscribeEvent("onTowerSold", (Action<Vector3>)TowerRemoved);
         }
     }
 }
