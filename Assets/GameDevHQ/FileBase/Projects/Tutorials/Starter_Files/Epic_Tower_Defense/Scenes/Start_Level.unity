@@ -7980,13 +7980,11 @@ MonoBehaviour:
   - {fileID: 46770128}
   _sellDisplay: {fileID: 1624499973}
   _levelStatus: {fileID: 909662579}
-  _armoryDisplay: {fileID: 1706649505}
-  _warfundDisplay: {fileID: 756966929}
-  _playbackSpeedDisplay: {fileID: 1353408163}
-  _restartDisplay: {fileID: 1432688602}
-  _livesAndWaveDisplay: {fileID: 2105959595}
-  _caution: []
-  _warning: []
+  _armoryDisplay: {fileID: 1706649507}
+  _warfundDisplay: {fileID: 756966931}
+  _playbackSpeedDisplay: {fileID: 1353408165}
+  _restartDisplay: {fileID: 1432688604}
+  _livesAndWaveDisplay: {fileID: 2105959597}
   _warFunds: {fileID: 1972901667}
   _sellAmount: {fileID: 1700177798}
   _lifeCount: {fileID: 783571177}
@@ -11235,7 +11233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:

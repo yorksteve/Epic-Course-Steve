@@ -14,13 +14,14 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _upgradeDisplay;
         [SerializeField] private GameObject _sellDisplay;
         [SerializeField] private GameObject _levelStatus;
-        [SerializeField] private GameObject _armoryDisplay;
-        [SerializeField] private GameObject _warfundDisplay;
-        [SerializeField] private GameObject _playbackSpeedDisplay;
-        [SerializeField] private GameObject _restartDisplay;
-        [SerializeField] private GameObject _livesAndWaveDisplay;
-        [SerializeField] private Image[] _caution;
-        [SerializeField] private Image[] _warning;
+        [SerializeField] private Image _armoryDisplay;
+        [SerializeField] private Image _warfundDisplay;
+        [SerializeField] private Image _playbackSpeedDisplay;
+        [SerializeField] private Image _restartDisplay;
+        [SerializeField] private Image _livesAndWaveDisplay;
+        private Image _levelStatusImage;
+        private Image _sellDisplayImage;
+        private Image[] _upgradeDisplayImages;
 
         [SerializeField] private Text _warFunds;
         [SerializeField] private Text _sellAmount;
@@ -53,6 +54,12 @@ namespace Scripts.Managers
             //{
             //    _levelStatus.SetActive(true);
             //}
+            _levelStatusImage = _levelStatus.GetComponent<Image>();
+            _sellDisplayImage = _sellDisplay.GetComponent<Image>();
+            for (int i = 0; i <= _upgradeDisplay.Length; i++)
+            {
+                _upgradeDisplayImages[i] = _upgradeDisplay[i].GetComponent<Image>();
+            }
         }
 
         public void TowerUpgradeAbility(bool enoughFunds, GameObject tower)
@@ -187,14 +194,17 @@ namespace Scripts.Managers
             if (_lives > 70)
             {
                 _statusIndicator.text = "Good";
+                ChangeStatus(Color.white);
             }
             else if (_lives <= 70 && _lives > 40)
             {
                 _statusIndicator.text = "Fair";
+                ChangeStatus(Color.yellow);
             }
             else if (_lives <= 40)
             {
                 _statusIndicator.text = "Danger";
+                ChangeStatus(Color.red);
             }
         }
 
@@ -225,6 +235,22 @@ namespace Scripts.Managers
                     EventManager.Fire("onStartingGame");
                 }
             }
+        }
+
+        public void ChangeStatus(Color color)
+        {
+            Color newColor = color;
+            for (int i = 0; i <= _upgradeDisplayImages.Length; i++)
+            {
+                _upgradeDisplayImages[i].color = newColor;
+            }
+            _sellDisplayImage.color = newColor;
+            _levelStatusImage.color = newColor;
+            _armoryDisplay.color = newColor;
+            _warfundDisplay.color = newColor;
+            _playbackSpeedDisplay.color = newColor;
+            _restartDisplay.color = newColor;
+            _livesAndWaveDisplay.color = newColor;
         }
 
         private void OnDisable()

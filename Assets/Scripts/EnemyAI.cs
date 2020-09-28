@@ -42,15 +42,8 @@ namespace Scripts
                 _agent.SetDestination(_destination.position);
             }
             _rotationPoint = _mechRotation.GetComponent<Transform>();
-
-            if (_rends != null)
-            {
-                _rends = GetComponentsInChildren<Renderer>();
-            }
-            else
-            {
-                Debug.Log("Failed to get renderers");
-            }
+            
+            _rends = GetComponentsInChildren<Renderer>();
 
             if (_parentConstraint != null)
             {
@@ -106,7 +99,7 @@ namespace Scripts
                     EventManager.Fire("onCleaningMech", this.gameObject);
                 }
             }
-           
+
         }
 
         void CleanUpMech(GameObject mech)

@@ -419,7 +419,7 @@ MonoBehaviour:
   _anim: {fileID: 3091765334721737276}
   _mechRotation: {fileID: 1917370851618318}
   _mechColl: {fileID: 2435675427632581367}
-  _parentContraint: {fileID: 0}
+  _parentConstraint: {fileID: 0}
   _health: 200
   _mechWarFund: 50
   _damageAmount: 0
