@@ -74,7 +74,7 @@ namespace Scripts.Managers
 
         public ITower PlaceTower(Vector3 pos)
         {
-            Debug.Log("TowerManager::PlaceTower()");
+            //Debug.Log("TowerManager::PlaceTower()");
 
             var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
             WarFundManager.Instance.BuyTower(_warFundsRequired);
@@ -116,7 +116,7 @@ namespace Scripts.Managers
 
         public void CheckUpgrade(ITower tower, Vector3 pos)
         {
-            Debug.Log("TowerManager::CheckUpgrade()");
+            //Debug.Log("TowerManager::CheckUpgrade()");
 
             _towerUpgrade = tower.UpgradeModel;
             _currentTower = tower.CurrentModel;
@@ -125,6 +125,8 @@ namespace Scripts.Managers
             if (_towerUpgrade != null)
             {
                 _upgradeCost = _towerUpgrade.GetComponent<ITower>().WarFundsRequired;
+                _towerWorth = tower.WarFundsRequired;
+                UIManager.Instance.SellingTower(_towerWorth);
 
                 if (_upgradeCost >= WarFundManager.Instance.RequestWarFunds())
                 {

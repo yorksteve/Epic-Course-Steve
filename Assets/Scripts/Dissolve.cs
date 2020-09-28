@@ -17,7 +17,7 @@ public class Dissolve : MonoBehaviour
     {
         if (_rends != null)
         {
-            _rends = GetComponentsInChildren<MeshRenderer>();
+            _rends = GetComponentsInChildren<Renderer>();
         }
         else
         {

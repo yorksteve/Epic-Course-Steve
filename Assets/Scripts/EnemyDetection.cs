@@ -44,11 +44,8 @@ namespace Scripts
             if (_targetEnemy != null)
             {
                 _attackData.Target(_targetEnemy);
-
-                // Commented out for testing mech tracking purposes
-
-                //_attackData.Attack(true);
-                //StartCoroutine(DamageMech(_targetEnemy));
+                _attackData.Attack(true);
+                StartCoroutine(DamageMech(_targetEnemy));
                 EventManager.Fire("onTargetTower", this.gameObject.transform.parent.gameObject);
             }
         }

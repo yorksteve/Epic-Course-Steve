@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using Scripts.Managers;
 using System;
 using Scripts.Interfaces;
+using UnityEngine.Animations;
 
 namespace Scripts
 {
@@ -14,11 +15,15 @@ namespace Scripts
         private Transform _destination;
         [SerializeField] private Animator _anim;
         [SerializeField] private GameObject _mechRotation;
-        [SerializeField] private Collider _mechColl;        
+        [SerializeField] private Collider _mechColl;
+        [SerializeField] private ParentConstraint _parentConstraint;
+        private Renderer[] _rends;
 
         [SerializeField] private int _health;
         [SerializeField] private int _mechWarFund;
         [SerializeField] private int _damageAmount;
+        private float _dissolve = 0;
+        private float _speed = .1f;
         private Transform _rotationPoint;
         [SerializeField] private bool _isChecked;
 
@@ -37,7 +42,20 @@ namespace Scripts
                 _agent.SetDestination(_destination.position);
             }
             _rotationPoint = _mechRotation.GetComponent<Transform>();
-            transform.rotation = Quaternion.identity;
+
+            if (_rends != null)
+            {
+                _rends = GetComponentsInChildren<Renderer>();
+            }
+            else
+            {
+                Debug.Log("Failed to get renderers");
+            }
+
+            if (_parentConstraint != null)
+            {
+                _parentConstraint.enabled = true;
+            }
         }
 
         private void OnEnable()
@@ -65,11 +83,30 @@ namespace Scripts
 
         void DestroyMech(GameObject mech)
         {
+            if (_parentConstraint != null)
+            {
+                _parentConstraint.enabled = false;
+            }
             _mechColl.enabled = false;
             _agent.isStopped = true;
             _health = 0;
             _anim.SetBool("Die", true);
-            EventManager.Fire("onDissolve", mech);
+            //EventManager.Fire("onDissolve", mech);
+            _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
+            while (_dissolve < 1)
+            {
+                _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
+                foreach (var rend in _rends)
+                {
+                    rend.material.SetFloat("_fillAmount", _dissolve);
+                }
+
+                if (_dissolve >= 1f)
+                {
+                    EventManager.Fire("onCleaningMech", this.gameObject);
+                }
+            }
+           
         }
 
         void CleanUpMech(GameObject mech)
@@ -77,8 +114,16 @@ namespace Scripts
             EventManager.Fire("onMechDestroyed", _mechWarFund);
             _anim.WriteDefaultValues();
             _mechColl.enabled = true;
+            foreach (var rend in _rends)
+            {
+                rend.material.SetFloat("_fillAmount", 0f);
+            }
             EventManager.Fire("onRecycleMech", mech);
-            EventManager.Fire("onStopDissolve", mech);
+            if (_parentConstraint != null)
+            {
+                _parentConstraint.enabled = true;
+            }
+            //EventManager.Fire("onStopDissolve", mech);
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
@@ -128,12 +173,7 @@ namespace Scripts
                 else
                 {
                     Attack(false);
-                    _rotationPoint.rotation = Quaternion.identity;
                 }
-            }
-            else
-            {
-                //_rotationPoint.rotation = Quaternion.identity;
             }
         }
 

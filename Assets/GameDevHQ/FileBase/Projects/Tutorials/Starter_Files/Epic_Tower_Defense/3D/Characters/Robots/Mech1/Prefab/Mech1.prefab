@@ -1505,7 +1505,6 @@ GameObject:
   - component: {fileID: -7183222840594975403}
   - component: {fileID: 1636041942856298398}
   - component: {fileID: -3099949395931670192}
-  - component: {fileID: 842426940342986500}
   m_Layer: 0
   m_Name: Mech1
   m_TagString: Enemy
@@ -1586,6 +1585,7 @@ MonoBehaviour:
   _anim: {fileID: 95831276238310704}
   _mechRotation: {fileID: 2394628658116734695}
   _mechColl: {fileID: -3099949395931670192}
+  _parentConstraint: {fileID: 4393546879519207715}
   _health: 100
   _mechWarFund: 25
   _damageAmount: 0
@@ -1603,18 +1603,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 4.389632, z: 2.217066}
   m_Center: {x: 0, y: 4.044108, z: 0.6085308}
---- !u!114 &842426940342986500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637921026644932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6daec0da77b496f418b3bd95f904ad38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1695296882317140
 GameObject:
   m_ObjectHideFlags: 0
@@ -2150,9 +2138,9 @@ ParentConstraint:
   - {x: -0.0064931805, y: 0.22911608, z: 0.03995442}
   m_RotationOffsets:
   - {x: 89.32943, y: -88.39205, z: -179.80675}
-  m_AffectTranslationX: 1
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 1
+  m_AffectTranslationX: 0
+  m_AffectTranslationY: 0
+  m_AffectTranslationZ: 0
   m_AffectRotationX: 1
   m_AffectRotationY: 1
   m_AffectRotationZ: 1

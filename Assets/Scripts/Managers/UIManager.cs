@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using YorkSDK.Util;
 using UnityEngine.UI;
+using System;
+using UnityEngine.SceneManagement;
 
 namespace Scripts.Managers
 {
@@ -11,13 +13,38 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _towers;
         [SerializeField] private GameObject[] _upgradeDisplay;
         [SerializeField] private GameObject _sellDisplay;
+        [SerializeField] private GameObject _levelStatus;
+
         [SerializeField] private Text _warFunds;
         [SerializeField] private Text _sellAmount;
+        [SerializeField] private Text _lifeCount;
+        [SerializeField] private Text _waveCount;
+        [SerializeField] private Text _levelStatusText;
+        [SerializeField] private Text _statusIndicator;
+
+        private int _lives = 100;
+        private int _countDown = 5;
+        private bool _gameStarted;
         private Transform _purchaseButton;
 
         public override void Init()
         {
             base.Init();
+        }
+
+        private void OnEnable()
+        {
+            EventManager.Listen("onWaveCount", (Action<int>)WaveCount);
+            EventManager.Listen("onSuccess", LifeCount);
+        }
+
+        public void Start()
+        {
+            _levelStatusText.text = "Epic Tower Defense";
+            //if ()  // Only want to SetActive(true) if not already the case
+            //{
+            //    _levelStatus.SetActive(true);
+            //}
         }
 
         public void TowerUpgradeAbility(bool enoughFunds, GameObject tower)
@@ -97,6 +124,102 @@ namespace Scripts.Managers
         public void ChangeFunds(int amount)
         {
             _warFunds.text = amount.ToString();
+        }
+
+        public void RestartGame()
+        {
+            Debug.Log("UIManager :: RestartGame()");
+            SceneManager.LoadScene(0);
+        }
+
+        public void PauseGame()
+        {
+            Debug.Log("Game Paused");
+            Time.timeScale = 0;
+            _levelStatusText.text = "Paused";
+            _levelStatus.SetActive(true);
+        }
+
+        public void PlayGame()
+        {
+            if (Time.timeScale == 0 && _gameStarted == true)
+            {
+                Time.timeScale = 1;
+            }
+
+            if (_gameStarted == false)
+            {
+                StartCoroutine(StartingGame());
+                _gameStarted = true;
+            }
+        }
+
+        public void FastForward()
+        {
+            if (Time.timeScale == 1)
+            {
+                Debug.Log("FastForward");
+                Time.timeScale = 2;
+            }
+            else if (Time.timeScale == 2)
+            {
+                Debug.Log("Normal speed");
+                Time.timeScale = 1;
+            }
+        }
+
+        public void LifeCount()
+        {
+            _lives--;
+            _lifeCount.text = _lives.ToString();
+
+            if (_lives > 70)
+            {
+                _statusIndicator.text = "Good";
+            }
+            else if (_lives <= 70 && _lives > 40)
+            {
+                _statusIndicator.text = "Fair";
+            }
+            else if (_lives <= 40)
+            {
+                _statusIndicator.text = "Danger";
+            }
+        }
+
+        public void WaveCount(int wave)
+        {
+            if (wave == 11)
+            {
+                _waveCount.text = (10 / 10).ToString();
+                _levelStatusText.text = "LEVEL COMPLETE";
+                _levelStatus.SetActive(true);
+            }
+            else
+            {
+                _waveCount.text = (wave / 10).ToString();
+            }
+        }
+
+        public IEnumerator StartingGame()
+        {
+            while (_countDown >= 0)
+            {
+                yield return new WaitForSeconds(1);
+                _levelStatusText.text = _countDown.ToString();
+                _countDown--;
+            }
+            if (_countDown == 0)
+            {
+                _levelStatus.SetActive(false);
+                EventManager.Fire("onFlyDreadnaught");
+            }
+        }
+
+        private void OnDisable()
+        {
+            EventManager.UnsubscribeEvent("onWaveCount", (Action<int>)WaveCount);
+            EventManager.UnsubscribeEvent("onSuccess", LifeCount);
         }
     }
 }

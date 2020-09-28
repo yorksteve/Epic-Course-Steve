@@ -22,7 +22,7 @@ namespace Scripts.Managers
 
         public int RequestWarFunds()
         {
-            Debug.Log("WarFundManager::RequestWarFunds() : " + _warFunds);
+            //Debug.Log("WarFundManager::RequestWarFunds() : " + _warFunds);
             return _warFunds;
         }
 

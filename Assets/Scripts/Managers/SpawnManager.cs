@@ -33,14 +33,17 @@ namespace Scripts.Managers
 
         public void StartWave()
         {
-            Debug.Log("SpawnManager :: StartWave() : Starting Wave");
-            mechsInWave = _amountOfMechs * _waveCount;
+            //Debug.Log("SpawnManager :: StartWave() : Starting Wave");
+            EventManager.Fire("onWaveCount", _waveCount);  // Fire event to UIManager
+            if (_waveCount <= 10)
+            {
+                mechsInWave = _amountOfMechs * _waveCount;
 
-            StartCoroutine(SpawnTime());
-            
-            _waveCount++;
+                StartCoroutine(SpawnTime());
 
-            Debug.Log("SpawnManager :: StartWave() : End of StartWave()");
+                _waveCount++;
+            }
+            //Debug.Log("SpawnManager :: StartWave() : End of StartWave()");
         }
 
         IEnumerator SpawnTime()
@@ -52,7 +55,7 @@ namespace Scripts.Managers
                 PoolManager.Instance.GetMech();
             }
 
-            Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
+            //Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
         }
 
         public void CheckWave()
@@ -62,27 +65,24 @@ namespace Scripts.Managers
                 StartCoroutine(NextWave());
             }
 
-            Debug.Log("SpawnManager::CheckWave(): Completed Wave Check");
+            //Debug.Log("SpawnManager::CheckWave(): Completed Wave Check");
         }
 
         public void SuccessfulMechs()
         {
             _successfulMechs++;
-            Debug.Log("SpawnManager::SuccessfulMechs()");
             CheckWave();
         }
 
         public void DestroyedMechs(int uselessValue)
         {
             _destroyedMechs++;
-            Debug.Log("SpawnManager::DestroyedMechs()");
-
             CheckWave();
         }
 
         IEnumerator NextWave()
         {
-            Debug.Log("SpawnManager :: NextWave()");
+            //Debug.Log("SpawnManager :: NextWave()");
             yield return new WaitForSeconds(10);
             StartWave();
         }

@@ -10,30 +10,28 @@ namespace Scripts.Extra
     {
         private int _speed = 3;
         private float _destination = -5.09f;
-        private bool _isCalled;
 
-        public void Update()
+        private void OnEnable()
         {
-            if (transform.position.x < _destination)
-            {
-                transform.Translate(Time.deltaTime * _speed, 0, 0);
-            }
-
-            else
-            {
-                if (_isCalled == false)
-                {
-                    CompletedMovement();
-                }
-            }
-            
+            EventManager.Listen("onFlyDreadnaught", FlyShip);
         }
 
-        void CompletedMovement()
+        private void FlyShip()
         {
-            EventManager.Fire("onDreadnaught");
+            while (transform.position.x < _destination)
+            {
+                transform.Translate(Time.deltaTime * _speed, 0, 0);
 
-            _isCalled = true;
+                if (transform.position.x == _destination)
+                {
+                    EventManager.Fire("onDreadnaught");
+                }
+            }
+        }
+
+        private void OnDisable()
+        {
+            EventManager.UnsubscribeEvent("onFlyDreadnaught", FlyShip);
         }
     }
 }

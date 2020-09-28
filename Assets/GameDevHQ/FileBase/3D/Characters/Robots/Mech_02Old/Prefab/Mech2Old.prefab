@@ -361,9 +361,8 @@ GameObject:
   - component: {fileID: -7933604995683069797}
   - component: {fileID: -7168904304040241426}
   - component: {fileID: 2435675427632581367}
-  - component: {fileID: 5898089280175500668}
   m_Layer: 0
-  m_Name: Mech2
+  m_Name: Mech2Old
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -420,9 +419,11 @@ MonoBehaviour:
   _anim: {fileID: 3091765334721737276}
   _mechRotation: {fileID: 1917370851618318}
   _mechColl: {fileID: 2435675427632581367}
+  _parentContraint: {fileID: 0}
   _health: 200
   _mechWarFund: 50
   _damageAmount: 0
+  _isChecked: 0
 --- !u!195 &-7168904304040241426
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -458,20 +459,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.7799815, y: 3.747772, z: 3.731984}
   m_Center: {x: 0.38999066, y: 2.662364, z: -0.0035346693}
---- !u!114 &5898089280175500668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1079767520691416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6daec0da77b496f418b3bd95f904ad38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _upperBody: {fileID: 2100000, guid: 52f6c7901c944f84b80a271cebdf47c8, type: 2}
-  _lowerBody: {fileID: 2100000, guid: 9ebabebc95497c74d8cb1d6031dece1e, type: 2}
 --- !u!1 &1088550950582580
 GameObject:
   m_ObjectHideFlags: 0
