@@ -24,6 +24,7 @@ namespace Scripts.Managers
         private int _upgradeCost;
         private int _towerWorth;
         private bool _placingTower;
+        private bool _gameStarted;
 
 
         public override void Init()
@@ -47,6 +48,12 @@ namespace Scripts.Managers
         {
             EventManager.Listen("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
             EventManager.Listen("onDamageTowers", (Action<int, GameObject>)TowerDamaged);
+            EventManager.Listen("onStartingGame", OnGameStart);
+        }
+
+        private void OnGameStart()
+        {
+            _gameStarted = true;
         }
 
         public void Update()
@@ -75,28 +82,34 @@ namespace Scripts.Managers
         public ITower PlaceTower(Vector3 pos)
         {
             //Debug.Log("TowerManager::PlaceTower()");
-
-            var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
-            WarFundManager.Instance.BuyTower(_warFundsRequired);
-            return initial.GetComponent<ITower>();
+            if (_warFundsRequired <= WarFundManager.Instance.RequestWarFunds())
+            {
+                var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);
+                WarFundManager.Instance.BuyTower(_warFundsRequired);
+                return initial.GetComponent<ITower>();
+            }
+            return null;
         }
 
         public void PlaceDecoyTower(int i)
         {
-            _warFundsRequired = _towerData[i].WarFundsRequired;
-
-            if (_warFundsRequired <= WarFundManager.Instance.RequestWarFunds())
+            if (_gameStarted == true)
             {
-                _placingTower = true;
-                _towerID = i;
-                _prefabDecoy = Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);
+                _warFundsRequired = _towerData[i].WarFundsRequired;
 
-                EventManager.Fire("onPlacingTower", true);
-            }
-            else
-            {
-                Debug.Log("TowerManager::PlaceDecoyTower() : Not enough War Funds to buy this tower");
-            }
+                if (_warFundsRequired <= WarFundManager.Instance.RequestWarFunds())
+                {
+                    _placingTower = true;
+                    _towerID = i;
+                    _prefabDecoy = Instantiate(_decoyTower[i], Input.mousePosition, Quaternion.identity);
+
+                    EventManager.Fire("onPlacingTower", true);
+                }
+                else
+                {
+                    Debug.Log("TowerManager::PlaceDecoyTower() : Not enough War Funds to buy this tower");
+                }
+            } 
         }
 
         public void SnapToPosition(Vector3 pos)
@@ -173,6 +186,7 @@ namespace Scripts.Managers
         {
             EventManager.UnsubscribeEvent("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
             EventManager.UnsubscribeEvent("onDamageTowers", (Action<int, GameObject>)TowerDamaged);
+            EventManager.UnsubscribeEvent("onStartingGame", OnGameStart);
         }
     }
 }

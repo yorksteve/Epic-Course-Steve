@@ -13,7 +13,7 @@ namespace Scripts.Extra
 
         private void OnEnable()
         {
-            EventManager.Listen("onFlyDreadnaught", FlyShip);
+            EventManager.Listen("onStartingGame", FlyShip);
         }
 
         private void FlyShip()
@@ -31,7 +31,7 @@ namespace Scripts.Extra
 
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onFlyDreadnaught", FlyShip);
+            EventManager.UnsubscribeEvent("onStartingGame", FlyShip);
         }
     }
 }

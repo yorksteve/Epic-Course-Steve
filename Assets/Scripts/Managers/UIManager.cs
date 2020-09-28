@@ -14,6 +14,13 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _upgradeDisplay;
         [SerializeField] private GameObject _sellDisplay;
         [SerializeField] private GameObject _levelStatus;
+        [SerializeField] private GameObject _armoryDisplay;
+        [SerializeField] private GameObject _warfundDisplay;
+        [SerializeField] private GameObject _playbackSpeedDisplay;
+        [SerializeField] private GameObject _restartDisplay;
+        [SerializeField] private GameObject _livesAndWaveDisplay;
+        [SerializeField] private Image[] _caution;
+        [SerializeField] private Image[] _warning;
 
         [SerializeField] private Text _warFunds;
         [SerializeField] private Text _sellAmount;
@@ -40,6 +47,7 @@ namespace Scripts.Managers
 
         public void Start()
         {
+            _gameStarted = false;
             _levelStatusText.text = "Epic Tower Defense";
             //if ()  // Only want to SetActive(true) if not already the case
             //{
@@ -142,13 +150,16 @@ namespace Scripts.Managers
 
         public void PlayGame()
         {
+            Debug.Log("UIManager :: PlayGame()");
+
             if (Time.timeScale == 0 && _gameStarted == true)
             {
                 Time.timeScale = 1;
             }
 
-            if (_gameStarted == false)
+            else if (_gameStarted == false)
             {
+                Debug.Log("UIManager :: PlayGame() : else if()");
                 StartCoroutine(StartingGame());
                 _gameStarted = true;
             }
@@ -208,11 +219,11 @@ namespace Scripts.Managers
                 yield return new WaitForSeconds(1);
                 _levelStatusText.text = _countDown.ToString();
                 _countDown--;
-            }
-            if (_countDown == 0)
-            {
-                _levelStatus.SetActive(false);
-                EventManager.Fire("onFlyDreadnaught");
+                if (_countDown == 0)
+                {
+                    _levelStatus.SetActive(false);
+                    EventManager.Fire("onStartingGame");
+                }
             }
         }
 

@@ -47,6 +47,10 @@ namespace Scripts.Managers
         public int UpdateFunds(int WarFunds)
         {
             WarFunds = _warFunds;
+            if (_warFunds < 0)
+            {
+                _warFunds = 0;
+            }
             UIManager.Instance.ChangeFunds(_warFunds);
             return _warFunds;
         }
