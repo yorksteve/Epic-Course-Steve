@@ -1086,7 +1086,7 @@ MonoBehaviour:
   _launchSpeed: 10
   _power: 20
   _fuseDelay: 0
-  _reloadTime: 0
+  _reloadTime: 4
   _destroyTime: 10
   _towerBase: {fileID: 1757643714812444}
   _explosion: {fileID: 4688366796816071958, guid: 0bd59304b034bee4e939420e993113e1,

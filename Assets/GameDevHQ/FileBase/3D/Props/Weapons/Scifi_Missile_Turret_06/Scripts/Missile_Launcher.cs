@@ -114,6 +114,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             Vector3 direction = enemy.transform.position - _towerSource.position;
 
             _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            EventManager.Fire("onTargetedMech", enemy);
         }
 
         private void OnEnable()

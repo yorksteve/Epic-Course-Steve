@@ -11,6 +11,7 @@ namespace Scripts.Extra
         private float _speed = 3f;
         private float _destination = -5.09f;
         private bool _startingGame = false;
+        private bool _eventFired = false;
 
         private void OnEnable()
         {
@@ -26,10 +27,11 @@ namespace Scripts.Extra
                     transform.Translate(Time.deltaTime * _speed, 0, 0);
                 }
 
-                else
+                else if (_eventFired == false)
                 {
                     EventManager.Fire("onDreadnaught");
                     Debug.Log("Fired event");
+                    _eventFired = true;
                 }
             }    
         }

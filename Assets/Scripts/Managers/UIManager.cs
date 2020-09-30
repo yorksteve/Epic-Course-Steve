@@ -34,6 +34,8 @@ namespace Scripts.Managers
         private bool _gameStarted;
         private Transform _purchaseButton;
 
+        //[SerializeField] private GameObject _levelStatusTest;
+
         public override void Init()
         {
             base.Init();
@@ -165,6 +167,7 @@ namespace Scripts.Managers
             if (Time.timeScale == 0 && _gameStarted == true)
             {
                 Time.timeScale = 1;
+                _levelStatus.SetActive(false);
             }
 
             else if (_gameStarted == false)
@@ -213,6 +216,7 @@ namespace Scripts.Managers
 
         public void WaveCount(int wave)
         {
+            Debug.Log("UIManager :: WaveCount " + wave);
             if (wave <= 10)
             {
                 _levelStatus.SetActive(false);
@@ -235,6 +239,7 @@ namespace Scripts.Managers
                 yield return new WaitForSeconds(1);
                 if (_countDown == 0)
                 {
+                    Debug.Log(_levelStatus.active + " UIManager :: StartingGame()");
                     _levelStatus.SetActive(false);
                     EventManager.Fire("onStartingGame");
                 }

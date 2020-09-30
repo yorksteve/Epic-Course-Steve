@@ -102,8 +102,8 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         public void Target(GameObject enemy)
         {
             Vector3 direction = enemy.transform.position - _towerSource.position;
-
             _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            EventManager.Fire("onTargetedMech", enemy);
         }
 
         public float Damage()
