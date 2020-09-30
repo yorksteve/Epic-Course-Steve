@@ -15,7 +15,6 @@ namespace Scripts
         private GameObject _towerParent;
         private GameObject _targetEnemy;
         List<GameObject> mechs = new List<GameObject>();
-        private int _damageAmount;
 
 
         private void OnEnable()
@@ -24,7 +23,6 @@ namespace Scripts
             _towerParent = _towerPos.gameObject;
             _towerData = _towerParent.GetComponent<ITower>();
             _attackData = _towerParent.GetComponent<IAttack>();
-            _damageAmount = _attackData.Damage();
 
             EventManager.Listen("onTargetNew", (Action<GameObject>)RemoveDestroyedMechs);
         }
@@ -45,7 +43,6 @@ namespace Scripts
             {
                 _attackData.Target(_targetEnemy);
                 _attackData.Attack(true);
-                StartCoroutine(DamageMech(_targetEnemy));
                 EventManager.Fire("onTargetTower", this.gameObject.transform.parent.gameObject);
             }
         }
@@ -55,17 +52,19 @@ namespace Scripts
             if (other.gameObject.tag == "Enemy")
             {
                 mechs.Remove(other.gameObject);
+                EventManager.Fire("onMechExit", other.gameObject);
+
+                _attackData.Attack(false);
                 if (mechs.Count > 0)
                 {
                     _targetEnemy = mechs[0];
+                    //_attackData.Attack(true);
                 }
 
                 if (mechs.Count == 0)
                 {
                     _attackData.Attack(false);
                 }
-
-                EventManager.Fire("onMechExit", other.gameObject);
             }
         }
 
@@ -76,14 +75,8 @@ namespace Scripts
             if (mechs.Count > 0)
             {
                 _targetEnemy = mechs[0];
-                _attackData.Attack(true);
+                //_attackData.Attack(true);
             }
-        }
-
-        private IEnumerator DamageMech(GameObject mech)
-        {
-            yield return new WaitForSeconds(2.5f);
-            EventManager.Fire("onDamage", _damageAmount, _targetEnemy);
         }
 
         private void OnDisable()

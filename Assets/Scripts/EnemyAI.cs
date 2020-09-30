@@ -11,7 +11,7 @@ namespace Scripts
 {
     public class EnemyAI : MonoBehaviour, IAttack, IHealth
     {
-        private NavMeshAgent _agent;
+        [SerializeField] private NavMeshAgent _agent;
         private Transform _destination;
         [SerializeField] private Animator _anim;
         [SerializeField] private GameObject _mechRotation;
@@ -19,9 +19,10 @@ namespace Scripts
         [SerializeField] private ParentConstraint _parentConstraint;
         private Renderer[] _rends;
 
-        [SerializeField] private int _health;
+        [SerializeField] private float _health;
+        [SerializeField] private float _maxHealth;
         [SerializeField] private int _mechWarFund;
-        [SerializeField] private int _damageAmount;
+        [SerializeField] private float _damageAmount;
         private float _dissolve = 0;
         private float _speed = .1f;
         private Transform _rotationPoint;
@@ -31,6 +32,7 @@ namespace Scripts
         private void Start()
         {
             _destination = SpawnManager.Instance.RequestDestination();
+            _maxHealth = _health;
 
             if (_agent != null)
             {
@@ -53,12 +55,20 @@ namespace Scripts
 
         private void OnEnable()
         {
-            EventManager.Listen("onDamage", (Action<int, GameObject>)Health);
+            EventManager.Listen("onDamage", (Action<float>)Health);
             EventManager.Listen("onNewWave", ResetMech);           
             EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
             EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
             EventManager.Listen("onCleaningMech", (Action<GameObject>)CleanUpMech);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                StartCoroutine(DestroyMech(this.gameObject));
+            }
         }
 
         private void ResetMech()
@@ -74,7 +84,7 @@ namespace Scripts
             }
         }
 
-        void DestroyMech(GameObject mech)
+        IEnumerator DestroyMech(GameObject mech)
         {
             if (_parentConstraint != null)
             {
@@ -82,11 +92,12 @@ namespace Scripts
             }
             _mechColl.enabled = false;
             _agent.isStopped = true;
-            _health = 0;
+            _health = 0f;
             _anim.SetBool("Die", true);
-            //EventManager.Fire("onDissolve", mech);
-            _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
-            while (_dissolve < 1)
+            yield return new WaitForSeconds(3);
+      
+            _dissolve = Mathf.Clamp01(_dissolve += (_speed * Time.deltaTime));
+            while (_dissolve < 1f)
             {
                 _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
                 foreach (var rend in _rends)
@@ -112,11 +123,11 @@ namespace Scripts
                 rend.material.SetFloat("_fillAmount", 0f);
             }
             EventManager.Fire("onRecycleMech", mech);
+            EventManager.Fire("onResetHealth", _maxHealth, mech);
             if (_parentConstraint != null)
             {
                 _parentConstraint.enabled = true;
             }
-            //EventManager.Fire("onStopDissolve", mech);
         }
 
         // Mechs can attack soldiers placed in the field (to be added later...probably)
@@ -126,7 +137,6 @@ namespace Scripts
             {
                 Debug.Log("EnemyAI :: Attack()");
                 _anim.SetBool("Fire", true);
-                Damage();
             }
             else
             {
@@ -170,34 +180,34 @@ namespace Scripts
             }
         }
 
-        public int Damage()
+        public float Damage()
         {
             return _damageAmount;
         }
 
         private void AttackData(GameObject tower)
         {
-            int damage = Damage();
+            float damage = Damage();
             EventManager.Fire("onDamageTowers", damage, tower); // Fire event to TowerManager
+            Debug.Log("EnemyAI :: AttackData()");
         }
 
-        public void Health(int damage, GameObject obj)
+        public void Health(float damage)
         {
-            if (obj == this.gameObject)
-            {
-                _health -= damage;
+            _health -= damage;
+            EventManager.Fire("onHealthBarCube", _health, this.gameObject);
+            Debug.Log("EnemyAI :: Health()");
 
-                if (_health <= 0)
-                {
-                    EventManager.Fire("onTargetNew", this.gameObject); // Fire event to EnemyDetection
-                    DestroyMech(obj);
-                }
+            if (_health <= 0)
+            {
+                EventManager.Fire("onTargetNew", this.gameObject); // Fire event to EnemyDetection
+                StartCoroutine(DestroyMech(this.gameObject));
             }
         }
 
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onDamage", (Action<int, GameObject>)Health);
+            EventManager.UnsubscribeEvent("onDamage", (Action<float>)Health);
             EventManager.UnsubscribeEvent("onNewWave", ResetMech);
             EventManager.UnsubscribeEvent("onTargetTower", (Action<GameObject>)Target);
             EventManager.UnsubscribeEvent("onCheckMech", (Action<GameObject>)CheckMech);

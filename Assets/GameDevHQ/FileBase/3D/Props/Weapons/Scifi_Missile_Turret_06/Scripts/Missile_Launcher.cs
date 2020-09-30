@@ -13,7 +13,7 @@ using System;
 
 namespace GameDevHQ.FileBase.Missile_Launcher
 {
-    public class Missile_Launcher : MonoBehaviour, ITower, IAttack, IHealth
+    public class Missile_Launcher : MonoBehaviour, ITower, IAttack
     {
         public enum MissileType
         {
@@ -99,9 +99,9 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             }
         }
 
-        public int Damage()
+        public float Damage()
         {
-            int damageAmount = 2;
+            float damageAmount = 2f;
             return damageAmount;
         }
 
@@ -115,19 +115,19 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
         private void OnEnable()
         {
-            EventManager.Listen("onDamageTowers", (Action<int, GameObject>)Health);
+            EventManager.Listen("onDamageTowers", (Action<float, GameObject>)Health);
         }
 
-        public void Health(int damage, GameObject obj)
+        public void Health(float damage, GameObject obj)
         {
             if (obj == this.gameObject)
             {
-                int health = 50;
+                float health = 50f;
                 health -= damage;
-                if (health <= 0)
+                if (health <= 0f)
                 {
                     _explosion.Play();
-                    health = 0;
+                    health = 0f;
                     Destroy(this.gameObject);
                     EventManager.Fire("onTowerDestroyed", this.transform.position);
                 }
@@ -136,7 +136,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onDamageTowers", (Action<int, GameObject>)Health);
+            EventManager.UnsubscribeEvent("onDamageTowers", (Action<float, GameObject>)Health);
         }
     }
 }

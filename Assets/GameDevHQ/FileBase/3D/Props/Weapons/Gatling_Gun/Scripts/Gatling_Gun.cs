@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Scripts.Interfaces;
-using Scripts.Managers;
-using System;
+
 
 namespace GameDevHQ.FileBase.Gatling_Gun
 {
@@ -21,9 +19,9 @@ namespace GameDevHQ.FileBase.Gatling_Gun
     /// </summary>
 
     [RequireComponent(typeof(AudioSource))] //Require Audio Source component
-    public class Gatling_Gun : MonoBehaviour, ITower, IAttack, IHealth
+    public class Gatling_Gun : MonoBehaviour
     {
-        [SerializeField] private Transform _gunBarrel; //Reference to hold the gun barrel
+        private Transform _gunBarrel; //Reference to hold the gun barrel
         public GameObject Muzzle_Flash; //reference to the muzzle flash effect to play when firing
         public ParticleSystem bulletCasings; //reference to the bullet casing effect to play when firing
         public AudioClip fireSound; //Reference to the audio clip
@@ -31,44 +29,22 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private AudioSource _audioSource; //reference to the audio source component
         private bool _startWeaponNoise = true;
 
-        [SerializeField] private int _warFundsRequired = 200;
-        [SerializeField] private GameObject _upgradeModel;
-        public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
-        public GameObject CurrentModel { get; set; }
-        public GameObject UpgradeModel { get => _upgradeModel; }
-
-        [SerializeField] private GameObject _towerBase;
-        private Transform _towerSource;
-
-        [SerializeField] private ParticleSystem _explosion;
-
-
         // Use this for initialization
         void Start()
         {
-            CurrentModel = this.gameObject;
+            _gunBarrel = GameObject.Find("Barrel_to_Spin").GetComponent<Transform>(); //assigning the transform of the gun barrel to the variable
             Muzzle_Flash.SetActive(false); //setting the initial state of the muzzle flash effect to off
             _audioSource = GetComponent<AudioSource>(); //ssign the Audio Source to the reference variable
             _audioSource.playOnAwake = false; //disabling play on awake
             _audioSource.loop = true; //making sure our sound effect loops
             _audioSource.clip = fireSound; //assign the clip to play
-
-            _towerSource = _towerBase.GetComponent<Transform>();
         }
 
-        // Method to rotate gun barrel 
-        void RotateBarrel() 
+        // Update is called once per frame
+        void Update()
         {
-            if (_gunBarrel != null)
-            {
-                _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
-            }
-        }
-
-        public void Attack(bool attack)
-        {
-            if (attack == true)
-            {
+            if (Input.GetMouseButton(0)) //Check for left click (held) user input
+            { 
                 RotateBarrel(); //Call the rotation function responsible for rotating our gun barrel
                 Muzzle_Flash.SetActive(true); //enable muzzle effect particle effect
                 bulletCasings.Emit(1); //Emit the bullet casing particle effect  
@@ -78,53 +54,21 @@ namespace GameDevHQ.FileBase.Gatling_Gun
                     _audioSource.Play(); //play audio clip attached to audio source
                     _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
                 }
-            }
 
-            else
-            {
+            }
+            else if (Input.GetMouseButtonUp(0)) //Check for left click (release) user input
+            {      
                 Muzzle_Flash.SetActive(false); //turn off muzzle flash particle effect
                 _audioSource.Stop(); //stop the sound effect from playing
                 _startWeaponNoise = true; //set the start weapon noise value to true
-                bulletCasings.Stop();
             }
         }
 
-        public int Damage()
+        // Method to rotate gun barrel 
+        void RotateBarrel() 
         {
-            int damageAmount = 1;
-            return damageAmount;
-        }
+            _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
 
-        public void Target(GameObject enemy)
-        {
-            Vector3 direction = enemy.transform.position - _towerSource.position;
-            _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
-        }
-
-        private void OnEnable()
-        {
-            EventManager.Listen("onDamageTowers", (Action<int, GameObject>)Health);
-        }
-
-        public void Health(int damage, GameObject obj)
-        {
-            if (obj == this.gameObject)
-            {
-                int health = 50;
-                health -= damage;
-                if (health <= 0)
-                {
-                    _explosion.Play();
-                    health = 0;
-                    Destroy(this.gameObject);
-                    EventManager.Fire("onTowerDestroyed", this.transform.position);
-                }
-            }
-        }
-
-        private void OnDisable()
-        {
-            EventManager.UnsubscribeEvent("onDamageTowers", (Action<int, GameObject>)Health);
         }
     }
 

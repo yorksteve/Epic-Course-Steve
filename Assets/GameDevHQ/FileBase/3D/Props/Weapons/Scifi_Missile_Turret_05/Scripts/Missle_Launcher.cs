@@ -8,7 +8,7 @@ using Scripts.Managers;
 
 namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 {
-    public class Missle_Launcher : MonoBehaviour, IAttack, ITower, IHealth
+    public class Missle_Launcher : MonoBehaviour, IAttack, ITower
     {
         [SerializeField]
         private GameObject _missilePrefab; //holds the missle gameobject to clone
@@ -104,22 +104,22 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
             _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
-        public int Damage()
+        public float Damage()
         {
-            int damageAmount = 8;
+            float damageAmount = 8f;
             return damageAmount;
         }
 
-        public void Health(int damage, GameObject obj)
+        public void Health(float damage, GameObject obj)
         {
             if (obj == this.gameObject)
             {
-                int health = 100;
+                float health = 100f;
                 health -= damage;
-                if (health <= 0)
+                if (health <= 0f)
                 {
                     _explosion.Play();
-                    health = 0;
+                    health = 0f;
                     Destroy(this.gameObject);
                     EventManager.Fire("onTowerDestroyed", this.transform.position);
                 }

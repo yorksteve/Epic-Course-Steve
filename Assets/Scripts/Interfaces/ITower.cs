@@ -10,6 +10,7 @@ namespace Scripts.Interfaces
         int WarFundsRequired { get; set; }
         GameObject CurrentModel { get; set; }
         GameObject UpgradeModel { get; }
+        void Health(float damage, GameObject obj);
     }
 }
 

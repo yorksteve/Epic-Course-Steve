@@ -22,7 +22,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
     /// </summary>
 
     [RequireComponent(typeof(AudioSource))] //Require Audio Source component
-    public class Dual_Gatling_Gun : MonoBehaviour, IAttack, ITower, IHealth
+    public class Dual_Gatling_Gun : MonoBehaviour, IAttack, ITower
     {
         [SerializeField]
         private Transform[] _gunBarrel; //Reference to hold the gun barrel
@@ -88,6 +88,8 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
                     _audioSource.Play(); //play audio clip attached to audio source
                     _startWeaponNoise = false; //set the start weapon noise value to false to prevent calling it again
                 }
+
+                Damage();
             }
 
             else
@@ -109,22 +111,25 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
             _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
 
-        public int Damage()
+        public float Damage()
         {
-            int damageAmount = 5;
+            float damageAmount = .02f;
+            EventManager.Fire("onDamage", damageAmount);
+            Debug.Log("Damage() on gatling gun");
             return damageAmount;
         }
 
-        public void Health(int damage, GameObject obj)
+        public void Health(float damage, GameObject obj)
         {
             if (obj == this.gameObject)
             {
-                int health = 100;
+                float health = 100;
                 health -= damage;
+                EventManager.Fire("onHealthBar", health, obj);
                 if (health <= 0)
                 {
                     _explosion.Play();
-                    health = 0;
+                    health = 0f;
                     Destroy(this.gameObject);
                     EventManager.Fire("onTowerDestroyed", this.transform.position);
                 }

@@ -8,25 +8,35 @@ namespace Scripts.Extra
 {
     public class SpaceShipController : MonoBehaviour
     {
-        private int _speed = 3;
+        private float _speed = 3f;
         private float _destination = -5.09f;
+        private bool _startingGame = false;
 
         private void OnEnable()
         {
             EventManager.Listen("onStartingGame", FlyShip);
         }
 
-        private void FlyShip()
+        private void Update()
         {
-            while (transform.position.x < _destination)
+            if (_startingGame == true)
             {
-                transform.Translate(Time.deltaTime * _speed, 0, 0);
+                if (transform.position.x < _destination)
+                {
+                    transform.Translate(Time.deltaTime * _speed, 0, 0);
+                }
 
-                if (transform.position.x == _destination)
+                else
                 {
                     EventManager.Fire("onDreadnaught");
+                    Debug.Log("Fired event");
                 }
-            }
+            }    
+        }
+
+        private void FlyShip()
+        {
+            _startingGame = true;
         }
 
         private void OnDisable()

@@ -33,7 +33,7 @@ namespace Scripts.Managers
 
         public void StartWave()
         {
-            //Debug.Log("SpawnManager :: StartWave() : Starting Wave");
+            Debug.Log("SpawnManager :: StartWave() : Starting Wave");
             EventManager.Fire("onWaveCount", _waveCount);  // Fire event to UIManager
             if (_waveCount <= 10)
             {
@@ -43,19 +43,19 @@ namespace Scripts.Managers
 
                 _waveCount++;
             }
-            //Debug.Log("SpawnManager :: StartWave() : End of StartWave()");
+            Debug.Log("SpawnManager :: StartWave() : End of StartWave()");
         }
 
         IEnumerator SpawnTime()
         {
             for (int i = 0; i <= mechsInWave; i++)
             {
-                yield return new WaitForSeconds(2);
-                EventManager.Fire("onNewWave");
+                yield return new WaitForSeconds(5);
                 PoolManager.Instance.GetMech();
+                //EventManager.Fire("onNewWave");
             }
 
-            //Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
+            Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
         }
 
         public void CheckWave()
@@ -64,8 +64,6 @@ namespace Scripts.Managers
             {
                 StartCoroutine(NextWave());
             }
-
-            //Debug.Log("SpawnManager::CheckWave(): Completed Wave Check");
         }
 
         public void SuccessfulMechs()
@@ -82,7 +80,6 @@ namespace Scripts.Managers
 
         IEnumerator NextWave()
         {
-            //Debug.Log("SpawnManager :: NextWave()");
             yield return new WaitForSeconds(10);
             StartWave();
         }
@@ -107,7 +104,6 @@ namespace Scripts.Managers
         {
             return _waveCount;
         }
-
 
         private void OnDisable()
         {

@@ -63,7 +63,6 @@ namespace Scripts
 
         private void OnMouseDown()
         {
-            Debug.Log("AvailableSpots::OnMouseDown()");
             if (_isActive == false && _placingTower == true)
             {
                 _towerPlaced = TowerManager.Instance.PlaceTower(transform.position);
@@ -72,7 +71,6 @@ namespace Scripts
 
             if (_isActive == true && _placingTower == false)
             {
-                Debug.Log("AvailableSpots::OnMouseDown() : Inside if()");
                 EventManager.Fire("onUpgradeTower", _towerPlaced, this.transform.position);
             }
         }

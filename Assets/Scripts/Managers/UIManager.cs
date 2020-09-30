@@ -21,7 +21,6 @@ namespace Scripts.Managers
         [SerializeField] private Image _livesAndWaveDisplay;
         private Image _levelStatusImage;
         private Image _sellDisplayImage;
-        private Image[] _upgradeDisplayImages;
 
         [SerializeField] private Text _warFunds;
         [SerializeField] private Text _sellAmount;
@@ -50,15 +49,18 @@ namespace Scripts.Managers
         {
             _gameStarted = false;
             _levelStatusText.text = "Epic Tower Defense";
-            //if ()  // Only want to SetActive(true) if not already the case
-            //{
-            //    _levelStatus.SetActive(true);
-            //}
+            _lifeCount.text = "100";
+            _waveCount.text = "1";
+       
             _levelStatusImage = _levelStatus.GetComponent<Image>();
             _sellDisplayImage = _sellDisplay.GetComponent<Image>();
-            for (int i = 0; i <= _upgradeDisplay.Length; i++)
+        }
+
+        public void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                _upgradeDisplayImages[i] = _upgradeDisplay[i].GetComponent<Image>();
+                PlayGame();
             }
         }
 
@@ -210,15 +212,16 @@ namespace Scripts.Managers
 
         public void WaveCount(int wave)
         {
-            if (wave == 11)
+            if (wave <= 10)
+            {
+                _levelStatus.SetActive(false);
+                _waveCount.text = (wave / 10).ToString();
+            }
+            else if (wave == 11)
             {
                 _waveCount.text = (10 / 10).ToString();
                 _levelStatusText.text = "LEVEL COMPLETE";
                 _levelStatus.SetActive(true);
-            }
-            else
-            {
-                _waveCount.text = (wave / 10).ToString();
             }
         }
 
@@ -226,9 +229,9 @@ namespace Scripts.Managers
         {
             while (_countDown >= 0)
             {
-                yield return new WaitForSeconds(1);
                 _levelStatusText.text = _countDown.ToString();
                 _countDown--;
+                yield return new WaitForSeconds(1);
                 if (_countDown == 0)
                 {
                     _levelStatus.SetActive(false);
@@ -240,9 +243,9 @@ namespace Scripts.Managers
         public void ChangeStatus(Color color)
         {
             Color newColor = color;
-            for (int i = 0; i <= _upgradeDisplayImages.Length; i++)
+            for (int i = 0; i < _upgradeDisplay.Length; i++)
             {
-                _upgradeDisplayImages[i].color = newColor;
+                _upgradeDisplay[i].GetComponent<Image>().color = newColor;
             }
             _sellDisplayImage.color = newColor;
             _levelStatusImage.color = newColor;

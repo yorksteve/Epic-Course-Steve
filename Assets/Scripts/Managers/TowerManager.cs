@@ -47,7 +47,7 @@ namespace Scripts.Managers
         private void OnEnable()
         {
             EventManager.Listen("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
-            EventManager.Listen("onDamageTowers", (Action<int, GameObject>)TowerDamaged);
+            EventManager.Listen("onDamageTowers", (Action<float, GameObject>)TowerDamaged);
             EventManager.Listen("onStartingGame", OnGameStart);
         }
 
@@ -173,19 +173,16 @@ namespace Scripts.Managers
             Destroy(_currentTower);
         }
 
-        public void TowerDamaged(int damageAmount, GameObject tower)
-        {
-            if (tower != null && damageAmount != 0)
-            {
-                tower.GetComponent<IHealth>().Health(damageAmount, tower);  // WHY DOES THIS NOT WORK??
-            }
+        public void TowerDamaged(float damageAmount, GameObject tower)
+        {            
+            tower.GetComponent<ITower>().Health(damageAmount, tower);   
         }
 
 
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
-            EventManager.UnsubscribeEvent("onDamageTowers", (Action<int, GameObject>)TowerDamaged);
+            EventManager.UnsubscribeEvent("onDamageTowers", (Action<float, GameObject>)TowerDamaged);
             EventManager.UnsubscribeEvent("onStartingGame", OnGameStart);
         }
     }
