@@ -39,6 +39,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         [SerializeField] private int _warFundsRequired = 500;
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
+        private Quaternion _originalRotation;
 
         [SerializeField] private ParticleSystem _explosion;
 
@@ -61,6 +62,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
             _audioSource.clip = _fireSound; //assign the clip to play
 
             _towerSource = _towerBase.GetComponent<Transform>();
+            _originalRotation = _towerSource.rotation;
         }
 
         // Method to rotate gun barrel 
@@ -106,9 +108,17 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
 
         public void Target(GameObject enemy)
         {
-            Vector3 direction = enemy.transform.position - _towerSource.position;
-
-            _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            if (enemy != null)
+            {
+                Vector3 direction = enemy.transform.position - _towerSource.position;
+                _towerSource.rotation = Quaternion.LookRotation(direction, Vector3.up);
+                EventManager.Fire("onTargetedMech", enemy);
+            }
+            else
+            {
+                transform.rotation = _originalRotation;
+            }
+            
         }
 
         public float Damage()

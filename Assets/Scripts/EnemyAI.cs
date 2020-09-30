@@ -18,6 +18,7 @@ namespace Scripts
         [SerializeField] private Collider _mechColl;
         [SerializeField] private ParentConstraint _parentConstraint;
         private Renderer[] _rends;
+        private GameObject _targetMech;
 
         [SerializeField] private float _health;
         [SerializeField] private float _maxHealth;
@@ -51,6 +52,7 @@ namespace Scripts
             {
                 _parentConstraint.enabled = true;
             }
+
         }
 
         private void OnEnable()
@@ -61,6 +63,7 @@ namespace Scripts
             EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
             EventManager.Listen("onCleaningMech", (Action<GameObject>)CleanUpMech);
+            EventManager.Listen("onTargetedMech", (Action<GameObject>)TargetedMech);
         }
 
         private void Update()
@@ -117,13 +120,13 @@ namespace Scripts
         {
             EventManager.Fire("onMechDestroyed", _mechWarFund);
             _anim.WriteDefaultValues();
-            _mechColl.enabled = true;
             foreach (var rend in _rends)
             {
                 rend.material.SetFloat("_fillAmount", 0f);
             }
             EventManager.Fire("onRecycleMech", mech);
             EventManager.Fire("onResetHealth", _maxHealth, mech);
+            _mechColl.enabled = true;
             if (_parentConstraint != null)
             {
                 _parentConstraint.enabled = true;
@@ -192,16 +195,24 @@ namespace Scripts
             Debug.Log("EnemyAI :: AttackData()");
         }
 
+        public void TargetedMech(GameObject mech)
+        {
+            _targetMech = mech;
+        }
+
         public void Health(float damage)
         {
-            _health -= damage;
-            EventManager.Fire("onHealthBarCube", _health, this.gameObject);
-            Debug.Log("EnemyAI :: Health()");
-
-            if (_health <= 0)
+            if (_targetMech == this.gameObject)
             {
-                EventManager.Fire("onTargetNew", this.gameObject); // Fire event to EnemyDetection
-                StartCoroutine(DestroyMech(this.gameObject));
+                _health -= damage;
+                EventManager.Fire("onHealthBarCube", _health, this.gameObject);
+                Debug.Log("EnemyAI :: Health()");
+
+                if (_health <= 0)
+                {
+                    EventManager.Fire("onTargetNew", this.gameObject); // Fire event to EnemyDetection
+                    StartCoroutine(DestroyMech(this.gameObject));
+                }
             }
         }
 
@@ -213,6 +224,7 @@ namespace Scripts
             EventManager.UnsubscribeEvent("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.UnsubscribeEvent("onMechExit", (Action<GameObject>)MechExit);
             EventManager.UnsubscribeEvent("onCleaningMech", (Action<GameObject>)CleanUpMech);
+            EventManager.UnsubscribeEvent("onTargetedMech", (Action<GameObject>)TargetedMech);
         }
     }
 }

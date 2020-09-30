@@ -49,6 +49,7 @@ namespace Scripts.Managers
         {
             _gameStarted = false;
             _levelStatusText.text = "Epic Tower Defense";
+            _levelStatus.SetActive(true);
             _lifeCount.text = "100";
             _waveCount.text = "1";
        
@@ -229,7 +230,7 @@ namespace Scripts.Managers
         {
             while (_countDown >= 0)
             {
-                _levelStatusText.text = _countDown.ToString();
+                _levelStatusText.text = ("Starting in " + _countDown.ToString());
                 _countDown--;
                 yield return new WaitForSeconds(1);
                 if (_countDown == 0)

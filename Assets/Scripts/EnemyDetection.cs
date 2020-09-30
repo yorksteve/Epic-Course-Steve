@@ -45,6 +45,10 @@ namespace Scripts
                 _attackData.Attack(true);
                 EventManager.Fire("onTargetTower", this.gameObject.transform.parent.gameObject);
             }
+            else
+            {
+                _attackData.Attack(false);
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -53,8 +57,8 @@ namespace Scripts
             {
                 mechs.Remove(other.gameObject);
                 EventManager.Fire("onMechExit", other.gameObject);
-
                 _attackData.Attack(false);
+
                 if (mechs.Count > 0)
                 {
                     _targetEnemy = mechs[0];

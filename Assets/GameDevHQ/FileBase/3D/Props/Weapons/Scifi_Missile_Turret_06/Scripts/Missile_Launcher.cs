@@ -78,6 +78,8 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
                 _misslePositions[i].SetActive(false); //turn off the rocket sitting in the turret to make it look like it fired
 
+                Damage();
+
                 yield return new WaitForSeconds(_fireDelay); //wait for the firedelay
             }
 
@@ -102,6 +104,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         public float Damage()
         {
             float damageAmount = 2f;
+            EventManager.Fire("onDamage", damageAmount);
             return damageAmount;
         }
 
@@ -124,6 +127,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             {
                 float health = 50f;
                 health -= damage;
+                EventManager.Fire("onHealthBar", health, obj);
                 if (health <= 0f)
                 {
                     _explosion.Play();
