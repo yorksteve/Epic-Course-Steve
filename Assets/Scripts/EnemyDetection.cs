@@ -64,8 +64,7 @@ namespace Scripts
                     _targetEnemy = mechs[0];
                     //_attackData.Attack(true);
                 }
-
-                if (mechs.Count == 0)
+                else
                 {
                     _attackData.Attack(false);
                 }

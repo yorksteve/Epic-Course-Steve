@@ -37,7 +37,6 @@ namespace Scripts
         {
             if (_currentObj == obj)
             {
-                Debug.Log("HealthBar :: ModifyHealth()");
                 _healthSlider.value = health;
             }
         }

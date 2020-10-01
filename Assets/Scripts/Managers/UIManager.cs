@@ -124,6 +124,11 @@ namespace Scripts.Managers
             _sellDisplay.SetActive(false);
         }
 
+        public void CancelSale()
+        {
+            _sellDisplay.SetActive(false);
+        }
+
         public void PurchaseUpgrade(int upgradeIndex)
         {
             TowerManager.Instance.UpgradeTower();
@@ -142,19 +147,24 @@ namespace Scripts.Managers
 
         public void RestartGame()
         {
-            SceneManager.LoadScene(0);
+            if (_gameStarted == true)
+            {
+                SceneManager.LoadScene(0);
+            }
         }
 
         public void PauseGame()
         {
-            Time.timeScale = 0;
-            _levelStatusText.text = "Paused";
-            _levelStatus.SetActive(true);
+            if (_gameStarted == true)
+            {
+                Time.timeScale = 0;
+                _levelStatusText.text = "Paused";
+                _levelStatus.SetActive(true);
+            }
         }
 
         public void PlayGame()
         {
-
             if (Time.timeScale == 0 && _gameStarted == true)
             {
                 Time.timeScale = 1;
@@ -170,13 +180,16 @@ namespace Scripts.Managers
 
         public void FastForward()
         {
-            if (Time.timeScale == 1)
+            if (_gameStarted == true)
             {
-                Time.timeScale = 2;
-            }
-            else if (Time.timeScale == 2)
-            {
-                Time.timeScale = 1;
+                if (Time.timeScale == 1)
+                {
+                    Time.timeScale = 2;
+                }
+                else if (Time.timeScale == 2)
+                {
+                    Time.timeScale = 1;
+                }
             }
         }
 

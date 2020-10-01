@@ -40,7 +40,6 @@ namespace Scripts
         {
             if (obj == _currentObj)
             {
-                Debug.Log("HealthBarCube :: ModifyHealth()");
                 _currentHealth = health;
                 _healthPercent = _currentHealth / _maxHealth;
                 _material.SetFloat("_healthPercent", _healthPercent);

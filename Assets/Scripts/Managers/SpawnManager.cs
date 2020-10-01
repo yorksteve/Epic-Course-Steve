@@ -15,8 +15,8 @@ namespace Scripts.Managers
 
         public int mechsInWave;
         private int _amountOfMechs = 10;
-        private int _successfulMechs;
-        private int _destroyedMechs;
+        private int _successfulMechs = 0;
+        private int _destroyedMechs = 0;
 
         private WaitForSeconds _spawnTimeYield;
 
@@ -29,7 +29,7 @@ namespace Scripts.Managers
         private void OnEnable()
         {
             EventManager.Listen("onSuccess", SuccessfulMechs);
-            EventManager.Listen("onMechDestroyed", (Action<int>)DestroyedMechs);
+            EventManager.Listen("onMechDestroyedSpawn", (Action<int>)DestroyedMechs);
             EventManager.Listen("onDreadnaught", StartWave);
             EventManager.Listen("onNextWave", StartWave);
         }
@@ -57,8 +57,9 @@ namespace Scripts.Managers
             for (int i = 0; i <= mechsInWave; i++)
             {
                 yield return _spawnTimeYield;
-                //EventManager.Fire("onNewWave");
                 PoolManager.Instance.GetMech();
+                yield return new WaitForSeconds(.5f);
+                EventManager.Fire("onNewWave");
             }
         }
 
@@ -76,9 +77,9 @@ namespace Scripts.Managers
             CheckWave();
         }
 
-        public void DestroyedMechs(int uselessValue)
+        public void DestroyedMechs(int count)
         {
-            _destroyedMechs++;
+            _destroyedMechs += count;
             CheckWave();
         }
 

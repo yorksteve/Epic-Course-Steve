@@ -123,9 +123,8 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
 
         public float Damage()
         {
-            float damageAmount = .02f;
+            float damageAmount = .04f;
             EventManager.Fire("onDamage", damageAmount);
-            Debug.Log("Damage() on gatling gun");
             return damageAmount;
         }
 

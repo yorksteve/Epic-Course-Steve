@@ -129,8 +129,6 @@ namespace Scripts.Managers
 
         public void CheckUpgrade(ITower tower, Vector3 pos)
         {
-            //Debug.Log("TowerManager::CheckUpgrade()");
-
             _towerUpgrade = tower.UpgradeModel;
             _currentTower = tower.CurrentModel;
             _towerPos = pos;

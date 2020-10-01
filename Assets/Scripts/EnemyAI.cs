@@ -60,7 +60,7 @@ namespace Scripts
         private void OnEnable()
         {
             EventManager.Listen("onDamage", (Action<float>)Health);
-            //EventManager.Listen("onNewWave", ResetMech);           
+            EventManager.Listen("onNewWave", ResetMech);           
             EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
             EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
@@ -68,26 +68,18 @@ namespace Scripts
             EventManager.Listen("onTargetedMech", (Action<GameObject>)TargetedMech);
         }
 
-        private void Update()
+        private void ResetMech()
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (_agent != null)
             {
-                StartCoroutine(DestroyMech(this.gameObject));
+                _agent.SetDestination(_destination.position);
+            }
+            else
+            {
+                _agent = GetComponent<NavMeshAgent>();
+                _agent.SetDestination(_destination.position);
             }
         }
-
-        //private void ResetMech()
-        //{
-        //    if (_agent != null)
-        //    {
-        //        _agent.SetDestination(_destination.position);
-        //    }
-        //    else
-        //    {
-        //        _agent = GetComponent<NavMeshAgent>();
-        //        _agent.SetDestination(_destination.position);
-        //    }
-        //}
 
         IEnumerator DestroyMech(GameObject mech)
         {
@@ -104,6 +96,7 @@ namespace Scripts
             _dissolve = Mathf.Clamp01(_dissolve += (_speed * Time.deltaTime));
             while (_dissolve < 1f)
             {
+                Debug.Log("EnemyAI :: DestroyMech() : dissolve while loop");
                 _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
                 foreach (var rend in _rends)
                 {
@@ -120,7 +113,9 @@ namespace Scripts
 
         void CleanUpMech(GameObject mech)
         {
+            Debug.Log("CleanUpMech()");
             EventManager.Fire("onMechDestroyed", _mechWarFund);
+            EventManager.Fire("onMechDestroyedSpawn", 1);
             _anim.WriteDefaultValues();
             foreach (var rend in _rends)
             {
@@ -140,7 +135,6 @@ namespace Scripts
         {
             if (attack == true)
             {
-                Debug.Log("EnemyAI :: Attack()");
                 _anim.SetBool("Fire", true);
             }
             else
@@ -154,7 +148,6 @@ namespace Scripts
             if (mech == this.gameObject)
             {
                 _isChecked = true;
-                Debug.Log("EnemyAI :: CheckMech()");
             }
         }
 
@@ -170,7 +163,6 @@ namespace Scripts
         {
             if (_isChecked == true)
             {
-                Debug.Log("EnemyAI :: Target()");
                 Vector3 direction = enemy.transform.position - _rotationPoint.position;
                 _rotationPoint.rotation = Quaternion.LookRotation(direction, Vector3.up);
                 if (enemy != null)
@@ -194,7 +186,6 @@ namespace Scripts
         {
             float damage = Damage();
             EventManager.Fire("onDamageTowers", damage, tower); // Fire event to TowerManager
-            Debug.Log("EnemyAI :: AttackData()");
         }
 
         public void TargetedMech(GameObject mech)
@@ -208,7 +199,6 @@ namespace Scripts
             {
                 _health -= damage;
                 EventManager.Fire("onHealthBarCube", _health, this.gameObject);
-                Debug.Log("EnemyAI :: Health()");
 
                 if (_health <= 0)
                 {
@@ -221,7 +211,7 @@ namespace Scripts
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onDamage", (Action<float>)Health);
-            //EventManager.UnsubscribeEvent("onNewWave", ResetMech);
+            EventManager.UnsubscribeEvent("onNewWave", ResetMech);
             EventManager.UnsubscribeEvent("onTargetTower", (Action<GameObject>)Target);
             EventManager.UnsubscribeEvent("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.UnsubscribeEvent("onMechExit", (Action<GameObject>)MechExit);
