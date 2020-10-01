@@ -11,8 +11,6 @@ namespace Scripts
     {
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("EndZone :: OnTriggerEnter : Destination Reached");
-
             if (other.tag == "Enemy")
             {
                 EventManager.Fire("onEndZoneReached", other.gameObject);

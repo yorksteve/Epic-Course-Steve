@@ -30,11 +30,12 @@ namespace Scripts.Managers
         [SerializeField] private Text _statusIndicator;
 
         private int _lives = 100;
-        private int _countDown = 5;
+        private int _startCountDown = 5;
+        private int _nextWaveCountDown = 10;
         private bool _gameStarted;
         private Transform _purchaseButton;
+        private WaitForSeconds _countDownYield;
 
-        //[SerializeField] private GameObject _levelStatusTest;
 
         public override void Init()
         {
@@ -43,8 +44,8 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            EventManager.Listen("onWaveCount", (Action<int>)WaveCount);
             EventManager.Listen("onSuccess", LifeCount);
+            EventManager.Listen("onWaveCount", (Action<int>)WaveCount);
         }
 
         public void Start()
@@ -53,18 +54,12 @@ namespace Scripts.Managers
             _levelStatusText.text = "Epic Tower Defense";
             _levelStatus.SetActive(true);
             _lifeCount.text = "100";
-            _waveCount.text = "1";
        
             _levelStatusImage = _levelStatus.GetComponent<Image>();
             _sellDisplayImage = _sellDisplay.GetComponent<Image>();
-        }
 
-        public void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                PlayGame();
-            }
+            _countDownYield = new WaitForSeconds(1);
+            WaveCount(1);
         }
 
         public void TowerUpgradeAbility(bool enoughFunds, GameObject tower)
@@ -138,7 +133,6 @@ namespace Scripts.Managers
         public void CancelUpgrade(int i)
         {
             _upgradeDisplay[i].SetActive(false);
-            Debug.Log("UIManager :: CancelUpgrade()");
         }
 
         public void ChangeFunds(int amount)
@@ -148,13 +142,11 @@ namespace Scripts.Managers
 
         public void RestartGame()
         {
-            Debug.Log("UIManager :: RestartGame()");
             SceneManager.LoadScene(0);
         }
 
         public void PauseGame()
         {
-            Debug.Log("Game Paused");
             Time.timeScale = 0;
             _levelStatusText.text = "Paused";
             _levelStatus.SetActive(true);
@@ -162,7 +154,6 @@ namespace Scripts.Managers
 
         public void PlayGame()
         {
-            Debug.Log("UIManager :: PlayGame()");
 
             if (Time.timeScale == 0 && _gameStarted == true)
             {
@@ -172,7 +163,6 @@ namespace Scripts.Managers
 
             else if (_gameStarted == false)
             {
-                Debug.Log("UIManager :: PlayGame() : else if()");
                 StartCoroutine(StartingGame());
                 _gameStarted = true;
             }
@@ -182,12 +172,10 @@ namespace Scripts.Managers
         {
             if (Time.timeScale == 1)
             {
-                Debug.Log("FastForward");
                 Time.timeScale = 2;
             }
             else if (Time.timeScale == 2)
             {
-                Debug.Log("Normal speed");
                 Time.timeScale = 1;
             }
         }
@@ -212,19 +200,22 @@ namespace Scripts.Managers
                 _statusIndicator.text = "Danger";
                 ChangeStatus(Color.red);
             }
+
+            if (_lives == 0)
+            {
+                _lives = 0;
+                _levelStatusText.text = "Game Over";
+                _levelStatus.SetActive(true);
+            }
         }
 
-        public void WaveCount(int wave)
+        public void WaveCount(int waveNumber)
         {
-            Debug.Log("UIManager :: WaveCount " + wave);
-            if (wave <= 10)
+            _waveCount.text = (waveNumber.ToString() + " / 10");
+            
+            if (waveNumber == 11)
             {
-                _levelStatus.SetActive(false);
-                _waveCount.text = (wave / 10).ToString();
-            }
-            else if (wave == 11)
-            {
-                _waveCount.text = (10 / 10).ToString();
+                _waveCount.text = (10.ToString() + " / 10");
                 _levelStatusText.text = "LEVEL COMPLETE";
                 _levelStatus.SetActive(true);
             }
@@ -232,16 +223,31 @@ namespace Scripts.Managers
 
         public IEnumerator StartingGame()
         {
-            while (_countDown >= 0)
+            while (_startCountDown >= 0)
             {
-                _levelStatusText.text = ("Starting in " + _countDown.ToString());
-                _countDown--;
-                yield return new WaitForSeconds(1);
-                if (_countDown == 0)
+                _levelStatusText.text = ("Starting in \n" + _startCountDown.ToString());
+                _startCountDown--;
+                yield return _countDownYield;
+                if (_startCountDown == 0)
                 {
-                    Debug.Log(_levelStatus.active + " UIManager :: StartingGame()");
                     _levelStatus.SetActive(false);
                     EventManager.Fire("onStartingGame");
+                }
+            }
+        }
+
+        public IEnumerator NextWave()
+        {
+            while (_nextWaveCountDown > 0)
+            {
+                _levelStatusText.text = ("Next Wave in \n" + _nextWaveCountDown.ToString());
+                _levelStatus.SetActive(true);
+                _nextWaveCountDown--;
+                yield return _countDownYield;
+                if (_nextWaveCountDown == 0)
+                {
+                    _levelStatus.SetActive(false);
+                    SpawnManager.Instance.StartWave();
                 }
             }
         }
@@ -264,8 +270,8 @@ namespace Scripts.Managers
 
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onWaveCount", (Action<int>)WaveCount);
             EventManager.UnsubscribeEvent("onSuccess", LifeCount);
+            EventManager.UnsubscribeEvent("onWaveCount", (Action<int>)WaveCount);
         }
     }
 }

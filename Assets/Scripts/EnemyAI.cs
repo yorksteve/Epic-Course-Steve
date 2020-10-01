@@ -28,6 +28,7 @@ namespace Scripts
         private float _speed = .1f;
         private Transform _rotationPoint;
         [SerializeField] private bool _isChecked;
+        private WaitForSeconds _destroyMechYield;
 
 
         private void Start()
@@ -53,12 +54,13 @@ namespace Scripts
                 _parentConstraint.enabled = true;
             }
 
+            _destroyMechYield = new WaitForSeconds(3);
         }
 
         private void OnEnable()
         {
             EventManager.Listen("onDamage", (Action<float>)Health);
-            EventManager.Listen("onNewWave", ResetMech);           
+            //EventManager.Listen("onNewWave", ResetMech);           
             EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
             EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
@@ -74,18 +76,18 @@ namespace Scripts
             }
         }
 
-        private void ResetMech()
-        {
-            if (_agent != null)
-            {
-                _agent.SetDestination(_destination.position);
-            }
-            else
-            {
-                _agent = GetComponent<NavMeshAgent>();
-                _agent.SetDestination(_destination.position);
-            }
-        }
+        //private void ResetMech()
+        //{
+        //    if (_agent != null)
+        //    {
+        //        _agent.SetDestination(_destination.position);
+        //    }
+        //    else
+        //    {
+        //        _agent = GetComponent<NavMeshAgent>();
+        //        _agent.SetDestination(_destination.position);
+        //    }
+        //}
 
         IEnumerator DestroyMech(GameObject mech)
         {
@@ -97,7 +99,7 @@ namespace Scripts
             _agent.isStopped = true;
             _health = 0f;
             _anim.SetBool("Die", true);
-            yield return new WaitForSeconds(3);
+            yield return _destroyMechYield;
       
             _dissolve = Mathf.Clamp01(_dissolve += (_speed * Time.deltaTime));
             while (_dissolve < 1f)
@@ -219,7 +221,7 @@ namespace Scripts
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onDamage", (Action<float>)Health);
-            EventManager.UnsubscribeEvent("onNewWave", ResetMech);
+            //EventManager.UnsubscribeEvent("onNewWave", ResetMech);
             EventManager.UnsubscribeEvent("onTargetTower", (Action<GameObject>)Target);
             EventManager.UnsubscribeEvent("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.UnsubscribeEvent("onMechExit", (Action<GameObject>)MechExit);

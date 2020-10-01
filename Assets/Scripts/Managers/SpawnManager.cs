@@ -18,6 +18,8 @@ namespace Scripts.Managers
         private int _successfulMechs;
         private int _destroyedMechs;
 
+        private WaitForSeconds _spawnTimeYield;
+
         public override void Init()
         {
             base.Init();
@@ -29,12 +31,17 @@ namespace Scripts.Managers
             EventManager.Listen("onSuccess", SuccessfulMechs);
             EventManager.Listen("onMechDestroyed", (Action<int>)DestroyedMechs);
             EventManager.Listen("onDreadnaught", StartWave);
+            EventManager.Listen("onNextWave", StartWave);
+        }
+
+        private void Start()
+        {
+            _spawnTimeYield = new WaitForSeconds(5);
         }
 
         public void StartWave()
         {
-            Debug.Log("SpawnManager :: StartWave() : Starting Wave");
-            EventManager.Fire("onWaveCount", _waveCount);  // Fire event to UIManager
+            EventManager.Fire("onWaveCount", _waveCount);
             if (_waveCount <= 10)
             {
                 mechsInWave = _amountOfMechs * _waveCount;
@@ -43,26 +50,23 @@ namespace Scripts.Managers
 
                 _waveCount++;
             }
-            Debug.Log("SpawnManager :: StartWave() : End of StartWave()");
         }
 
         IEnumerator SpawnTime()
         {
             for (int i = 0; i <= mechsInWave; i++)
             {
-                yield return new WaitForSeconds(5);
-                PoolManager.Instance.GetMech();
+                yield return _spawnTimeYield;
                 //EventManager.Fire("onNewWave");
+                PoolManager.Instance.GetMech();
             }
-
-            Debug.Log("SpawnManager :: SpawnTime() : Spawning for current wave finished");
         }
 
         public void CheckWave()
         {
             if (mechsInWave == (_successfulMechs + _destroyedMechs))
             {
-                StartCoroutine(NextWave());
+                StartCoroutine(UIManager.Instance.NextWave());
             }
         }
 
@@ -76,12 +80,6 @@ namespace Scripts.Managers
         {
             _destroyedMechs++;
             CheckWave();
-        }
-
-        IEnumerator NextWave()
-        {
-            yield return new WaitForSeconds(10);
-            StartWave();
         }
 
         public void RestartGame()

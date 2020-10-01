@@ -14609,7 +14609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _decoyTower:
-  - {fileID: 3392277388699459784, guid: 1eab24be3f57f91468707de0923b1c99, type: 3}
+  - {fileID: 8921234968025954285, guid: 6e3e1d31a09833d4e81022e0cd29600c, type: 3}
   - {fileID: 2981298498862127109, guid: 96a916b22cdc9ca4394b2deeb48c9a5c, type: 3}
   _tower:
   - {fileID: 1425032208015248, guid: 75f3d166786e1cb40afc4396cd0bcc22, type: 3}

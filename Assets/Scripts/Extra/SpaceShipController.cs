@@ -20,6 +20,9 @@ namespace Scripts.Extra
 
         private void Update()
         {
+            if (_eventFired == true)
+                return;
+
             if (_startingGame == true)
             {
                 if (transform.position.x < _destination)
@@ -30,7 +33,6 @@ namespace Scripts.Extra
                 else if (_eventFired == false)
                 {
                     EventManager.Fire("onDreadnaught");
-                    Debug.Log("Fired event");
                     _eventFired = true;
                 }
             }    

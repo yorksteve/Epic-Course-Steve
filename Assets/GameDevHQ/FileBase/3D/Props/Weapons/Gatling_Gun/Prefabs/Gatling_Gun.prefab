@@ -30,6 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4483940257070060}
+  - {fileID: 4467111432530078}
   m_Father: {fileID: 4445333471610312}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4941,7 +4942,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4230997169374272}
-  - {fileID: 4467111432530078}
   m_Father: {fileID: 4633165491543876}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5075,10 +5075,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c7edd4816764b2cb111ea15f8f117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gunBarrel: {fileID: 4813843730394250}
   Muzzle_Flash: {fileID: 1905276477678454}
   bulletCasings: {fileID: 198239830521320308}
   fireSound: {fileID: 8300000, guid: 08e0cb88300e54b09aa0deb684c3a3de, type: 3}
-  _warFundsRequired: 250
+  _warFundsRequired: 200
   _upgradeModel: {fileID: 1873819670802014, guid: 4565034b2cea2354aa1991c60bc1cd44,
     type: 3}
   _explosion: {fileID: 4688366796816071958, guid: 0bd59304b034bee4e939420e993113e1,
@@ -5475,12 +5476,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1905276477678454}
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.14400001, y: 0.78152764, z: 2.7986846}
+  m_LocalRotation: {x: -2.9018165e-26, y: -0.7071068, z: -2.9018165e-26, w: 0.7071068}
+  m_LocalPosition: {x: -0.14815925, y: 0.5022869, z: 2.7836633}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4477828785630856}
-  m_Father: {fileID: 4445333471610312}
+  m_Father: {fileID: 4230997169374272}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!198 &198006838423099326
@@ -15337,9 +15338,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 10
   m_WholeNumbers: 0
-  m_Value: 100
+  m_Value: 10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
