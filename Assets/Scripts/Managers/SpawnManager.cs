@@ -29,7 +29,7 @@ namespace Scripts.Managers
         private void OnEnable()
         {
             EventManager.Listen("onSuccess", SuccessfulMechs);
-            EventManager.Listen("onMechDestroyedSpawn", (Action<int>)DestroyedMechs);
+            EventManager.Listen("onMechDestroyedSpawn", DestroyedMechs);
             EventManager.Listen("onDreadnaught", StartWave);
             EventManager.Listen("onNextWave", StartWave);
         }
@@ -77,9 +77,10 @@ namespace Scripts.Managers
             CheckWave();
         }
 
-        public void DestroyedMechs(int count)
+        public void DestroyedMechs()
         {
-            _destroyedMechs += count;
+            Debug.Log("SpawnManager :: DestroyedMechs()");
+            _destroyedMechs++;
             CheckWave();
         }
 
@@ -107,7 +108,7 @@ namespace Scripts.Managers
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onSuccess", SuccessfulMechs);
-            EventManager.UnsubscribeEvent("onMechDestroyed", (Action<int>)DestroyedMechs);
+            EventManager.UnsubscribeEvent("onMechDestroyed", DestroyedMechs);
             EventManager.UnsubscribeEvent("onDreadnaught", StartWave);
         }
     }

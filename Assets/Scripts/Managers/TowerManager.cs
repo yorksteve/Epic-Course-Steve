@@ -81,7 +81,6 @@ namespace Scripts.Managers
 
         public ITower PlaceTower(Vector3 pos)
         {
-            //Debug.Log("TowerManager::PlaceTower()");
             if (_warFundsRequired <= WarFundManager.Instance.RequestWarFunds())
             {
                 var initial = Instantiate(_tower[_towerID], pos, Quaternion.identity);

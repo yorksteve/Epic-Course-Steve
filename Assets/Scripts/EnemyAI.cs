@@ -79,6 +79,8 @@ namespace Scripts
                 _agent = GetComponent<NavMeshAgent>();
                 _agent.SetDestination(_destination.position);
             }
+
+            EventManager.Fire("onResetHealth", 100, this.gameObject);
         }
 
         IEnumerator DestroyMech(GameObject mech)
@@ -91,12 +93,11 @@ namespace Scripts
             _agent.isStopped = true;
             _health = 0f;
             _anim.SetBool("Die", true);
+            EventManager.Fire("onMechDestroyedSpawn");
             yield return _destroyMechYield;
       
-            _dissolve = Mathf.Clamp01(_dissolve += (_speed * Time.deltaTime));
             while (_dissolve < 1f)
             {
-                Debug.Log("EnemyAI :: DestroyMech() : dissolve while loop");
                 _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
                 foreach (var rend in _rends)
                 {
@@ -113,9 +114,7 @@ namespace Scripts
 
         void CleanUpMech(GameObject mech)
         {
-            Debug.Log("CleanUpMech()");
             EventManager.Fire("onMechDestroyed", _mechWarFund);
-            EventManager.Fire("onMechDestroyedSpawn", 1);
             _anim.WriteDefaultValues();
             foreach (var rend in _rends)
             {
