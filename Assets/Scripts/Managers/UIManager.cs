@@ -10,6 +10,9 @@ namespace Scripts.Managers
 {
     public class UIManager : MonoSingleton<UIManager>
     {
+        // Make this Dynamic UI
+
+
         [SerializeField] private GameObject[] _towers;
         [SerializeField] private GameObject[] _upgradeDisplay;
         [SerializeField] private GameObject _sellDisplay;

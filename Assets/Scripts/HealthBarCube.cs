@@ -10,6 +10,7 @@ namespace Scripts
     public class HealthBarCube : MonoBehaviour
     {
         [SerializeField] private GameObject _currentObj;
+        private GameObject _mainCamera;
         private float _maxScale = 10f;
         [SerializeField] private float _maxHealth;
         private float _currentHealth;
@@ -29,11 +30,12 @@ namespace Scripts
             _material = _rend.materials[0];
             _healthPercent = 1f;
             gameObject.transform.localScale = new Vector3(_maxScale, .5f, .05f);
+            _mainCamera = Camera.main.gameObject;
         }
 
         void Update()
         {
-            Vector3 direction = Camera.main.transform.position - this.gameObject.transform.position;
+            Vector3 direction = _mainCamera.transform.position - this.gameObject.transform.position;
             transform.LookAt(direction);
         }
 

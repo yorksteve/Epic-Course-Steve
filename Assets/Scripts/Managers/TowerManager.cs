@@ -15,6 +15,7 @@ namespace Scripts.Managers
         private GameObject _towerUpgrade;
         private GameObject _prefabDecoy;
         private Vector3 _towerPos;
+        private Camera _mainCamera;
 
         private ITower[] _towerData;
         private IAttack[] _attackData;
@@ -41,7 +42,9 @@ namespace Scripts.Managers
             {
                 _towerData[i] = _tower[i].GetComponent<ITower>();
                 _attackData[i] = _tower[i].GetComponent<IAttack>();
-            }            
+            }
+
+            _mainCamera = Camera.main;
         }
 
         private void OnEnable()
@@ -61,7 +64,7 @@ namespace Scripts.Managers
             if (_placingTower == false)
                 return;
 
-            Ray rayOrigin = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray rayOrigin = _mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
 
             if (Physics.Raycast(rayOrigin, out hitInfo))

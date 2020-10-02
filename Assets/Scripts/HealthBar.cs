@@ -11,6 +11,7 @@ namespace Scripts
     {
         [SerializeField] private Slider _healthSlider;
         [SerializeField] private GameObject _currentObj;
+        private Camera _mainCamera;
 
         private void OnEnable()
         {
@@ -18,9 +19,14 @@ namespace Scripts
             EventManager.Listen("onResetHealthTower", (Action<float, GameObject>)SetMaxHealth);
         }
 
+        private void Start()
+        {
+            _mainCamera = Camera.main;
+        }
+
         void Update()
         {
-            Vector3 direction = Camera.main.transform.position - this.gameObject.transform.position;
+            Vector3 direction = _mainCamera.transform.position - this.gameObject.transform.position;
             transform.LookAt(direction);
         }
 

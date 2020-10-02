@@ -19,15 +19,15 @@ namespace Scripts
         [SerializeField] private ParentConstraint _parentConstraint;
         private Renderer[] _rends;
         private GameObject _targetMech;
+        private Transform _rotationPoint;
 
         [SerializeField] private float _health;
         [SerializeField] private float _maxHealth;
         [SerializeField] private int _mechWarFund;
         [SerializeField] private float _damageAmount;
-        private float _dissolve = 0;
-        private float _speed = .1f;
-        private Transform _rotationPoint;
-        [SerializeField] private bool _isChecked;
+        private float _speed = 5f;
+        private bool _isChecked;
+        private bool _mechKilled = false;
         private WaitForSeconds _destroyMechYield;
 
 
@@ -78,52 +78,6 @@ namespace Scripts
             {
                 _agent = GetComponent<NavMeshAgent>();
                 _agent.SetDestination(_destination.position);
-            }
-        }
-
-        IEnumerator DestroyMech(GameObject mech)
-        {
-            if (_parentConstraint != null)
-            {
-                _parentConstraint.enabled = false;
-            }
-            _mechColl.enabled = false;
-            _agent.isStopped = true;
-            _health = 0f;
-            _anim.SetBool("Die", true);
-            EventManager.Fire("onMechDestroyedSpawn");
-            yield return _destroyMechYield;
-      
-            while (_dissolve < 1f)
-            {
-                _dissolve = Mathf.Clamp01(_dissolve += _speed * Time.deltaTime);
-                foreach (var rend in _rends)
-                {
-                    rend.material.SetFloat("_fillAmount", _dissolve);
-                }
-
-                if (_dissolve >= 1f)
-                {
-                    EventManager.Fire("onCleaningMech", this.gameObject);
-                }
-            }
-
-        }
-
-        void CleanUpMech(GameObject mech)
-        {
-            EventManager.Fire("onMechDestroyed", _mechWarFund);
-            _anim.WriteDefaultValues();
-            foreach (var rend in _rends)
-            {
-                rend.material.SetFloat("_fillAmount", 0f);
-            }
-            EventManager.Fire("onRecycleMech", mech);
-            EventManager.Fire("onResetHealthMech", _maxHealth, mech);
-            _mechColl.enabled = true;
-            if (_parentConstraint != null)
-            {
-                _parentConstraint.enabled = true;
             }
         }
 
@@ -197,12 +151,65 @@ namespace Scripts
                 _health -= damage;
                 EventManager.Fire("onHealthBarCube", _health, this.gameObject);
 
-                if (_health <= 0)
+                if (_health <= 0 && _mechKilled == false)
                 {
+                    _mechKilled = true;
                     EventManager.Fire("onTargetNew", this.gameObject); // Fire event to EnemyDetection
                     StartCoroutine(DestroyMech(this.gameObject));
                 }
             }
+        }
+
+        IEnumerator DestroyMech(GameObject mech)
+        {
+            if (_parentConstraint != null)
+            {
+                _parentConstraint.enabled = false;
+            }
+            _mechColl.enabled = false;
+            _agent.isStopped = true;
+            _health = 0f;
+            _anim.SetBool("Die", true);
+            EventManager.Fire("onMechDestroyedSpawn");
+            yield return _destroyMechYield;
+            StartCoroutine(DissolveRoutine());
+        }
+
+        IEnumerator DissolveRoutine()
+        {
+            float dissolve = 0f;
+            while (dissolve < 1f)
+            {
+                foreach (var rend in _rends)
+                {
+                    dissolve += Time.deltaTime / _speed;
+                    rend.material.SetFloat("_fillAmount", dissolve);
+                    yield return new WaitForEndOfFrame();
+                }
+
+                if (dissolve >= 1f)
+                {
+                    EventManager.Fire("onCleaningMech", this.gameObject);
+                }
+            }
+        }
+
+        void CleanUpMech(GameObject mech)
+        {
+            EventManager.Fire("onMechDestroyed", _mechWarFund);
+            _anim.WriteDefaultValues();
+            foreach (var rend in _rends)
+            {
+                rend.material.SetFloat("_fillAmount", 0f);
+            }
+            EventManager.Fire("onRecycleMech", mech);
+            EventManager.Fire("onResetHealthMech", _maxHealth, mech);
+            _mechColl.enabled = true;
+            if (_parentConstraint != null)
+            {
+                _parentConstraint.enabled = true;
+            }
+            _mechKilled = false;
         }
 
         private void OnDisable()

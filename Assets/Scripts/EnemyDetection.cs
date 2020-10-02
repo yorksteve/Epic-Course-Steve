@@ -29,7 +29,7 @@ namespace Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag == "Enemy")
+            if (other.gameObject.CompareTag("Enemy"))
             {
                 mechs.Add(other.gameObject);
                 _targetEnemy = mechs[0];
@@ -39,35 +39,35 @@ namespace Scripts
 
         private void OnTriggerStay(Collider other)
         {
-            if (_targetEnemy != null)
+            if (other.gameObject.CompareTag("Enemy"))
             {
-                _attackData.Target(_targetEnemy);
-                _attackData.Attack(true);
-                EventManager.Fire("onTargetTower", this.gameObject.transform.parent.gameObject);
-            }
-            else
-            {
-                _attackData.Attack(false);
+                if (_targetEnemy != null)
+                {
+                    _attackData.Target(_targetEnemy);
+                    _attackData.Attack(true);
+                    EventManager.Fire("onTargetTower", this.gameObject.transform.parent.gameObject);
+                }
+                else
+                {
+                    _attackData.Attack(false);
+                }
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.tag == "Enemy")
+            if (other.gameObject.CompareTag("Enemy"))
             {
                 mechs.Remove(other.gameObject);
-                Debug.Log("EnemyDetection :: OnTriggerExit : Mech removed from list");
                 EventManager.Fire("onMechExit", other.gameObject);
                 _attackData.Attack(false);
 
                 if (mechs.Count > 0)
                 {
                     _targetEnemy = mechs[0];
-                    Debug.Log("EnemyDetection :: OnTriggerExit : if ()");
                 }
                 else
                 {
-                    Debug.Log("EnemyDetection :: OnTriggerExit : else");
                     _attackData.Attack(false);
                 }
             }

@@ -19,6 +19,7 @@ namespace Scripts.Managers
         private int _destroyedMechs = 0;
 
         private WaitForSeconds _spawnTimeYield;
+        private WaitForSeconds _resetMechYield;
 
         public override void Init()
         {
@@ -37,6 +38,7 @@ namespace Scripts.Managers
         private void Start()
         {
             _spawnTimeYield = new WaitForSeconds(5);
+            _resetMechYield = new WaitForSeconds(.5f);
         }
 
         public void StartWave()
@@ -58,7 +60,7 @@ namespace Scripts.Managers
             {
                 yield return _spawnTimeYield;
                 PoolManager.Instance.GetMech();
-                yield return new WaitForSeconds(.5f);
+                yield return _resetMechYield;
                 EventManager.Fire("onNewWave");
             }
         }
@@ -79,7 +81,6 @@ namespace Scripts.Managers
 
         public void DestroyedMechs()
         {
-            Debug.Log("SpawnManager :: DestroyedMechs()");
             _destroyedMechs++;
             CheckWave();
         }
