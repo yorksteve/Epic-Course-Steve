@@ -15,7 +15,7 @@ namespace Scripts
         private void OnEnable()
         {
             EventManager.Listen("onHealthBar", (Action<float, GameObject>)ModifyHealth);
-            EventManager.Listen("onResetHealth", (Action<float, GameObject>)SetMaxHealth);
+            EventManager.Listen("onResetHealthTower", (Action<float, GameObject>)SetMaxHealth);
         }
 
         void Update()
@@ -44,7 +44,7 @@ namespace Scripts
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onHealthBar", (Action<float, GameObject>)ModifyHealth);
-            EventManager.UnsubscribeEvent("onResetHealth", (Action<float, GameObject>)SetMaxHealth);
+            EventManager.UnsubscribeEvent("onResetHealthTower", (Action<float, GameObject>)SetMaxHealth);
         }
     }
 }

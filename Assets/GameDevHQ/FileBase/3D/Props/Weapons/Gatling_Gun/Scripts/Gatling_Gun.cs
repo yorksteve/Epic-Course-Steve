@@ -81,6 +81,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
                     health = 0f;
                     Destroy(this.gameObject);
                     EventManager.Fire("onTowerDestroyed", this.transform.position);
+                    EventManager.Fire("onResetHealthTower", 100, this.gameObject);
                 }
             }
         }

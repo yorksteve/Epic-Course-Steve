@@ -79,8 +79,6 @@ namespace Scripts
                 _agent = GetComponent<NavMeshAgent>();
                 _agent.SetDestination(_destination.position);
             }
-
-            EventManager.Fire("onResetHealth", 100, this.gameObject);
         }
 
         IEnumerator DestroyMech(GameObject mech)
@@ -121,7 +119,7 @@ namespace Scripts
                 rend.material.SetFloat("_fillAmount", 0f);
             }
             EventManager.Fire("onRecycleMech", mech);
-            EventManager.Fire("onResetHealth", _maxHealth, mech);
+            EventManager.Fire("onResetHealthMech", _maxHealth, mech);
             _mechColl.enabled = true;
             if (_parentConstraint != null)
             {

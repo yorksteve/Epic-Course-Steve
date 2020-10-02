@@ -56,16 +56,18 @@ namespace Scripts
             if (other.gameObject.tag == "Enemy")
             {
                 mechs.Remove(other.gameObject);
+                Debug.Log("EnemyDetection :: OnTriggerExit : Mech removed from list");
                 EventManager.Fire("onMechExit", other.gameObject);
                 _attackData.Attack(false);
 
                 if (mechs.Count > 0)
                 {
                     _targetEnemy = mechs[0];
-                    //_attackData.Attack(true);
+                    Debug.Log("EnemyDetection :: OnTriggerExit : if ()");
                 }
                 else
                 {
+                    Debug.Log("EnemyDetection :: OnTriggerExit : else");
                     _attackData.Attack(false);
                 }
             }

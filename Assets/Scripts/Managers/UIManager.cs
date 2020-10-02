@@ -150,6 +150,7 @@ namespace Scripts.Managers
             if (_gameStarted == true)
             {
                 SceneManager.LoadScene(0);
+                _gameStarted = false;
             }
         }
 

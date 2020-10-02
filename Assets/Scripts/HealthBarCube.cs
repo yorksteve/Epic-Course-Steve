@@ -20,7 +20,7 @@ namespace Scripts
         private void OnEnable()
         {
             EventManager.Listen("onHealthBarCube", (Action<float, GameObject>)ModifyHealth);
-            EventManager.Listen("onResetHealth", (Action<float, GameObject>)ModifyHealth);
+            EventManager.Listen("onResetHealthMech", (Action<float, GameObject>)ModifyHealth);
         }
 
         private void Awake()
@@ -51,7 +51,7 @@ namespace Scripts
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onHealthBarCube", (Action<float, GameObject>)ModifyHealth);
-            EventManager.UnsubscribeEvent("onResetHealth", (Action<float, GameObject>)ModifyHealth);
+            EventManager.UnsubscribeEvent("onResetHealthMech", (Action<float, GameObject>)ModifyHealth);
         }
     }
 }
