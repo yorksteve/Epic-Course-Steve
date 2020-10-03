@@ -22,7 +22,7 @@ namespace Scripts
         private Transform _rotationPoint;
 
         [SerializeField] private float _health;
-        [SerializeField] private float _maxHealth;
+        [SerializeField] private static float _maxHealth = 100f;
         [SerializeField] private int _mechWarFund;
         [SerializeField] private float _damageAmount;
         private float _speed = 5f;
@@ -30,11 +30,8 @@ namespace Scripts
         private bool _mechKilled = false;
         private WaitForSeconds _destroyMechYield;
 
-
-        private void Start()
+        private void Awake()
         {
-            _destination = SpawnManager.Instance.RequestDestination();
-            _maxHealth = _health;
 
             if (_agent != null)
             {
@@ -46,7 +43,7 @@ namespace Scripts
                 _agent.SetDestination(_destination.position);
             }
             _rotationPoint = _mechRotation.GetComponent<Transform>();
-            
+
             _rends = GetComponentsInChildren<Renderer>();
 
             if (_parentConstraint != null)
@@ -55,6 +52,11 @@ namespace Scripts
             }
 
             _destroyMechYield = new WaitForSeconds(3);
+        }
+
+        private void Start()
+        {
+            _destination = SpawnManager.Instance.RequestDestination();
         }
 
         private void OnEnable()

@@ -19,7 +19,7 @@ namespace Scripts
             EventManager.Listen("onResetHealthTower", (Action<float, GameObject>)SetMaxHealth);
         }
 
-        private void Start()
+        private void Awake()
         {
             _mainCamera = Camera.main;
         }

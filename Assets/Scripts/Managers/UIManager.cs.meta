@@ -3,7 +3,23 @@ guid: cc5137ab0e13a5c40a4b8e87cacbab87
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _sellDisplay: {instanceID: 0}
+  - _levelStatus: {instanceID: 0}
+  - _dynamicUI: {instanceID: 0}
+  - _armoryDisplay: {instanceID: 0}
+  - _warfundDisplay: {instanceID: 0}
+  - _playbackSpeedDisplay: {instanceID: 0}
+  - _restartDisplay: {instanceID: 0}
+  - _livesAndWaveDisplay: {instanceID: 0}
+  - _warFunds: {instanceID: 0}
+  - _sellAmount: {instanceID: 0}
+  - _lifeCount: {instanceID: 0}
+  - _waveCount: {instanceID: 0}
+  - _levelStatusText: {instanceID: 0}
+  - _statusIndicator: {instanceID: 0}
+  - _playButton: {fileID: 4580968703657314531, guid: 0e9dd3e29007aaa42a2764df42920516,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

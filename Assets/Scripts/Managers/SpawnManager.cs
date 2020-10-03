@@ -35,7 +35,7 @@ namespace Scripts.Managers
             EventManager.Listen("onNextWave", StartWave);
         }
 
-        private void Start()
+        private void Awake()
         {
             _spawnTimeYield = new WaitForSeconds(5);
             _resetMechYield = new WaitForSeconds(.5f);
