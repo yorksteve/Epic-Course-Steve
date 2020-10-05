@@ -91,6 +91,12 @@ namespace Scripts.Managers
             StartWave();
         }
 
+        public void LoadLevel(int wave)
+        {
+            _waveCount = wave;
+            StartWave();
+        }
+
         public Transform RequestDestination()
         {
             return _destination;

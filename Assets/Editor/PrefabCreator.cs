@@ -2,9 +2,8 @@
 using UnityEditor;
 
 #if UNITY_EDITOR
-public class ToolsEditorWindow : EditorWindow
+public class PrefabCreator : EditorWindow
 {
-    string editorName = "Prefab Manipulator";
     private bool _foldoutBool = true;
     private Color _newColorMech;
     private Color _newColorDissolve;
@@ -15,23 +14,20 @@ public class ToolsEditorWindow : EditorWindow
     private float _attackRadius;
     private Object _rotationPoint;
 
-    // Add menu named "My Window" to the Window menu
-    [MenuItem("Window/My Window")]
+    [MenuItem("Window/Prefab Creator")]
     static void Init()
     {
-        // Get existing open window or if none, make a new one:
-        ToolsEditorWindow window = (ToolsEditorWindow)EditorWindow.GetWindow(typeof(ToolsEditorWindow));
+        PrefabCreator window = (PrefabCreator)EditorWindow.GetWindow(typeof(PrefabCreator));
         window.Show();
     }
 
     void OnGUI()
     {
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-        editorName = EditorGUILayout.TextField("Text Field", editorName);
 
         // Ability to create and alter mechs and towers
 
-        EditorGUILayout.BeginFoldoutHeaderGroup(_foldoutBool, "Mech");
+        EditorGUILayout.BeginFoldoutHeaderGroup(_foldoutBool, "Mech", null);
         if (_foldoutBool)
         {
             EditorGUILayout.BeginHorizontal();
@@ -76,6 +72,15 @@ public class ToolsEditorWindow : EditorWindow
                 
             }
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Save Changes"))
+                UpdatePrefab();
+            if (GUILayout.Button("Create New Prefab"))
+                CreatePrefab();
+            EditorGUILayout.EndHorizontal();
         }
 
         EditorGUILayout.EndFoldoutHeaderGroup();
@@ -113,6 +118,15 @@ public class ToolsEditorWindow : EditorWindow
             EditorGUILayout.BeginHorizontal();
             _attackRadius = EditorGUILayout.FloatField("Attack Radius", _attackRadius);
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Save Changes"))
+                UpdatePrefab();
+            if (GUILayout.Button("Create New Prefab"))
+                CreatePrefab();
+            EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
     }
@@ -133,6 +147,16 @@ public class ToolsEditorWindow : EditorWindow
     }
 
     private void ChangeSpeed()
+    {
+
+    }
+
+    private void CreatePrefab()
+    {
+
+    }
+
+    private void UpdatePrefab()
     {
 
     }
