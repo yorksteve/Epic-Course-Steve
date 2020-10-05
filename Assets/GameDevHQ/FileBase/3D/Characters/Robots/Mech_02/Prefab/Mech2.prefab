@@ -457,10 +457,8 @@ MonoBehaviour:
   _mechColl: {fileID: -5446082025213779002}
   _parentConstraint: {fileID: 0}
   _health: 100
-  _maxHealth: 100
   _mechWarFund: 50
   _damageAmount: 2
-  _isChecked: 0
 --- !u!1 &1088550950582580
 GameObject:
   m_ObjectHideFlags: 0
@@ -3474,6 +3472,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _maxHealth
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409291006650868204, guid: 0399c73d78a2d60459d814f8aa8688c4,
+        type: 3}
+      propertyPath: _maxScale
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8409291006650868205, guid: 0399c73d78a2d60459d814f8aa8688c4,
         type: 3}

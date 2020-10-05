@@ -1588,10 +1588,8 @@ MonoBehaviour:
   _mechColl: {fileID: -3099949395931670192}
   _parentConstraint: {fileID: 4393546879519207715}
   _health: 100
-  _maxHealth: 100
   _mechWarFund: 25
   _damageAmount: 1
-  _isChecked: 0
 --- !u!65 &-3099949395931670192
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2137,7 +2135,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: -0.17732793, y: 0.011147378, z: -1.0242804}
   m_RotationAtRest: {x: 2.6948192, y: 0, z: -1.9783258}
   m_TranslationOffsets:
-  - {x: -0.0064935684, y: 0.22911608, z: 0.039954185}
+  - {x: -0.0064931805, y: 0.22911608, z: 0.03995442}
   m_RotationOffsets:
   - {x: 89.32943, y: -88.39205, z: -179.80675}
   m_AffectTranslationX: 0
@@ -2561,6 +2559,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _maxHealth
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409291006650868204, guid: 0399c73d78a2d60459d814f8aa8688c4,
+        type: 3}
+      propertyPath: _maxScale
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8409291006650868205, guid: 0399c73d78a2d60459d814f8aa8688c4,
         type: 3}

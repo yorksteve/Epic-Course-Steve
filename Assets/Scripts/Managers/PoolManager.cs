@@ -23,12 +23,15 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        private void Start()
+        private void Awake()
         {
             _startPoint = SpawnManager.Instance.RequestStartPoint();
             _waveCount = SpawnManager.Instance.RequestWave();
-            _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
+        }
 
+        private void Start()
+        {
+            _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
         }
 
         private void OnEnable()

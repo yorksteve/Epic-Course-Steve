@@ -11,7 +11,7 @@ namespace Scripts
     {
         [SerializeField] private GameObject _currentObj;
         private GameObject _mainCamera;
-        private float _maxScale = 10f;
+        [SerializeField] private float _maxScale;// = 10f;
         [SerializeField] private float _maxHealth;
         private float _currentHealth;
         private Material _material;
