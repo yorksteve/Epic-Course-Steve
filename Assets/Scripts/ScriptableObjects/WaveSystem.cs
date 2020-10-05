@@ -10,7 +10,7 @@ namespace Scripts.ScriptableObjects
     {
         public int id;
         public List<GameObject> sequence;
-        public int waveDuration;
+        public int spawnDelay;
 
         public void StartWave()
         {

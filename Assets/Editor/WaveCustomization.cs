@@ -24,23 +24,32 @@ public class WaveCustomization : EditorWindow
     {
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
+        EditorGUILayout.Space();
 
-        EditorGUILayout.BeginHorizontal();
-        _waveNumber = (int)EditorGUILayout.IntField("Wave Number", _waveNumber);
-        if (GUILayout.Button("Load"))
-            LoadWave();
-        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Foldout(_mechsClicked, "Mechs", true);
+        if (_mechsClicked == true)
+        {
+            EditorGUILayout.BeginHorizontal();
+            _waveNumber = (int)EditorGUILayout.IntField("Wave Number", _waveNumber);
+            if (GUILayout.Button("Load"))
+                LoadWave();
+            EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginFoldoutHeaderGroup(_mechsClicked, "Mechs");
+            _mech = (GameObject)EditorGUILayout.ObjectField("Mechs", _mech, typeof(GameObject));
+            _numberOfMechs = (int)EditorGUILayout.IntField("Amount in Wave", _numberOfMechs);
+        }
+        
+
+        //EditorGUILayout.BeginFoldoutHeaderGroup(_mechsClicked, "Mechs");
         //for (int i = 0; i < _mechs.Length; i++)
         //{
         //    _mechs[i] = (GameObject)EditorGUILayout.ObjectField("Mech", _mechs[i], typeof(GameObject));
         //    _numberOfMechs = (int)EditorGUILayout.IntField("Amount in Wave", _numberOfMechs);
         //}
 
-        _mech = (GameObject)EditorGUILayout.ObjectField("Mechs", _mech, typeof(GameObject));
-        _numberOfMechs = (int)EditorGUILayout.IntField("Amount in Wave", _numberOfMechs);
-        EditorGUILayout.EndFoldoutHeaderGroup();
+        
+        //EditorGUILayout.EndFoldoutHeaderGroup();
+        
 
     }
 

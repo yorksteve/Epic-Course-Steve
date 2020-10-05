@@ -1,4 +1,5 @@
 ﻿using Scripts.Extra;
+using Scripts.ScriptableObjects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace Scripts.Managers
         private int _waveCount = 1;
         [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _destination;
+
+        private List<WaveSystem> _wave;
 
         public int mechsInWave;
         private int _amountOfMechs = 10;
@@ -43,6 +46,8 @@ namespace Scripts.Managers
 
         public void StartWave()
         {
+            
+
             EventManager.Fire("onWaveCount", _waveCount);
             if (_waveCount <= 10)
             {

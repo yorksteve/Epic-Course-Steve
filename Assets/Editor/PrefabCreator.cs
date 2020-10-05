@@ -25,8 +25,10 @@ public class PrefabCreator : EditorWindow
     {
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
+        EditorGUILayout.Space();
         // Ability to create and alter mechs and towers
 
+        EditorGUI.BeginChangeCheck();
         EditorGUILayout.BeginFoldoutHeaderGroup(_foldoutBool, "Mech", null);
         if (_foldoutBool)
         {
@@ -88,6 +90,7 @@ public class PrefabCreator : EditorWindow
         EditorGUILayout.Space();
         EditorGUILayout.Space();
 
+        EditorGUI.BeginChangeCheck();
         EditorGUILayout.BeginFoldoutHeaderGroup(_foldoutBool, "Tower");
         if (_foldoutBool)
         {
@@ -105,6 +108,8 @@ public class PrefabCreator : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             _rotationPoint = EditorGUILayout.ObjectField("Rotation Point", _rotationPoint, typeof(Transform), true);
+            if (GUILayout.Button("Assign"))
+                //Assign the rotation point
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
@@ -129,6 +134,7 @@ public class PrefabCreator : EditorWindow
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        EditorGUI.EndChangeCheck();
     }
 
     private void ChangeColor()
@@ -138,7 +144,7 @@ public class PrefabCreator : EditorWindow
 
     private void ChangeHealth()
     {
-
+        Debug.Log("ChangeHealth()");
     }
 
     private void ChangeDamage()
