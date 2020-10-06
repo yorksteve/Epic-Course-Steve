@@ -11,7 +11,8 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _mechs;
         [SerializeField] private GameObject _mechContainer;
-        [SerializeField] private List<GameObject> _mechPool;
+        [SerializeField] private List<GameObject> _mech1Pool;
+        [SerializeField] private List<GameObject> _mech2Pool;
 
         private Transform _startPoint;
         private int _waveCount;
@@ -25,7 +26,8 @@ namespace Scripts.Managers
 
         private void Start()
         {
-            _mechPool = GenerateMechs(_amountOfMechs);
+            _mech1Pool = GenerateMech1(_amountOfMechs);
+            _mech2Pool = GenerateMech2(_amountOfMechs);
             _startPoint = SpawnManager.Instance.RequestStartPoint();
             //_waveCount = SpawnManager.Instance.RequestWave();
         }
@@ -36,31 +38,48 @@ namespace Scripts.Managers
             EventManager.Listen("onRecycleMech", (Action<GameObject>)RecycleMech);
         }
 
-        GameObject CreateMech()
+        GameObject CreateMech(int i)
         {
-            GameObject mech = Instantiate(_mechs[UnityEngine.Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity); // Need to change this
+            GameObject mech = Instantiate(_mechs[i], _startPoint.position, Quaternion.identity);
             mech.transform.parent = _mechContainer.transform;
             mech.SetActive(false);
-            _mechPool.Add(mech);
+            if (i == 0)
+            {
+                _mech1Pool.Add(mech);
+            }
+            else
+            {
+                _mech2Pool.Add(mech);
+            }
 
             return mech;
         }
 
 
-        List<GameObject> GenerateMechs(int amountOfMechs)
+        List<GameObject> GenerateMech1(int amountOfMechs)
         {
             for (int i = 0; i < amountOfMechs; i++)
             {
-                GameObject mech = CreateMech();
+                GameObject mech1 = CreateMech(0);
             }
 
-            return _mechPool;
+            return _mech1Pool;
+        }
+
+        List<GameObject> GenerateMech2(int amountOfMechs)
+        {
+            for (int i = 0; i < amountOfMechs; i++)
+            {
+                GameObject mech2 = CreateMech(1);
+            }
+
+            return _mech2Pool;
         }
 
 
-        public GameObject GetMech()
+        public GameObject GetMech1()
         {
-            foreach (var mech in _mechPool)
+            foreach (var mech in _mech1Pool)
             {
                 if (mech.activeInHierarchy == false)
                 {
@@ -70,7 +89,22 @@ namespace Scripts.Managers
                 }
             }
 
-            return CreateMech();
+            return CreateMech(0);
+        }
+
+        public GameObject GetMech2()
+        {
+            foreach (var mech in _mech2Pool)
+            {
+                if (mech.activeInHierarchy == false)
+                {
+                    mech.transform.position = _startPoint.position;
+                    mech.SetActive(true);
+                    return mech;
+                }
+            }
+
+            return CreateMech(1);
         }
 
         public void RecycleMech(GameObject mech)
