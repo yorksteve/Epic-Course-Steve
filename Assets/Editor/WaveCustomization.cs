@@ -9,17 +9,17 @@ public class WaveCustomization : EditorWindow
     private int _waveNumber;
     private int _spawnDelay;
     private int _waveDuration;
+    private int _waveID;
     private int _numberOfMechs;
     private bool _waveSelected = true;
     private bool _mechsClicked = true;
     private string _waveStatus = "Select a Wave";
-    //private GameObject[] _mechs;
+    private GameObject[] _mechs;
     private GameObject _mech;
 
     [MenuItem("Window/Wave Customization")]
     static void Init()
     {
-        // Get existing open window or if none, make a new one:
         WaveCustomization window = (WaveCustomization)EditorWindow.GetWindow(typeof(WaveCustomization));
         window.Show();
     }
@@ -30,14 +30,20 @@ public class WaveCustomization : EditorWindow
 
         EditorGUILayout.Space();
 
-        _waveSelected = EditorGUILayout.Foldout(_waveSelected, _waveStatus);
-
-        if (_waveSelected)
+        _waveNumber = EditorGUILayout.IntField("Wave ", _waveNumber);
+        if (GUILayout.Button("Load Data"))
         {
+            _spawnDelay = SpawnManager.Instance.RequestSpawnDelay(_waveNumber);
+            _waveDuration = SpawnManager.Instance.RequestWaveDuration(_waveNumber);
+            //_mechs = 
+            _waveID = SpawnManager.Instance.RequestWaveID(_waveNumber);
+
+
             _spawnDelay = (int)EditorGUILayout.IntField("Spawn Delay", _spawnDelay);
             _waveDuration = (int)EditorGUILayout.IntField("Wave Duration", _waveDuration);
 
             _numberOfMechs = (int)EditorGUILayout.IntField("Amount Of Mechs in Wave", _numberOfMechs);
+
             _mechsClicked = EditorGUILayout.Foldout(_mechsClicked, "Mechs");
             if (_mechsClicked)
             {
@@ -52,10 +58,11 @@ public class WaveCustomization : EditorWindow
             if (GUILayout.Button("Load"))
                 LoadWave();
 
+            if (GUILayout.Button("Update Wave"))
+                UpdateWave();
+
             if (GUILayout.Button("Create New"))
                 NewWave();
-
-            _waveStatus = "Wave " + _waveNumber;
         }
     }
 
@@ -65,11 +72,15 @@ public class WaveCustomization : EditorWindow
         //SpawnManager.Instance.LoadLevel(_waveNumber);
     }
 
-    private void NewWave()
+    private void UpdateWave()
     {
 
     }
 
+    private void NewWave()
+    {
+
+    }
 }
 #endif
 

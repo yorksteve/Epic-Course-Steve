@@ -17,11 +17,6 @@ namespace Scripts.Managers
         private int _currentWave;
         private int _waveCount = 1;
 
-        //public int mechsInWave;
-        //private int _successfulMechs = 0;
-        //private int _destroyedMechs = 0;
-
-        //private WaitForSeconds _spawnTimeYield;
         //private WaitForSeconds _resetMechYield;
 
         public override void Init()
@@ -46,22 +41,7 @@ namespace Scripts.Managers
 
         public void StartWave()
         {
-            //var currentWave = _wave[_currentWave];
-
-            //mechsInWave = currentWave.sequence.Count;
-            //_waveCount = currentWave.id;
-
-
             StartCoroutine(SpawnTime());
-
-            //if (_waveCount <= 10)
-            //{
-            //    mechsInWave =
-
-            //    StartCoroutine(SpawnTime());
-
-            //    _waveCount++;
-            //}
         }
 
         IEnumerator SpawnTime()
@@ -74,46 +54,19 @@ namespace Scripts.Managers
                 _waveCount++;
                 //yield return _resetMechYield;
             }
-
-            //for (int i = 0; i <= mechsInWave; i++)
-            //{
-            //yield return _spawnTimeYield;
-            //PoolManager.Instance.GetMech();
-            
-            //}
         }
 
-        //public void CheckWave()
-        //{
-        //    if (mechsInWave == (_successfulMechs + _destroyedMechs))
-        //    {
-        //        StartCoroutine(UIManager.Instance.NextWave());
-        //    }
-        //}
+        public void RestartGame()
+        {
+            _waveCount = 1;
+            StartWave();
+        }
 
-        //public void SuccessfulMechs()
-        //{
-        //    _successfulMechs++;
-        //    CheckWave();
-        //}
-
-        //public void DestroyedMechs()
-        //{
-        //    _destroyedMechs++;
-        //    CheckWave();
-        //}
-
-        //public void RestartGame()
-        //{
-        //    _waveCount = 1;
-        //    StartWave();
-        //}
-
-        //public void LoadLevel(int wave)
-        //{
-        //    _waveCount = wave;
-        //    StartWave();
-        //}
+        public void LoadLevel(int wave)
+        {
+            _waveCount = wave;
+            StartWave();
+        }
 
         public Transform RequestDestination()
         {
@@ -125,15 +78,32 @@ namespace Scripts.Managers
             return _startPoint;
         }
 
-        //public int RequestWave()
-        //{
-        //    return _waveCount;
-        //}
+        public List<GameObject> RequestSequence(int number)
+        {
+            var currentWave = _wave[number];
+            return currentWave.sequence;
+        }
+
+        public int RequestWaveID(int number)
+        {
+            var currentWave = _wave[number];
+            return currentWave.id;
+        }
+
+        public int RequestSpawnDelay(int number)
+        {
+            var currentWave = _wave[number];
+            return currentWave.spawnDelay;
+        }
+
+        public int RequestWaveDuration(int number)
+        {
+            var currentWave = _wave[number];
+            return currentWave.waveDuration;
+        }
 
         private void OnDisable()
         {
-            //EventManager.UnsubscribeEvent("onSuccess", SuccessfulMechs);
-            //EventManager.UnsubscribeEvent("onMechDestroyed", DestroyedMechs);
             EventManager.UnsubscribeEvent("onDreadnaught", StartWave);
             EventManager.UnsubscribeEvent("onNextWave", StartWave);
         }

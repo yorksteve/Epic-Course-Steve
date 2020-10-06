@@ -18,8 +18,7 @@ namespace Scripts.ScriptableObjects
         {
             foreach (var mech in sequence)
             {
-                PoolManager.Instance.GetMech1();
-                PoolManager.Instance.GetMech2();
+                PoolManager.Instance.GetMech();
                 EventManager.Fire("onNewWave");
                 yield return new WaitForSeconds(spawnDelay);
             }

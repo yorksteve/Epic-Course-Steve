@@ -11,8 +11,7 @@ namespace Scripts.Managers
     {
         [SerializeField] private GameObject[] _mechs;
         [SerializeField] private GameObject _mechContainer;
-        [SerializeField] private List<GameObject> _mech1Pool;
-        [SerializeField] private List<GameObject> _mech2Pool;
+        [SerializeField] private List<GameObject> _mechPool;
 
         private Transform _startPoint;
         private int _waveCount;
@@ -26,10 +25,8 @@ namespace Scripts.Managers
 
         private void Start()
         {
-            _mech1Pool = GenerateMech1(_amountOfMechs);
-            _mech2Pool = GenerateMech2(_amountOfMechs);
+            _mechPool = GenerateMech1(_amountOfMechs);
             _startPoint = SpawnManager.Instance.RequestStartPoint();
-            //_waveCount = SpawnManager.Instance.RequestWave();
         }
 
         private void OnEnable()
@@ -42,16 +39,9 @@ namespace Scripts.Managers
         {
             GameObject mech = Instantiate(_mechs[i], _startPoint.position, Quaternion.identity);
             mech.transform.parent = _mechContainer.transform;
-            mech.SetActive(false);
-            if (i == 0)
-            {
-                _mech1Pool.Add(mech);
-            }
-            else
-            {
-                _mech2Pool.Add(mech);
-            }
-
+            mech.SetActive(false);            
+            _mechPool.Add(mech);
+            
             return mech;
         }
 
@@ -63,7 +53,7 @@ namespace Scripts.Managers
                 GameObject mech1 = CreateMech(0);
             }
 
-            return _mech1Pool;
+            return _mechPool;
         }
 
         List<GameObject> GenerateMech2(int amountOfMechs)
@@ -73,13 +63,13 @@ namespace Scripts.Managers
                 GameObject mech2 = CreateMech(1);
             }
 
-            return _mech2Pool;
+            return _mechPool;
         }
 
 
-        public GameObject GetMech1()
+        public GameObject GetMech()
         {
-            foreach (var mech in _mech1Pool)
+            foreach (var mech in _mechPool)
             {
                 if (mech.activeInHierarchy == false)
                 {
@@ -89,22 +79,7 @@ namespace Scripts.Managers
                 }
             }
 
-            return CreateMech(0);
-        }
-
-        public GameObject GetMech2()
-        {
-            foreach (var mech in _mech2Pool)
-            {
-                if (mech.activeInHierarchy == false)
-                {
-                    mech.transform.position = _startPoint.position;
-                    mech.SetActive(true);
-                    return mech;
-                }
-            }
-
-            return CreateMech(1);
+            return CreateMech(0); // Add in generic
         }
 
         public void RecycleMech(GameObject mech)

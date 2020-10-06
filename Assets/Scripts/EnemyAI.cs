@@ -32,16 +32,6 @@ namespace Scripts
 
         private void Awake()
         {
-
-            if (_agent != null)
-            {
-                _agent.SetDestination(_destination.position);
-            }
-            else
-            {
-                _agent = GetComponent<NavMeshAgent>();
-                _agent.SetDestination(_destination.position);
-            }
             _rotationPoint = _mechRotation.GetComponent<Transform>();
 
             _rends = GetComponentsInChildren<Renderer>();
@@ -57,6 +47,16 @@ namespace Scripts
         private void Start()
         {
             _destination = SpawnManager.Instance.RequestDestination();
+
+            if (_agent != null)
+            {
+                _agent.SetDestination(_destination.position);
+            }
+            else
+            {
+                _agent = GetComponent<NavMeshAgent>();
+                _agent.SetDestination(_destination.position);
+            }
         }
 
         private void OnEnable()
