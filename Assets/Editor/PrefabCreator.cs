@@ -71,7 +71,7 @@ public class PrefabCreator : EditorWindow
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
-                //_health = EditorGUILayout.FloatField("Health", _mech.FindProperty("_maxHealth").floatValue);
+                //_health = (float)EditorGUILayout.FloatField("Health", _health = _mech.FindProperty("_maxHealth").floatValue);
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();

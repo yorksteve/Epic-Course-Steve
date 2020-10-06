@@ -33,7 +33,7 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        private void Awake()
+        private void Start()
         {
             _towerData = new ITower[_tower.Length];
             _attackData = new IAttack[_tower.Length];

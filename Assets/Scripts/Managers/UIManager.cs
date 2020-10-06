@@ -14,7 +14,6 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _upgradeDisplay;
         [SerializeField] private GameObject _sellDisplay;
         [SerializeField] private GameObject _levelStatus;
-        //[SerializeField] private Transform _dynamicUI;
 
         [SerializeField] private Image _armoryDisplay;
         [SerializeField] private Image _warfundDisplay;
@@ -30,8 +29,6 @@ namespace Scripts.Managers
         [SerializeField] private Text _waveCount;
         [SerializeField] private Text _levelStatusText;
         [SerializeField] private Text _statusIndicator;
-
-        //[SerializeField] private Button _playButton;
 
         private int _lives = 100;
         private int _startCountDown = 5;
@@ -60,18 +57,9 @@ namespace Scripts.Managers
 
         public void Start()
         {
-            //_levelStatus.transform.SetParent(_dynamicUI);
-           //_playButton.transform.SetParent(_dynamicUI);
-            //_sellDisplay.transform.SetParent(_dynamicUI);
-            //for (int i = 0; i < _upgradeDisplay.Length; i++)
-            //{
-            //    _upgradeDisplay[i].transform.SetParent(_dynamicUI);
-            //}
             _gameStarted = false;
             _levelStatusText.text = "Epic Tower Defense";
             _levelStatus.SetActive(true);
-            //Instantiate(_levelStatus, _dynamicUI);
-            //Instantiate(_playButton);
             _lifeCount.text = "100";
  
             _countDownYield = new WaitForSeconds(1);
@@ -91,7 +79,6 @@ namespace Scripts.Managers
                     {
                         _purchaseButton.gameObject.GetComponent<Button>().enabled = false;
                         colorChange.a = 1;
-                        //Instantiate(_upgradeDisplay[0]);
                         _upgradeDisplay[0].SetActive(true);
                         Debug.Log("Not enough WarFunds to upgrade tower");
                     }
@@ -99,7 +86,6 @@ namespace Scripts.Managers
                     {
                         _purchaseButton.gameObject.GetComponent<Button>().enabled = true;
                         colorChange.a = 0;
-                        //Instantiate(_upgradeDisplay[0]);
                         _upgradeDisplay[0].SetActive(true);
                     }
                 }
@@ -116,7 +102,6 @@ namespace Scripts.Managers
                     {
                         _purchaseButton.gameObject.GetComponent<Button>().enabled = false;  // Disable the upgrade button
                         colorChange.a = 1; // Gray out the upgrade button
-                        //Instantiate(_upgradeDisplay[1]);
                         _upgradeDisplay[1].SetActive(true);
                         Debug.Log("Not enough WarFunds to upgrade tower");
                     }
@@ -124,7 +109,6 @@ namespace Scripts.Managers
                     {
                         _purchaseButton.gameObject.GetComponent<Button>().enabled = true;
                         colorChange.a = 0;
-                        //Instantiate(_upgradeDisplay[1]);
                         _upgradeDisplay[1].SetActive(true);
                     }
                 }
@@ -135,33 +119,28 @@ namespace Scripts.Managers
         public void SellingTower(int towerWorth)
         {
             _sellAmount.text = towerWorth.ToString();
-            //Instantiate(_sellDisplay);
             _sellDisplay.SetActive(true);
         }
 
         public void SellTower()
         {
             TowerManager.Instance.SellTower();
-            //Destroy(_sellDisplay);
             _sellDisplay.SetActive(false);
         }
 
         public void CancelSale()
         {
-            //Destroy(_sellDisplay);
             _sellDisplay.SetActive(false);
         }
 
         public void PurchaseUpgrade(int upgradeIndex)
         {
             TowerManager.Instance.UpgradeTower();
-            //Destroy(_upgradeDisplay[upgradeIndex]);
             _upgradeDisplay[upgradeIndex].SetActive(false);
         }
 
         public void CancelUpgrade(int i)
         {
-            //Destroy(_upgradeDisplay[i]);
             _upgradeDisplay[i].SetActive(false);
         }
 
@@ -185,9 +164,7 @@ namespace Scripts.Managers
             {
                 Time.timeScale = 0;
                 _levelStatusText.text = "Paused";
-                //Instantiate(_levelStatus, _dynamicUI);
                 _levelStatus.SetActive(true);
-                //Instantiate(_playButton);
             }
         }
 
@@ -196,16 +173,13 @@ namespace Scripts.Managers
             if (Time.timeScale == 0 && _gameStarted == true)
             {
                 Time.timeScale = 1;
-                //Destroy(_levelStatus);
                 _levelStatus.SetActive(false);
-                //Destroy(_playButton);
             }
 
             else if (_gameStarted == false)
             {
                 StartCoroutine(StartingGame());
                 _gameStarted = true;
-                //Destroy(_playButton);
             }
         }
 
@@ -249,7 +223,6 @@ namespace Scripts.Managers
             {
                 _lives = 0;
                 _levelStatusText.text = "Game Over";
-                //Instantiate(_levelStatus, _dynamicUI);
                 _levelStatus.SetActive(true);
             }
         }
@@ -262,7 +235,6 @@ namespace Scripts.Managers
             {
                 _waveCount.text = (10.ToString() + " / 10");
                 _levelStatusText.text = "LEVEL COMPLETE";
-                //Instantiate(_levelStatus, _dynamicUI);
                 _levelStatus.SetActive(true);
             }
         }
@@ -276,7 +248,6 @@ namespace Scripts.Managers
                 yield return _countDownYield;
                 if (_startCountDown == 0)
                 {
-                    //Destroy(_levelStatus);
                     _levelStatus.SetActive(false);
                     EventManager.Fire("onStartingGame");
                 }
@@ -288,13 +259,11 @@ namespace Scripts.Managers
             while (_nextWaveCountDown > 0)
             {
                 _levelStatusText.text = ("Next Wave in \n" + _nextWaveCountDown.ToString());
-                //Instantiate(_levelStatus, _dynamicUI);
                 _levelStatus.SetActive(true);
                 _nextWaveCountDown--;
                 yield return _countDownYield;
                 if (_nextWaveCountDown == 0)
                 {
-                    //Destroy(_levelStatus);
                     _levelStatus.SetActive(false);
                     SpawnManager.Instance.StartWave();
                 }

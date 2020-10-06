@@ -12,12 +12,15 @@ namespace Scripts.ScriptableObjects
         public int id;
         public List<GameObject> sequence;
         public int spawnDelay;
+        public int waveDuration = 10;
 
-        public void StartWave()
+        public IEnumerator StartWaveSystem()
         {
             foreach (var mech in sequence)
             {
                 PoolManager.Instance.GetMech();
+                EventManager.Fire("onNewWave");
+                yield return new WaitForSeconds(spawnDelay);
             }
         }
     }

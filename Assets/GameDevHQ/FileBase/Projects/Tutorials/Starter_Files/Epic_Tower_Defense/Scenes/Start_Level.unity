@@ -4619,7 +4619,6 @@ MonoBehaviour:
   _mechs:
   - {fileID: 1637921026644932, guid: b6f9eb08e9dcb484fbccc49d65f561ab, type: 3}
   - {fileID: 1079767520691416, guid: fed6fd85e4a83418485118c22ed9f184, type: 3}
-  _amountOfMechs: 10
   _mechContainer: {fileID: 1104665871}
   _mechPool: []
 --- !u!4 &617139271
@@ -9920,7 +9919,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startPoint: {fileID: 818718050}
   _destination: {fileID: 1207510476}
-  mechsInWave: 0
+  _wave:
+  - {fileID: 11400000, guid: 6a225c4d4758bcb499ff48ae3d1d79a6, type: 2}
+  - {fileID: 11400000, guid: 502531eca2240f341a9f76d5b2a1535d, type: 2}
+  - {fileID: 11400000, guid: 3571858853d0d2144aaf73a00263e489, type: 2}
+  - {fileID: 11400000, guid: fef1d8c2e35e34549b0b7fc2aa245919, type: 2}
+  - {fileID: 11400000, guid: e88387324960cf24cbdb4b2bdafbfd60, type: 2}
+  - {fileID: 11400000, guid: 76c49cb954f56fb4e96721385a086957, type: 2}
+  - {fileID: 11400000, guid: 5c39daab6587f344380878ad1d9306d3, type: 2}
+  - {fileID: 11400000, guid: 498496ff82dfabb489b97e97ba2229ec, type: 2}
+  - {fileID: 11400000, guid: 7b71f84c4d22aeb4a8cc0b6ef1dcb932, type: 2}
+  - {fileID: 11400000, guid: 400fc61d0cc964a4fbfd4fcc77c7296d, type: 2}
 --- !u!4 &1490091709
 Transform:
   m_ObjectHideFlags: 0

@@ -10,19 +10,19 @@ namespace Scripts.Managers
 {
     public class SpawnManager : MonoSingleton<SpawnManager>
     {
-        //private int _waveCount = 1;
         [SerializeField] private Transform _startPoint;
         [SerializeField] private Transform _destination;
+        [SerializeField] private List<WaveSystem> _wave;
 
-        private List<WaveSystem> _wave;
+        private int _currentWave;
+        private int _waveCount = 1;
 
         //public int mechsInWave;
-        //private int _amountOfMechs = 10;
         //private int _successfulMechs = 0;
         //private int _destroyedMechs = 0;
 
         //private WaitForSeconds _spawnTimeYield;
-        private WaitForSeconds _resetMechYield;
+        //private WaitForSeconds _resetMechYield;
 
         public override void Init()
         {
@@ -40,20 +40,25 @@ namespace Scripts.Managers
 
         private void Start()
         {
-            //_spawnTimeYield = new WaitForSeconds(5);
+            //_spawnTimeYield = new WaitForSeconds(_wave[_currentWave].spawnDelay);
             //_resetMechYield = new WaitForSeconds(.5f);
         }
 
         public void StartWave()
         {
-            
+            //var currentWave = _wave[_currentWave];
 
-            //EventManager.Fire("onWaveCount", _waveCount);
+            //mechsInWave = currentWave.sequence.Count;
+            //_waveCount = currentWave.id;
+
+
+            StartCoroutine(SpawnTime());
+
             //if (_waveCount <= 10)
             //{
-            //    mechsInWave = _amountOfMechs * _waveCount;
+            //    mechsInWave =
 
-                StartCoroutine(SpawnTime());
+            //    StartCoroutine(SpawnTime());
 
             //    _waveCount++;
             //}
@@ -61,12 +66,20 @@ namespace Scripts.Managers
 
         IEnumerator SpawnTime()
         {
+            foreach (var wave in _wave)
+            {
+                EventManager.Fire("onWaveCount", _waveCount);
+                wave.StartWaveSystem();
+                yield return new WaitForSeconds(wave.waveDuration);
+                _waveCount++;
+                //yield return _resetMechYield;
+            }
+
             //for (int i = 0; i <= mechsInWave; i++)
             //{
-                //yield return _spawnTimeYield;
-                //PoolManager.Instance.GetMech();
-                yield return _resetMechYield;
-                EventManager.Fire("onNewWave");
+            //yield return _spawnTimeYield;
+            //PoolManager.Instance.GetMech();
+            
             //}
         }
 

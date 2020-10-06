@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using YorkSDK.Util;
 using System;
-
+using Scripts.ScriptableObjects;
 
 namespace Scripts.Managers
 {
     public class PoolManager : MonoSingleton<PoolManager>
     {
         [SerializeField] private GameObject[] _mechs;
-        //[SerializeField] private int _amountOfMechs = 10;
         [SerializeField] private GameObject _mechContainer;
         [SerializeField] private List<GameObject> _mechPool;
 
         private Transform _startPoint;
         private int _waveCount;
+        private int _amountOfMechs = 10;
 
 
         public override void Init()
@@ -23,15 +23,11 @@ namespace Scripts.Managers
             base.Init();
         }
 
-        private void Awake()
-        {
-            _startPoint = SpawnManager.Instance.RequestStartPoint();
-            //_waveCount = SpawnManager.Instance.RequestWave();
-        }
-
         private void Start()
         {
-            //_mechPool = GenerateMechs(_amountOfMechs * _waveCount);
+            _mechPool = GenerateMechs(_amountOfMechs);
+            _startPoint = SpawnManager.Instance.RequestStartPoint();
+            //_waveCount = SpawnManager.Instance.RequestWave();
         }
 
         private void OnEnable()
@@ -42,7 +38,7 @@ namespace Scripts.Managers
 
         GameObject CreateMech()
         {
-            GameObject mech = Instantiate(_mechs[UnityEngine.Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity);
+            GameObject mech = Instantiate(_mechs[UnityEngine.Random.Range(0, _mechs.Length)], _startPoint.position, Quaternion.identity); // Need to change this
             mech.transform.parent = _mechContainer.transform;
             mech.SetActive(false);
             _mechPool.Add(mech);
