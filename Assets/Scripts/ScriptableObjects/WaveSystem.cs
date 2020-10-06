@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Scripts.Managers;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace Scripts.ScriptableObjects
         {
             foreach (var mech in sequence)
             {
-                Instantiate(mech);
+                PoolManager.Instance.GetMech();
             }
         }
     }

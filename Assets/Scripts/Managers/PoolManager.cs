@@ -10,7 +10,7 @@ namespace Scripts.Managers
     public class PoolManager : MonoSingleton<PoolManager>
     {
         [SerializeField] private GameObject[] _mechs;
-        [SerializeField] private int _amountOfMechs = 10;
+        //[SerializeField] private int _amountOfMechs = 10;
         [SerializeField] private GameObject _mechContainer;
         [SerializeField] private List<GameObject> _mechPool;
 
@@ -26,12 +26,12 @@ namespace Scripts.Managers
         private void Awake()
         {
             _startPoint = SpawnManager.Instance.RequestStartPoint();
-            _waveCount = SpawnManager.Instance.RequestWave();
+            //_waveCount = SpawnManager.Instance.RequestWave();
         }
 
         private void Start()
         {
-            _mechPool = GenerateMechs(_amountOfMechs * _waveCount);
+            //_mechPool = GenerateMechs(_amountOfMechs * _waveCount);
         }
 
         private void OnEnable()

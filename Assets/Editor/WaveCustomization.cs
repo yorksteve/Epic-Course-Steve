@@ -56,7 +56,7 @@ public class WaveCustomization : EditorWindow
     private void LoadWave()
     {
         // Testing
-        SpawnManager.Instance.LoadLevel(_waveNumber);
+        //SpawnManager.Instance.LoadLevel(_waveNumber);
     }
 
 }

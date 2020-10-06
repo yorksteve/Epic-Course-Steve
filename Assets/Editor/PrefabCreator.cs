@@ -4,15 +4,29 @@ using UnityEditor;
 #if UNITY_EDITOR
 public class PrefabCreator : EditorWindow
 {
-    private bool _foldoutBool = true;
     private Color _newColorMech;
+    private Color _newColorTower;
     private Color _newColorDissolve;
+
     private float _health;
     private float _damage;
     private float _speed;
+    private float _dissolve;
     private string _tag = "";
     private float _attackRadius;
-    private Object _rotationPoint;
+
+    private SerializedObject _mech;
+    private SerializedObject _tower;
+    private GameObject _objMech;
+    private GameObject _objTower;
+
+    private Editor mechEditor;
+    private Editor towerEditor;
+
+    private bool _showMech = true;
+    private bool _showTower = true;
+    private string _statusMech = "Select a Mech";
+    private string _statusTower = "Select a Tower";
 
     [MenuItem("Window/Prefab Creator")]
     static void Init()
@@ -23,149 +37,140 @@ public class PrefabCreator : EditorWindow
 
     void OnGUI()
     {
+        mechEditor = Editor.CreateEditor(_objMech);
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
 
         EditorGUILayout.Space();
-        // Ability to create and alter mechs and towers
 
         EditorGUI.BeginChangeCheck();
-        EditorGUILayout.BeginFoldoutHeaderGroup(_foldoutBool, "Mech", null);
-        if (_foldoutBool)
+        _objMech = (GameObject)EditorGUILayout.ObjectField("Mech", _objMech, typeof(GameObject));
+
+        if (EditorGUI.EndChangeCheck())
         {
-            EditorGUILayout.BeginHorizontal();
-            _newColorMech = EditorGUILayout.ColorField("Mech Color", _newColorMech);
-            if (GUILayout.Button("Change"))
-                ChangeColor();
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _newColorDissolve = EditorGUILayout.ColorField("Dissolve Color", _newColorDissolve);
-            if (GUILayout.Button("Change"))
-                ChangeColor();
-            // Add slider to test shader
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _health = EditorGUILayout.FloatField("Health", _health);
-            if (GUILayout.Button("Update"))
-                ChangeHealth();
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _damage = EditorGUILayout.FloatField("Damage", _damage);
-            if (GUILayout.Button("Update"))
-                ChangeDamage();
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _speed = EditorGUILayout.FloatField("Speed", _speed);
-            if (GUILayout.Button("Update"))
-                ChangeSpeed();
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _rotationPoint = EditorGUILayout.ObjectField("Rotation Point", _rotationPoint, typeof(Transform), true);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _tag = EditorGUILayout.TagField("Set Tag", _tag);
-            if (GUILayout.Button("Set Tag"))
-            {
-                
-            }
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Save Changes"))
-                UpdatePrefab();
-            if (GUILayout.Button("Create New Prefab"))
-                CreatePrefab();
-            EditorGUILayout.EndHorizontal();
+            DestroyImmediate(mechEditor);
         }
 
-        EditorGUILayout.EndFoldoutHeaderGroup();
+        if (_objMech != null)
+        {
+            _mech = new SerializedObject(_objMech);
+        }
+
+        _showMech = EditorGUILayout.Foldout(_showMech, _statusMech);
+
+        if (_showMech)
+        {
+            if (_mech != null)
+            {
+                EditorGUILayout.BeginHorizontal();
+                _newColorMech = EditorGUILayout.ColorField("Mech Color", _newColorMech);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                _newColorDissolve = EditorGUILayout.ColorField("Dissolve Color", _newColorDissolve);
+                EditorGUILayout.Slider(_dissolve, 0, 1);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                //_health = EditorGUILayout.FloatField("Health", _mech.FindProperty("_maxHealth").floatValue);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                //_damage = EditorGUILayout.FloatField("Damage", _mech.FindProperty("_damageAmount").floatValue);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                //_speed = EditorGUILayout.FloatField("Speed", _mech.FindProperty("Speed").floatValue);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                _tag = EditorGUILayout.TagField("Set Tag", _tag);
+                EditorGUILayout.EndHorizontal();
+
+                _mech.ApplyModifiedProperties();
+
+                EditorGUILayout.Space();
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Apply to Prefab"))
+                    _mech.Update();
+                if (GUILayout.Button("Create New Prefab"))
+                    CreatePrefab(_mech);
+
+                _statusMech = _objMech.name;
+            }
+        }
+
+        if (_objMech = null)
+        {
+            _showMech = false;
+            _statusMech = "Select a Mech";
+        }
+      
 
         EditorGUILayout.Space();
         EditorGUILayout.Space();
 
+        towerEditor = Editor.CreateEditor(_objTower);
+
         EditorGUI.BeginChangeCheck();
-        EditorGUILayout.BeginFoldoutHeaderGroup(_foldoutBool, "Tower");
-        if (_foldoutBool)
+        _objTower = (GameObject)EditorGUILayout.ObjectField("Tower", _objTower, typeof(GameObject));
+
+        if (EditorGUI.EndChangeCheck())
         {
-            EditorGUILayout.BeginHorizontal();
-            _health = EditorGUILayout.FloatField("Health", _health);
-            if (GUILayout.Button("Update"))
-                ChangeHealth();
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _damage = EditorGUILayout.FloatField("Damage", _damage);
-            if (GUILayout.Button("Update"))
-                ChangeDamage();
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _rotationPoint = EditorGUILayout.ObjectField("Rotation Point", _rotationPoint, typeof(Transform), true);
-            if (GUILayout.Button("Assign"))
-                //Assign the rotation point
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _tag = EditorGUILayout.TagField("Set Tag", _tag);
-            if (GUILayout.Button("Set Tag"))
-            {
-
-            }
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            _attackRadius = EditorGUILayout.FloatField("Attack Radius", _attackRadius);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Save Changes"))
-                UpdatePrefab();
-            if (GUILayout.Button("Create New Prefab"))
-                CreatePrefab();
-            EditorGUILayout.EndHorizontal();
+            DestroyImmediate(towerEditor);
         }
-        EditorGUILayout.EndFoldoutHeaderGroup();
-        EditorGUI.EndChangeCheck();
+
+        if (_objTower != null)
+        {
+            _tower = new SerializedObject(_objTower);
+        }
+
+        _showTower = EditorGUILayout.Foldout(_showTower, _statusTower);
+        if (_showTower)
+        {
+            if (_tower != null)
+            {
+                EditorGUILayout.BeginHorizontal();
+                _newColorMech = EditorGUILayout.ColorField("Tower Color", _newColorTower);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                //_health = EditorGUILayout.FloatField("Health", _tower.FindProperty("_maxHealth").floatValue);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                //_damage = EditorGUILayout.FloatField("Damage", _tower.FindProperty("_damageAmount").floatValue);
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                _tag = EditorGUILayout.TagField("Set Tag", _tag);
+                EditorGUILayout.EndHorizontal();
+
+                _mech.ApplyModifiedProperties();
+
+                EditorGUILayout.Space();
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Apply to Prefab"))
+                    _mech.Update();
+                if (GUILayout.Button("Create New Prefab"))
+                    CreatePrefab(_tower);
+
+                _statusTower = _objTower.name;
+            }
+        }
+       
+        if (_objTower = null)
+        {
+            _showTower = false;
+            _statusTower = "Select a Tower";
+        }
     }
 
-    private void ChangeColor()
+    private void CreatePrefab(SerializedObject objSer)
     {
-
+        GameObject obj = (GameObject)objSer.targetObject;
+        string path = "Assets/" + obj.name + ".prefab";
+        path = AssetDatabase.GenerateUniqueAssetPath(path);
+        PrefabUtility.SaveAsPrefabAssetAndConnect(obj, path, InteractionMode.UserAction);
     }
-
-    private void ChangeHealth()
-    {
-        Debug.Log("ChangeHealth()");
-    }
-
-    private void ChangeDamage()
-    {
-
-    }
-
-    private void ChangeSpeed()
-    {
-
-    }
-
-    private void CreatePrefab()
-    {
-
-    }
-
-    private void UpdatePrefab()
-    {
-
-    }
-
 }
 #endif

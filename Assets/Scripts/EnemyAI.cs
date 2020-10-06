@@ -22,7 +22,7 @@ namespace Scripts
         private Transform _rotationPoint;
 
         [SerializeField] private float _health;
-        [SerializeField] private static float _maxHealth = 100f;
+        private static float _maxHealth = 100f;
         [SerializeField] private int _mechWarFund;
         [SerializeField] private float _damageAmount;
         private float _speed = 5f;
