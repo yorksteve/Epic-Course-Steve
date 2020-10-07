@@ -12,16 +12,18 @@ public class ListCustomization : EditorWindow
     private GameObject _mech2;
     private List<GameObject> _mechList;
 
-    [MenuItem("Window/List Customization")]
-    static void Init()
-    {
-        ListCustomization window = (ListCustomization)EditorWindow.GetWindow(typeof(ListCustomization));
-        window.Show();
-    }
+    //[MenuItem("Window/List Customization")]
+    //static void Init()
+    //{
+    //    ListCustomization window = (ListCustomization)EditorWindow.GetWindow(typeof(ListCustomization));
+    //    window.Show();
+    //}
 
     private void OnEnable()
     {
-        _mech1Tex = EditorGUIUtility.FindTexture("");
+        //_mech1Tex =;
+        _mech1 = GameObject.Find("Mech1");
+        _mech2 = GameObject.Find("Mech2");
     }
 
     private void OnGUI()

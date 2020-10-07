@@ -56,10 +56,11 @@ public class WaveCustomization : EditorWindow
             {
                 AddMech(_waveNumber);
                 var list = _mechEditor.FindProperty("_waveMechs");
-                
+
                 // Open new window with list displayed and mechs to add
-                ListCustomization Instance = ScriptableObject.CreateInstance<ListCustomization>();
-                Instance.Show();
+                EditorWindow.CreateWindow<ListCustomization>("List Customization");
+                //ListCustomization Instance = ScriptableObject.CreateInstance<ListCustomization>();
+                //Instance.Show();
             }
             _mechEditor.ApplyModifiedProperties();
 
@@ -73,7 +74,11 @@ public class WaveCustomization : EditorWindow
 
             // Create a new wave with the above changes
             if (GUILayout.Button("Create New"))
+            {
                 NewWave();
+                ListCustomization Instance = ScriptableObject.CreateInstance<ListCustomization>();
+                Instance.Show();
+            }
 
             // Insert Wave
             if (GUILayout.Button("Insert Wave"))
