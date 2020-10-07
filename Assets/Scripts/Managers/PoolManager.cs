@@ -25,7 +25,8 @@ namespace Scripts.Managers
 
         private void Start()
         {
-            _mechPool = GenerateMech1(_amountOfMechs);
+            GenerateMech1(_amountOfMechs);
+            GenerateMech2(_amountOfMechs);
             _startPoint = SpawnManager.Instance.RequestStartPoint();
         }
 
@@ -35,9 +36,9 @@ namespace Scripts.Managers
             EventManager.Listen("onRecycleMech", (Action<GameObject>)RecycleMech);
         }
 
-        GameObject CreateMech(int i)
+        GameObject CreateMech(int id)
         {
-            GameObject mech = Instantiate(_mechs[i], _startPoint.position, Quaternion.identity);
+            GameObject mech = Instantiate(_mechs[id], _startPoint.position, Quaternion.identity);
             mech.transform.parent = _mechContainer.transform;
             mech.SetActive(false);            
             _mechPool.Add(mech);

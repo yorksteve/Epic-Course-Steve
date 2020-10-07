@@ -23,6 +23,27 @@ namespace Scripts.ScriptableObjects
                 yield return new WaitForSeconds(spawnDelay);
             }
         }
+
+        public void UpdateWave(int spawnDelayChange, int waveDurationChange, int mechCount)
+        {
+            spawnDelay = spawnDelayChange;
+            waveDuration = waveDurationChange;
+            sequence.Capacity = mechCount;
+        }
+
+        public void NewWave(int waveID, int spawnDelayChange, int waveDurationChange, int mechCount)
+        {
+            // Create a new wave?
+            id = waveID;
+            spawnDelay = spawnDelayChange;
+            waveDuration = waveDurationChange;
+            sequence.Capacity = mechCount;
+        }
+
+        public void InsertWave(int waveID)
+        {
+            id = waveID + 1;
+        }
     }
 }
 

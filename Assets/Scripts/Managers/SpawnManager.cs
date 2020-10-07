@@ -78,28 +78,66 @@ namespace Scripts.Managers
             return _startPoint;
         }
 
-        public List<GameObject> RequestSequence(int number)
+        public int RequestAmountOfMechs(int number)
         {
-            var currentWave = _wave[number];
-            return currentWave.sequence;
-        }
+            if (_wave[number] != null)
+            {
+                var currentWave = _wave[number].sequence.Count;
+                return currentWave;
+            }
 
-        public int RequestWaveID(int number)
-        {
-            var currentWave = _wave[number];
-            return currentWave.id;
+            return 0;
         }
 
         public int RequestSpawnDelay(int number)
         {
-            var currentWave = _wave[number];
-            return currentWave.spawnDelay;
+            if (_wave[number] != null)
+            {
+                var currentWave = _wave[number];
+                return currentWave.spawnDelay;
+            }
+
+            return 0;
         }
 
         public int RequestWaveDuration(int number)
         {
-            var currentWave = _wave[number];
-            return currentWave.waveDuration;
+            if (_wave[number] != null)
+            {
+                var currentWave = _wave[number];
+                return currentWave.waveDuration;
+            }
+
+            return 0;
+        }
+
+        public List<GameObject> RequestSequence(int number)
+        {
+            if (_wave[number] != null)
+            {
+                var currentWave = _wave[number].sequence;
+                return currentWave;
+            }
+
+            return null;
+        }
+
+        public void UpdateWaveSystem(int waveNumber, int spawnDelay, int waveDuration, int mechCount)
+        {
+            _wave[waveNumber].UpdateWave(spawnDelay, waveDuration, mechCount);
+        }
+
+        public void NewWave(int waveNumber, int spawnDelay, int waveDuration, int mechCount)
+        {
+            _wave[waveNumber].NewWave(waveNumber, spawnDelay, waveDuration, mechCount);
+        }
+
+        public void InsertWave(int waveNumber)
+        {
+            for (int i = waveNumber; i < _wave.Count; i++)
+            {
+                _wave[waveNumber].InsertWave(i);
+            }
         }
 
         private void OnDisable()
