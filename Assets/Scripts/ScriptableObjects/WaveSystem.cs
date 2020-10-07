@@ -31,18 +31,23 @@ namespace Scripts.ScriptableObjects
             sequence.Capacity = mechCount;
         }
 
-        public void NewWave(int waveID, int spawnDelayChange, int waveDurationChange, int mechCount)
+        public void NewWave(int waveID, int spawnDelayChange, int waveDurationChange, List<GameObject> mechs)
         {
             // Create a new wave?
             id = waveID;
             spawnDelay = spawnDelayChange;
             waveDuration = waveDurationChange;
-            sequence.Capacity = mechCount;
+            sequence = mechs;
         }
 
         public void InsertWave(int waveID)
         {
             id = waveID + 1;
+        }
+
+        public void AddedMechs(List<GameObject> mechs)
+        {
+            sequence = mechs;
         }
     }
 }

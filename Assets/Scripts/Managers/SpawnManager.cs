@@ -80,9 +80,9 @@ namespace Scripts.Managers
 
         public int RequestAmountOfMechs(int number)
         {
-            if (_wave[number] != null)
+            if (_wave[number - 1] != null)
             {
-                var currentWave = _wave[number].sequence.Count;
+                var currentWave = _wave[number - 1].sequence.Count;
                 return currentWave;
             }
 
@@ -91,9 +91,9 @@ namespace Scripts.Managers
 
         public int RequestSpawnDelay(int number)
         {
-            if (_wave[number] != null)
+            if (_wave[number - 1] != null)
             {
-                var currentWave = _wave[number];
+                var currentWave = _wave[number - 1];
                 return currentWave.spawnDelay;
             }
 
@@ -102,9 +102,9 @@ namespace Scripts.Managers
 
         public int RequestWaveDuration(int number)
         {
-            if (_wave[number] != null)
+            if (_wave[number - 1] != null)
             {
-                var currentWave = _wave[number];
+                var currentWave = _wave[number - 1];
                 return currentWave.waveDuration;
             }
 
@@ -113,10 +113,21 @@ namespace Scripts.Managers
 
         public List<GameObject> RequestSequence(int number)
         {
-            if (_wave[number] != null)
+            if (_wave[number - 1] != null)
             {
-                var currentWave = _wave[number].sequence;
+                var currentWave = _wave[number - 1].sequence;
                 return currentWave;
+            }
+
+            return null;
+        }
+
+        public GameObject[] RequestMechs(int number)
+        {
+            if (_wave[number - 1] != null)
+            {
+                
+                //return currentWave;
             }
 
             return null;
@@ -124,20 +135,25 @@ namespace Scripts.Managers
 
         public void UpdateWaveSystem(int waveNumber, int spawnDelay, int waveDuration, int mechCount)
         {
-            _wave[waveNumber].UpdateWave(spawnDelay, waveDuration, mechCount);
+            _wave[waveNumber - 1].UpdateWave(spawnDelay, waveDuration, mechCount);
         }
 
-        public void NewWave(int waveNumber, int spawnDelay, int waveDuration, int mechCount)
+        public void NewWave(int waveNumber, int spawnDelay, int waveDuration, List<GameObject> mechs)
         {
-            _wave[waveNumber].NewWave(waveNumber, spawnDelay, waveDuration, mechCount);
+            _wave[waveNumber - 1].NewWave(waveNumber, spawnDelay, waveDuration, mechs);
         }
 
         public void InsertWave(int waveNumber)
         {
-            for (int i = waveNumber; i < _wave.Count; i++)
+            for (int i = waveNumber - 1; i < _wave.Count; i++)
             {
-                _wave[waveNumber].InsertWave(i);
+                _wave[waveNumber - 1].InsertWave(i);
             }
+        }
+
+        public void AddedMechs(int waveNumber, List<GameObject> mechs)
+        {
+            _wave[waveNumber - 1].AddedMechs(mechs);
         }
 
         private void OnDisable()

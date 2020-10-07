@@ -25,9 +25,9 @@ namespace Scripts.Managers
 
         private void Start()
         {
-            GenerateMech1(_amountOfMechs);
-            GenerateMech2(_amountOfMechs);
             _startPoint = SpawnManager.Instance.RequestStartPoint();
+            GenerateMech1();
+            GenerateMech2();
         }
 
         private void OnEnable()
@@ -47,9 +47,9 @@ namespace Scripts.Managers
         }
 
 
-        List<GameObject> GenerateMech1(int amountOfMechs)
+        List<GameObject> GenerateMech1()
         {
-            for (int i = 0; i < amountOfMechs; i++)
+            for (int i = 0; i < _amountOfMechs; i++)
             {
                 GameObject mech1 = CreateMech(0);
             }
@@ -57,9 +57,9 @@ namespace Scripts.Managers
             return _mechPool;
         }
 
-        List<GameObject> GenerateMech2(int amountOfMechs)
+        List<GameObject> GenerateMech2()
         {
-            for (int i = 0; i < amountOfMechs; i++)
+            for (int i = 0; i < _amountOfMechs; i++)
             {
                 GameObject mech2 = CreateMech(1);
             }
