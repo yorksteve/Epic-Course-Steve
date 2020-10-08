@@ -99,14 +99,24 @@ public class PrefabCreator : EditorWindow
             _tag = EditorGUILayout.TagField("Set Tag", _tag);
             EditorGUILayout.EndHorizontal();
 
-            _mechEditor.ApplyModifiedProperties();
+            //_mechEditor.ApplyModifiedProperties();
 
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Apply to Prefab"))
-                _mechEditor.Update();
+            {
+                _mechEditor.ApplyModifiedProperties();
+                //_mechEditor.Update();
+            }
             if (GUILayout.Button("Create New Prefab"))
                 CreatePrefab(_objMech);
+            if (GUILayout.Button("Back"))
+            {
+                _showMech = false;
+                _objMech = null;
+                Undo.PerformUndo();
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
         EditorGUILayout.Space(10);
@@ -152,9 +162,19 @@ public class PrefabCreator : EditorWindow
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Apply to Prefab"))
+            {
+                //_towerEditor.ApplyModifiedProperties();
                 //_towerEditor.Update();
+            }
             if (GUILayout.Button("Create New Prefab"))
                 CreatePrefab(_objTower);
+            if (GUILayout.Button("Back"))
+            {
+                _showTower = false;
+                _objTower = null;
+                Undo.PerformUndo();
+            }
+            EditorGUILayout.EndHorizontal();
         }
     }
 

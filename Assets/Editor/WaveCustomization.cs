@@ -38,8 +38,12 @@ public class WaveCustomization : EditorWindow
         _mechEditor = new SerializedObject(this);
         _mech1 = GameObject.Find("Mech1");
         _mech2 = GameObject.Find("Mech2");
-        _mech1Tex = Resources.Load<Texture>("Assets/Mech1Pic.png");
-        _mech2Tex = Resources.Load<Texture>("Assets/Mech2Pic.png");
+        _mech1Tex = Resources.Load<Texture>("Prefab Images/Mech1Pic.png");
+        _mech2Tex = Resources.Load<Texture>("Prefab Images/Mech2Pic.png");
+        if (_mech2Tex == null)
+        {
+            Debug.Log("Picture not found");
+        }
     }
 
     void OnGUI()
@@ -124,7 +128,7 @@ public class WaveCustomization : EditorWindow
 
 
             EditorGUILayout.BeginVertical();
-            GUILayout.Box(_mech1Tex);
+            EditorGUILayout.PrefixLabel(new GUIContent(_mech1Tex));
             if (GUILayout.Button("Add"))
             {
                 _mechList.Add(_mech1);
@@ -132,7 +136,7 @@ public class WaveCustomization : EditorWindow
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginVertical();
-            GUILayout.Box(_mech2Tex);
+            EditorGUILayout.PrefixLabel(new GUIContent(_mech2Tex));
             if (GUILayout.Button("Add"))
             {
                 _mechList.Add(_mech2);
