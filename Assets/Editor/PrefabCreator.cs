@@ -50,15 +50,15 @@ public class PrefabCreator : EditorWindow
 
         if (_objMech != null)
         {
-            //_mechEditor = new SerializedObject(EnemyAI);
+            //_mechEditor = _objMech.GetComponent<EnemyAI>();
         }
 
         if (GUILayout.Button("Load Mech Data"))
         {
             _showMech = true;
             _showTower = false;
-            _health = _mechEditor.FindProperty("_maxHealth").floatValue;
-            _damage = _mechEditor.FindProperty("_damageAmount").floatValue;
+            //_health = _objMech.GetComponent<EnemyAI>().
+            //_damage = _objMech.GetComponent<EnemyAI>().Damag;
             _speed = _objMech.GetComponent<NavMeshAgent>().speed;
             _tag = _objMech.tag;
             var rends = _objMech.GetComponentsInChildren<Renderer>();

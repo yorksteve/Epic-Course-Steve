@@ -14,7 +14,7 @@ namespace Scripts.Managers
         [SerializeField] private Transform _destination;
         [SerializeField] private List<WaveSystem> _wave;
 
-        private int _currentWave;
+        private List<GameObject> _currentWave;
         private int _waveCount = 1;
 
         //private WaitForSeconds _resetMechYield;
@@ -112,15 +112,12 @@ namespace Scripts.Managers
             return 0;
         }
 
-        public List<GameObject> RequestSequence(int number)
+        public void RequestSequence(int number)
         {
             if (_wave[number - 1] != null)
             {
-                var currentWave = _wave[number - 1].sequence;
-                return currentWave;
+                _currentWave = _wave[number - 1].sequence;
             }
-
-            return null;
         }
 
         public GameObject[] RequestMechs(int number)
@@ -155,6 +152,11 @@ namespace Scripts.Managers
         public void AddedMechs(int waveNumber, List<GameObject> mechs)
         {
             _wave[waveNumber - 1].AddedMechs(mechs);
+        }
+
+        public List<GameObject> SetListCustomization()
+        {
+            return _currentWave;
         }
 
         private void OnDisable()

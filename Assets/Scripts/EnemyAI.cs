@@ -214,6 +214,11 @@ namespace Scripts
             _mechKilled = false;
         }
 
+        public float EditorGetHealth()
+        {
+            return _maxHealth;
+        }
+
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onDamage", (Action<float>)Health);
