@@ -49,7 +49,8 @@ namespace Scripts.Managers
             foreach (var wave in _wave)
             {
                 EventManager.Fire("onWaveCount", _waveCount);
-                wave.StartWaveSystem();
+                //wave.StartWaveSystem();
+                yield return wave.StartWaveSystem();
                 yield return new WaitForSeconds(wave.waveDuration);
                 _waveCount++;
                 //yield return _resetMechYield;

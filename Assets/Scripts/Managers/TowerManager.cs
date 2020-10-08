@@ -178,7 +178,6 @@ namespace Scripts.Managers
             tower.GetComponent<ITower>().Health(damageAmount, tower);   
         }
 
-
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);

@@ -55,6 +55,9 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         [SerializeField] private GameObject _towerBase;
         private Transform _towerSource;
 
+        private float _maxHealth = 50f;
+        private float _damageAmount = 2f;
+
 
         private void Start()
         {
@@ -103,9 +106,8 @@ namespace GameDevHQ.FileBase.Missile_Launcher
 
         public float Damage()
         {
-            float damageAmount = 2f;
-            EventManager.Fire("onDamage", damageAmount);
-            return damageAmount;
+            EventManager.Fire("onDamage", _damageAmount);
+            return _damageAmount;
         }
 
         public void Target(GameObject enemy)
@@ -126,7 +128,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         {
             if (obj == this.gameObject)
             {
-                float health = 50f;
+                float health = _maxHealth;
                 health -= damage;
                 EventManager.Fire("onHealthBar", health, obj);
                 if (health <= 0f)

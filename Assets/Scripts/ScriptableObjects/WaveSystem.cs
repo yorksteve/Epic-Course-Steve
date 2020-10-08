@@ -14,11 +14,19 @@ namespace Scripts.ScriptableObjects
         public int spawnDelay;
         public int waveDuration = 10;
 
+        private WaitForSeconds _resetDelay;
+
+        private void Awake()
+        {
+            _resetDelay = new WaitForSeconds(.5f);
+        }
+
         public IEnumerator StartWaveSystem()
         {
             foreach (var mech in sequence)
             {
-                PoolManager.Instance.GetMech();
+                PoolManager.Instance.GetMech(mech);
+                yield return _resetDelay;
                 EventManager.Fire("onNewWave");
                 yield return new WaitForSeconds(spawnDelay);
             }

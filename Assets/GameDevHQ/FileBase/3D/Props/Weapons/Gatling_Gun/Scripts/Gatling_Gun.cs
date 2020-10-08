@@ -44,6 +44,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private Transform _towerSource;
 
         private ParticleSystem _muzzleFlash;
+        private float _damageAmount = .02f;
+        private float _maxHealth = 100;
 
         // Use this for initialization
         void Start()
@@ -72,13 +74,13 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         {
             if (obj == this.gameObject)
             {
-                float health = 100;
-                health -= damage;
-                EventManager.Fire("onHealthBar", health, obj);
-                if (health <= 0)
+                float currentHealth = _maxHealth;
+                currentHealth -= damage;
+                EventManager.Fire("onHealthBar", currentHealth, obj);
+                if (currentHealth <= 0)
                 {
                     _explosion.Play();
-                    health = 0f;
+                    currentHealth = 0f;
                     Destroy(this.gameObject);
                     EventManager.Fire("onTowerDestroyed", this.transform.position);
                     EventManager.Fire("onResetHealthTower", 100, this.gameObject);
@@ -125,9 +127,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
 
         public float Damage()
         {
-            float damageAmount = .02f;
-            EventManager.Fire("onDamage", damageAmount);
-            return damageAmount;
+            EventManager.Fire("onDamage", _damageAmount);
+            return _damageAmount;
         }
     }
 

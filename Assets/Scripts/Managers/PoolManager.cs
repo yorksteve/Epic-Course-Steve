@@ -46,7 +46,6 @@ namespace Scripts.Managers
             return mech;
         }
 
-
         List<GameObject> GenerateMech1()
         {
             for (int i = 0; i < _amountOfMechs; i++)
@@ -68,11 +67,13 @@ namespace Scripts.Managers
         }
 
 
-        public GameObject GetMech()
+        public GameObject GetMech(GameObject mechToGet)
         {
+            int i = 0;
+
             foreach (var mech in _mechPool)
             {
-                if (mech.activeInHierarchy == false)
+                if (mech.activeInHierarchy == false && mech == mechToGet)
                 {
                     mech.transform.position = _startPoint.position;
                     mech.SetActive(true);
@@ -80,7 +81,16 @@ namespace Scripts.Managers
                 }
             }
 
-            return CreateMech(0); // Add in generic
+            if (mechToGet == _mechs[0])
+            {
+                i = 0;
+            }
+            else
+            {
+                i = 1;
+            }
+
+            return CreateMech(i);
         }
 
         public void RecycleMech(GameObject mech)

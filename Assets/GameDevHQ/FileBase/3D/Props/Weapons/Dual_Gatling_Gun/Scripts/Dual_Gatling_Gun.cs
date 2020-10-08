@@ -42,6 +42,8 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
         private Quaternion _originalRotation;
 
         [SerializeField] private ParticleSystem _explosion;
+        private float _maxHealth = 100f;
+        private float _damageAmount = .04f;
 
 
         public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
@@ -123,16 +125,15 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
 
         public float Damage()
         {
-            float damageAmount = .04f;
-            EventManager.Fire("onDamage", damageAmount);
-            return damageAmount;
+            EventManager.Fire("onDamage", _damageAmount);
+            return _damageAmount;
         }
 
         public void Health(float damage, GameObject obj)
         {
             if (obj == this.gameObject)
             {
-                float health = 100;
+                float health = _maxHealth;
                 health -= damage;
                 EventManager.Fire("onHealthBar", health, obj);
                 if (health <= 0)

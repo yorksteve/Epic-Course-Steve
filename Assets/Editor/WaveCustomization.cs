@@ -19,6 +19,7 @@ public class WaveCustomization : EditorWindow
     private GameObject _mech2;
     private List<GameObject> _mechList;
     private SerializedObject _mechEditor;
+    private Rect _windowRect = new Rect(20, 20, 120, 50);
 
     private bool _addingWave;
     private bool _addingMech;
@@ -37,6 +38,8 @@ public class WaveCustomization : EditorWindow
         _mechEditor = new SerializedObject(this);
         _mech1 = GameObject.Find("Mech1");
         _mech2 = GameObject.Find("Mech2");
+        _mech1Tex = Resources.Load<Texture>("Assets/Mech1Pic.png");
+        _mech2Tex = Resources.Load<Texture>("Assets/Mech2Pic.png");
     }
 
     void OnGUI()
@@ -75,6 +78,9 @@ public class WaveCustomization : EditorWindow
                 AddMech(_waveNumber);
                 var list = _mechEditor.FindProperty("_waveMechs");
                 _addingMech = true;
+                //BeginWindows();
+                //GUILayout.Window(0, _windowRect, ListCustomization, "List Customization");
+                //EndWindows();
             }
 
             // Load the selected wave
@@ -89,13 +95,16 @@ public class WaveCustomization : EditorWindow
             if (GUILayout.Button("Create New"))
             {
                 _addingWave = true;
+                //BeginWindows();
+                //GUILayout.Window(0, _windowRect, ListCustomization, "List Customization");
+                //EndWindows();
             }
 
             // Insert Wave
             if (GUILayout.Button("Insert Wave"))
                 InsertWave();
         }
-            
+
 
         if (_addingMech == true || _addingWave == true)
         {
@@ -107,8 +116,15 @@ public class WaveCustomization : EditorWindow
                 _windowOpened = true;
             }
 
+            
+            //for (EditorWindow.titleContent("List Customization"))
+            //{
+
+            //}
+
+
             EditorGUILayout.BeginVertical();
-            EditorGUILayout.LabelField(new GUIContent(_mech1Tex));
+            GUILayout.Box(_mech1Tex);
             if (GUILayout.Button("Add"))
             {
                 _mechList.Add(_mech1);
@@ -116,7 +132,7 @@ public class WaveCustomization : EditorWindow
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginVertical();
-            EditorGUILayout.LabelField(new GUIContent(_mech2Tex));
+            GUILayout.Box(_mech2Tex);
             if (GUILayout.Button("Add"))
             {
                 _mechList.Add(_mech2);
