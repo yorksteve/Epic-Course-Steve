@@ -22,7 +22,7 @@ namespace Scripts
         private Transform _rotationPoint;
 
         [SerializeField] private float _health;
-        private float _maxHealth = 100f;
+        public float _maxHealth = 100f;
         [SerializeField] private int _mechWarFund;
         [SerializeField] private float _damageAmount;
         private float _speed = 5f;
@@ -217,6 +217,18 @@ namespace Scripts
         public float EditorGetHealth()
         {
             return _maxHealth;
+        }
+
+        public float ChangeHealthEditor(float health)
+        {
+            _maxHealth = health;
+            return _maxHealth;
+        }
+
+        public float ChangeDamageEditor(float damage)
+        {
+            _damageAmount = damage;
+            return _damageAmount;
         }
 
         private void OnDisable()

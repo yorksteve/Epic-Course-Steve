@@ -130,6 +130,28 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             EventManager.Fire("onDamage", _damageAmount);
             return _damageAmount;
         }
+
+        public float EditorGetHealth()
+        {
+            return _maxHealth;
+        }
+
+        public float EditorGetDamage()
+        {
+            return _damageAmount;
+        }
+
+        public float EditorSetHealth(float health)
+        {
+            _maxHealth = health;
+            return _maxHealth;
+        }
+
+        public float EditorSetDamage(float damage)
+        {
+            _damageAmount = damage;
+            return _damageAmount;
+        }
     }
 
 }

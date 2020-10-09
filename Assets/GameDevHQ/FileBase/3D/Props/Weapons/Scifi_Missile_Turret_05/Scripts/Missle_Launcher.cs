@@ -41,6 +41,9 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 
         [SerializeField] private ParticleSystem _explosion;
 
+        private float _maxHealth = 100f;
+        private float _damageAmount = 8f;
+
         private void Start()
         {
             _towerSource = _towerBase.GetComponent<Transform>();
@@ -128,6 +131,28 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
                     EventManager.Fire("onTowerDestroyed", this.transform.position);
                 }
             }
+        }
+
+        public float EditorGetHealth()
+        {
+            return _maxHealth;
+        }
+
+        public float EditorGetDamage()
+        {
+            return _damageAmount;
+        }
+
+        public float EditorSetHealth(float health)
+        {
+            _maxHealth = health;
+            return _maxHealth;
+        }
+
+        public float EditorSetDamage(float damage)
+        {
+            _damageAmount = damage;
+            return _damageAmount;
         }
     }
 }

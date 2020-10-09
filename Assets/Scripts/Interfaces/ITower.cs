@@ -11,6 +11,10 @@ namespace Scripts.Interfaces
         GameObject CurrentModel { get; set; }
         GameObject UpgradeModel { get; }
         void Health(float damage, GameObject obj);
+        float EditorGetHealth();
+        float EditorGetDamage();
+        float EditorSetHealth(float health);
+        float EditorSetDamage(float damage);
     }
 }
 

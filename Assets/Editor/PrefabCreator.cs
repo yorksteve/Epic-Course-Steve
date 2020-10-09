@@ -3,6 +3,7 @@ using UnityEditor;
 using Scripts.Managers;
 using UnityEngine.AI;
 using Scripts.Interfaces;
+using Scripts;
 
 #if UNITY_EDITOR
 public class PrefabCreator : EditorWindow
@@ -18,26 +19,19 @@ public class PrefabCreator : EditorWindow
     private string _tag;
     private float _attackRadius;
 
-    private SerializedObject _mechEditor;
-    private SerializedObject _towerEditor;
+    private TowerManager _towerEditor;
     [SerializeField] private GameObject _objMech;
     [SerializeField] private GameObject _objTower;
 
     private bool _showMech = false;
     private bool _showTower = false;
-    private string _statusMech = "Select a Mech";
-    private string _statusTower = "Select a Tower";
+
 
     [MenuItem("Window/Prefab Creator")]
     static void Init()
     {
         PrefabCreator window = (PrefabCreator)EditorWindow.GetWindow(typeof(PrefabCreator));
         window.Show();
-    }
-
-    private void OnEnable()
-    {
-        _towerEditor = new SerializedObject(TowerManager.Instance);
     }
 
     void OnGUI()
@@ -48,40 +42,30 @@ public class PrefabCreator : EditorWindow
 
         _objMech = (GameObject)EditorGUILayout.ObjectField("Mech", _objMech, typeof(GameObject));
 
-        if (_objMech != null)
-        {
-            //_mechEditor = _objMech.GetComponent<EnemyAI>();
-        }
-
-        if (GUILayout.Button("Load Mech Data"))
+        if (GUILayout.Button("Load Mech Data") && _objMech != null)
         {
             _showMech = true;
             _showTower = false;
-            //_health = _objMech.GetComponent<EnemyAI>().
-            //_damage = _objMech.GetComponent<EnemyAI>().Damag;
+            _health = _objMech.GetComponent<Scripts.EnemyAI>().EditorGetHealth();
+            _damage = _objMech.GetComponent<Scripts.EnemyAI>().Damage();
             _speed = _objMech.GetComponent<NavMeshAgent>().speed;
             _tag = _objMech.tag;
-            var rends = _objMech.GetComponentsInChildren<Renderer>();
-            foreach (var rend in rends)
-            {
-                rend.sharedMaterial.color = _newColorMech;
-            }
+            //var rends = _objMech.GetComponentsInChildren<Renderer>();
+            //foreach (var rend in rends)
+            //{
+            //    _newColorMech = rend.materials[0].color;
+            //}
         }
 
         if (_showMech == true)
         {
-            EditorGUILayout.BeginHorizontal();
-            _newColorMech = EditorGUILayout.ColorField("Mech Color", _newColorMech);
-            var rends = _objMech.GetComponentsInChildren<Renderer>();
-            foreach (var rend in rends)
-            {
-                rend.sharedMaterial.color = _newColorMech;
-            }
-            EditorGUILayout.EndHorizontal();
+            //EditorGUILayout.BeginHorizontal();
+            //_newColorMech = EditorGUILayout.ColorField("Mech Color", _newColorMech);
+            //EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginHorizontal();
-            _newColorDissolve = EditorGUILayout.ColorField("Dissolve Color", _newColorDissolve);
-            EditorGUILayout.EndHorizontal();
+            //EditorGUILayout.BeginHorizontal();
+            //_newColorDissolve = EditorGUILayout.ColorField("Dissolve Color", _newColorDissolve);
+            //EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             _health = (float)EditorGUILayout.FloatField("Health", _health);
@@ -99,14 +83,11 @@ public class PrefabCreator : EditorWindow
             _tag = EditorGUILayout.TagField("Set Tag", _tag);
             EditorGUILayout.EndHorizontal();
 
-            //_mechEditor.ApplyModifiedProperties();
-
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Apply to Prefab"))
             {
-                _mechEditor.ApplyModifiedProperties();
-                //_mechEditor.Update();
+                ApplyToMechPrefab();
             }
             if (GUILayout.Button("Create New Prefab"))
                 CreatePrefab(_objMech);
@@ -114,7 +95,6 @@ public class PrefabCreator : EditorWindow
             {
                 _showMech = false;
                 _objMech = null;
-                Undo.PerformUndo();
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -127,23 +107,23 @@ public class PrefabCreator : EditorWindow
         {
             _showTower = true;
             _showMech = false;
-            var rends = _objTower.GetComponentsInChildren<Renderer>();
-            foreach (var rend in rends)
-            {
-                rend.sharedMaterial.color = _newColorTower;
-            }
+            //var rends = _objTower.GetComponentsInChildren<Renderer>();
+            //foreach (var rend in rends)
+            //{
+            //    _newColorTower = rend.sharedMaterial.color;
+            //}
+            
+            var editor = TowerManager.Instance;
+            _health = editor.EditorGetHealth(_objTower);
+            _damage = editor.EditorGetDamage(_objTower);
+            _tag = _objTower.tag;
         }
 
         if (_showTower == true)
         {
-            EditorGUILayout.BeginHorizontal();
-            _newColorTower = EditorGUILayout.ColorField("Tower Color", _newColorTower);
-            var rends = _objTower.GetComponentsInChildren<Renderer>();
-            foreach (var rend in rends)
-            {
-                rend.sharedMaterial.color = _newColorTower;
-            }
-            EditorGUILayout.EndHorizontal();
+            //EditorGUILayout.BeginHorizontal();
+            //_newColorTower = EditorGUILayout.ColorField("Tower Color", _newColorTower);
+            //EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             _health = EditorGUILayout.FloatField("Health", _health);
@@ -157,14 +137,11 @@ public class PrefabCreator : EditorWindow
             _tag = EditorGUILayout.TagField("Set Tag", _tag);
             EditorGUILayout.EndHorizontal();
 
-            //_towerEditor.ApplyModifiedProperties();
-
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Apply to Prefab"))
             {
-                //_towerEditor.ApplyModifiedProperties();
-                //_towerEditor.Update();
+                ApplyToTowerPrefab();
             }
             if (GUILayout.Button("Create New Prefab"))
                 CreatePrefab(_objTower);
@@ -180,9 +157,36 @@ public class PrefabCreator : EditorWindow
 
     private void CreatePrefab(GameObject obj)
     {
-        string path = "Assets/" + obj.name + ".prefab";
+        string path = "Assets/New Prefabs/" + obj.name + ".prefab";
         path = AssetDatabase.GenerateUniqueAssetPath(path);
         PrefabUtility.SaveAsPrefabAssetAndConnect(obj, path, InteractionMode.UserAction);
+    }
+
+    private void ApplyToMechPrefab()
+    {
+        var script = _objMech.GetComponent<Scripts.EnemyAI>();
+        var agent = _objMech.GetComponent<NavMeshAgent>();
+        script.ChangeDamageEditor(_damage);
+        script.ChangeHealthEditor(_health);
+        _objMech.tag = _tag;
+        agent.speed = _speed;
+        //var rends = _objMech.GetComponentsInChildren<Renderer>();
+        //foreach (var rend in rends)
+        //{
+        //    rend.sharedMaterial.color = _newColorMech;
+        //}
+    }
+
+    private void ApplyToTowerPrefab()
+    {
+        //var rends = _objTower.GetComponentsInChildren<Renderer>();
+        //foreach (var rend in rends)
+        //{
+        //    rend.sharedMaterial.color = _newColorTower;
+        //}
+        _objTower.tag = _tag;
+        TowerManager.Instance.EditorSetHealth(_objTower, _health);
+        TowerManager.Instance.EditorSetDamage(_objTower, _damage);
     }
 }
 #endif

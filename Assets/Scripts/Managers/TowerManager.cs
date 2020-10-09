@@ -178,6 +178,28 @@ namespace Scripts.Managers
             tower.GetComponent<ITower>().Health(damageAmount, tower);   
         }
 
+        public float EditorGetHealth(GameObject tower)
+        {
+            float health = tower.GetComponent<ITower>().EditorGetHealth();
+            return health;
+        }
+
+        public float EditorGetDamage(GameObject tower)
+        {
+            float damage = tower.GetComponent<ITower>().EditorGetDamage();
+            return damage;
+        }
+
+        public void EditorSetHealth(GameObject tower, float health)
+        {
+            tower.GetComponent<ITower>().EditorSetHealth(health);
+        }
+
+        public void EditorSetDamage(GameObject tower, float damage)
+        {
+            tower.GetComponent<ITower>().EditorSetDamage(damage);
+        }
+
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onUpgradeTower", (Action<ITower, Vector3>)CheckUpgrade);
