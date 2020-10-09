@@ -3,6 +3,7 @@ using UnityEditor;
 using Scripts.Managers;
 using System.Collections.Generic;
 using Scripts.ScriptableObjects;
+using System;
 
 
 #if UNITY_EDITOR
@@ -32,7 +33,9 @@ public class WaveCustomization : EditorWindow
     private void OnEnable()
     {
         _mechEditor = new SerializedObject(this);
-
+        EventManager.Listen("onCreateNewWave", (Action<List<GameObject>>)NewWave);
+        EventManager.Listen("onInsertWave", (Action<List<GameObject>>)InsertWave);
+        EventManager.Listen("onAddedMech", (Action<List<GameObject>>)AddedMechs);
     }
 
     void OnGUI()
@@ -70,7 +73,9 @@ public class WaveCustomization : EditorWindow
             {
                 AddMech(_waveNumber);
                 ListCustomization listEditor = EditorWindow.GetWindow<ListCustomization>("List Customization");
+                listEditor.position = new Rect(600, 200, 600, 600);
                 listEditor.Show();
+                EventManager.Fire("onAddMechBool");
             }
 
             // Load the selected wave
@@ -85,12 +90,23 @@ public class WaveCustomization : EditorWindow
             if (GUILayout.Button("Create New"))
             {
                 ListCustomization listEditor = EditorWindow.GetWindow<ListCustomization>("List Customization");
+                listEditor.position = new Rect(600, 200, 600, 600);
                 listEditor.Show();
+                EventManager.Fire("onCreateNewBool");
             }
 
             // Insert Wave
             if (GUILayout.Button("Insert Wave"))
-                InsertWave();
+            {
+                ListCustomization listEditor = EditorWindow.GetWindow<ListCustomization>("List Customization");
+                listEditor.position = new Rect(600, 200, 600, 600);
+                listEditor.Show();
+                EventManager.Fire("onInsertWaveBool");
+            }
+
+            // Close Window
+            if (GUILayout.Button("Close"))
+                this.Close();
         }
     }
 
@@ -104,15 +120,15 @@ public class WaveCustomization : EditorWindow
         SpawnManager.Instance.UpdateWaveSystem(_waveNumber, _spawnDelay, _waveDuration, _numberOfMechs);
     }
 
-    private void NewWave()
+    private void NewWave(List<GameObject> mechList)
     {
-        SpawnManager.Instance.NewWave(_waveNumber, _spawnDelay, _waveDuration, _mechList);
+        SpawnManager.Instance.NewWave(_waveNumber, _spawnDelay, _waveDuration, mechList);
     }
 
-    private void InsertWave()
+    private void InsertWave(List<GameObject> mechList)
     {
         SpawnManager.Instance.InsertWave(_waveNumber);
-        NewWave();
+        NewWave(mechList);
     }
 
     private void AddMech(int waveNumber)
@@ -120,9 +136,16 @@ public class WaveCustomization : EditorWindow
         SpawnManager.Instance.RequestSequence(waveNumber);
     }
 
-    private void AddedMechs(int waveNumber, List<GameObject> mechs)
+    private void AddedMechs(List<GameObject> mechs)
     {
-        SpawnManager.Instance.AddedMechs(waveNumber, mechs);
+        SpawnManager.Instance.AddedMechs(_waveNumber, mechs);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.UnsubscribeEvent("onCreateNewWave", (Action<List<GameObject>>)NewWave);
+        EventManager.UnsubscribeEvent("onInsertWave", (Action<List<GameObject>>)InsertWave);
+        EventManager.UnsubscribeEvent("onAddedMech", (Action<List<GameObject>>)AddedMechs);
     }
 }
 #endif

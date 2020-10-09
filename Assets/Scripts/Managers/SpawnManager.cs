@@ -3,6 +3,7 @@ using Scripts.ScriptableObjects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using YorkSDK.Util;
 
@@ -124,11 +125,13 @@ namespace Scripts.Managers
         {
             if (_wave[number - 1] != null)
             {
-                
-                //return currentWave;
+                GameObject[] mechs = _wave[number - 1].sequence.Distinct().ToArray();
+                return mechs;
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         public void UpdateWaveSystem(int waveNumber, int spawnDelay, int waveDuration, int mechCount)
