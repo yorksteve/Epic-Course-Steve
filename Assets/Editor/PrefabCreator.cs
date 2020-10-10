@@ -17,6 +17,7 @@ public class PrefabCreator : EditorWindow
     private float _speed;
     private float _dissolve;
     private string _tag;
+    private string _name;
     private float _attackRadius;
 
     private TowerManager _towerEditor;
@@ -50,6 +51,7 @@ public class PrefabCreator : EditorWindow
             _damage = _objMech.GetComponent<Scripts.EnemyAI>().Damage();
             _speed = _objMech.GetComponent<NavMeshAgent>().speed;
             _tag = _objMech.tag;
+            _name = _objMech.name;
             //var rends = _objMech.GetComponentsInChildren<Renderer>();
             //foreach (var rend in rends)
             //{
@@ -66,6 +68,10 @@ public class PrefabCreator : EditorWindow
             //EditorGUILayout.BeginHorizontal();
             //_newColorDissolve = EditorGUILayout.ColorField("Dissolve Color", _newColorDissolve);
             //EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            _name = EditorGUILayout.TextField("Prefab Name", _name);
+            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             _health = (float)EditorGUILayout.FloatField("Health", _health);
@@ -117,6 +123,7 @@ public class PrefabCreator : EditorWindow
             _health = editor.EditorGetHealth(_objTower);
             _damage = editor.EditorGetDamage(_objTower);
             _tag = _objTower.tag;
+            _name = _objTower.name;
         }
 
         if (_showTower == true)
@@ -124,6 +131,10 @@ public class PrefabCreator : EditorWindow
             //EditorGUILayout.BeginHorizontal();
             //_newColorTower = EditorGUILayout.ColorField("Tower Color", _newColorTower);
             //EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            _name = EditorGUILayout.TextField("Prefab Name", _name);
+            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
             _health = EditorGUILayout.FloatField("Health", _health);

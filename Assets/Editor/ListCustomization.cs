@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Scripts.Managers;
 using System.IO;
+using System;
 
 #if UNITY_EDITOR
 public class ListCustomization : EditorWindow
@@ -15,6 +16,8 @@ public class ListCustomization : EditorWindow
     private Texture2D _mech2Tex;
     private GameObject _mech1;
     private GameObject _mech2;
+    //private GameObject _mech;
+    //private List<GameObject> _mechDisplayList;
     private List<GameObject> _mechList;
     private Vector2 _scrollPos;
 
@@ -32,6 +35,7 @@ public class ListCustomization : EditorWindow
         EventManager.Listen("onAddMechBool", AddingMech);
         EventManager.Listen("onCreatingNewBool", CreatingWave);
         EventManager.Listen("onInsertWaveBool", InsertingWave);
+        //EventManager.Listen("onAddToDisplayList", (Action<GameObject>)AddToDisplayList);
 
         _fileData1 = File.ReadAllBytes("Assets/Resources/Prefab Images/Mech1Pic.png");
         _fileData2 = File.ReadAllBytes("Assets/Resources/Prefab Images/Mech2Pic.png");
@@ -53,6 +57,12 @@ public class ListCustomization : EditorWindow
         {
             _mechList = new List<GameObject>(5);
         }
+
+        
+        //if (_mechArray.Length == 0)
+        //{
+        //    Debug.Log("Failed to get mechs");
+        //}
     }
 
     private void OnGUI()
@@ -71,6 +81,11 @@ public class ListCustomization : EditorWindow
         EditorGUILayout.BeginVertical();
         EditorGUI.DrawPreviewTexture(_mech1Pos, _mech1Tex);
         EditorGUILayout.Space(200);
+        EditorGUILayout.BeginHorizontal();
+        //if (GUILayout.Button("Previous"))
+        //{
+        //    CycleArray(false);
+        //}
         if (GUILayout.Button("Add"))
         {
             _mechList.Add(_mech1);
@@ -80,12 +95,18 @@ public class ListCustomization : EditorWindow
             var index = _mechList.LastIndexOf(_mech1);
             _mechList.RemoveAt(index);
         }
+        //if (GUILayout.Button("Next"))
+        //{
+        //    CycleArray(true);
+        //}
+        EditorGUILayout.EndHorizontal();
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space(180);
 
         EditorGUILayout.BeginVertical();
         EditorGUI.DrawPreviewTexture(_mech2Pos, _mech2Tex);
+        EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Add"))
         {
             _mechList.Add(_mech2);
@@ -95,6 +116,7 @@ public class ListCustomization : EditorWindow
             var index = _mechList.LastIndexOf(_mech2);
             _mechList.RemoveAt(index);
         }
+        EditorGUILayout.EndHorizontal();
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndHorizontal();
@@ -144,11 +166,51 @@ public class ListCustomization : EditorWindow
         _insertingWave = true;
     }
 
+    //private void AddToDisplayList(GameObject mech)
+    //{
+    //    _mechDisplayList.Add(mech);
+    //}
+
+    //private GameObject CycleDisplayList(bool direction)
+    //{
+    //    for (int i = 0; i < _mechDisplayList.Count;)
+    //    {
+    //        if (direction == true)
+    //        {
+    //            if (i == _mechDisplayList.Count)
+    //            {
+    //                i = 0;
+    //            }
+    //            else
+    //            {
+    //                i++;
+    //            }
+    //        }
+    //        else if (direction == false)
+    //        {
+    //            if (i == 0)
+    //            {
+    //                i = _mechDisplayList.Count;
+    //            }
+    //            else
+    //            {
+    //                i--;
+    //            }
+    //        }
+
+    //        _mech = _mechA[i];
+    //        return _mech;
+    //    }
+
+    //    return null;
+    //}
+
     private void OnDisable()
     {
         EventManager.UnsubscribeEvent("onAddMechBool", AddingMech);
         EventManager.UnsubscribeEvent("onCreatingNewBool", CreatingWave);
         EventManager.UnsubscribeEvent("onInsertWaveBool", InsertingWave);
+        //EventManager.UnsubscribeEvent("onAddToDisplayList", (Action<GameObject>)AddToDisplayList);
     }
 }
 #endif

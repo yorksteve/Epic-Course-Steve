@@ -64,9 +64,14 @@ public class WaveCustomization : EditorWindow
             _numberOfMechs = (int)EditorGUILayout.IntField("Amount Of Mechs in Wave", _numberOfMechs);
 
             // Display current prefabs in wave
-            var property = _mechEditor.FindProperty("_mechs");
-            EditorGUILayout.PropertyField(property, true);
-            _mechEditor.ApplyModifiedProperties();
+            EditorGUILayout.Foldout(true, "Mechs in Wave");
+            for (int i = 0; i < _mechs.Length; i++)
+            {
+                _mechs[i] = (GameObject)EditorGUILayout.ObjectField(_mechs[i], typeof(GameObject));
+            }
+            //var property = _mechEditor.FindProperty("_mechs");
+            //EditorGUILayout.PropertyField(property, true);
+            //_mechEditor.ApplyModifiedProperties();
 
             // Add a new prefab to current wave
             if (GUILayout.Button("Add New Mech"))
