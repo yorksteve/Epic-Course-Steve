@@ -90,7 +90,7 @@ public class PrefabCreator : EditorWindow
                 ApplyToMechPrefab();
             }
             if (GUILayout.Button("Create New Prefab"))
-                CreatePrefab(_objMech);
+                CreateMechPrefab();
             if (GUILayout.Button("Back"))
             {
                 _showMech = false;
@@ -144,7 +144,7 @@ public class PrefabCreator : EditorWindow
                 ApplyToTowerPrefab();
             }
             if (GUILayout.Button("Create New Prefab"))
-                CreatePrefab(_objTower);
+                CreateTowerPrefab();
             if (GUILayout.Button("Back"))
             {
                 _showTower = false;
@@ -155,11 +155,18 @@ public class PrefabCreator : EditorWindow
         }
     }
 
-    private void CreatePrefab(GameObject obj)
+    private void CreateMechPrefab()
     {
-        string path = "Assets/New Prefabs/" + obj.name + ".prefab";
+        string path = "Assets/Prefabs/Mechs" + _objMech.name + ".prefab";
         path = AssetDatabase.GenerateUniqueAssetPath(path);
-        PrefabUtility.SaveAsPrefabAssetAndConnect(obj, path, InteractionMode.UserAction);
+        PrefabUtility.SaveAsPrefabAssetAndConnect(_objMech, path, InteractionMode.UserAction);
+    }
+
+    private void CreateTowerPrefab()
+    {
+        string path = "Assets/Prefabs/Towers" + _objTower.name + ".prefab";
+        path = AssetDatabase.GenerateUniqueAssetPath(path);
+        PrefabUtility.SaveAsPrefabAssetAndConnect(_objTower, path, InteractionMode.UserAction);
     }
 
     private void ApplyToMechPrefab()

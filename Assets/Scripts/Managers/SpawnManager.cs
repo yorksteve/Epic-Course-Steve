@@ -16,9 +16,7 @@ namespace Scripts.Managers
         [SerializeField] private List<WaveSystem> _wave;
 
         private List<GameObject> _currentWave;
-        private int _waveCount = 1;
 
-        //private WaitForSeconds _resetMechYield;
 
         public override void Init()
         {
@@ -28,46 +26,39 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            //EventManager.Listen("onSuccess", SuccessfulMechs);
-            //EventManager.Listen("onMechDestroyedSpawn", DestroyedMechs);
             EventManager.Listen("onDreadnaught", StartWave);
-            EventManager.Listen("onNextWave", StartWave);
-        }
-
-        private void Start()
-        {
-            //_spawnTimeYield = new WaitForSeconds(_wave[_currentWave].spawnDelay);
-            //_resetMechYield = new WaitForSeconds(.5f);
         }
 
         public void StartWave()
         {
-            StartCoroutine(SpawnTime());
+            StartCoroutine(SpawnTime(1));
         }
 
-        IEnumerator SpawnTime()
+        IEnumerator SpawnTime(int id)
         {
-            foreach (var wave in _wave)
+            //foreach (var wave in _wave)
+            //{
+            //    EventManager.Fire("onWaveCount", wave.id);
+            //    yield return wave.StartWaveSystem();
+            //    yield return new WaitForSeconds(wave.waveDuration);
+            //}
+
+            for (int i = (id - 1); i < _wave.Count; i++)
             {
-                EventManager.Fire("onWaveCount", _waveCount);
-                //wave.StartWaveSystem();
-                yield return wave.StartWaveSystem();
-                yield return new WaitForSeconds(wave.waveDuration);
-                _waveCount++;
-                //yield return _resetMechYield;
+                EventManager.Fire("onWaveCount", id);
+                yield return _wave[i].StartWaveSystem();
+                yield return new WaitForSeconds(_wave[i].waveDuration);
             }
         }
 
         public void RestartGame()
         {
-            _waveCount = 1;
-            StartWave();
+            StartCoroutine(SpawnTime(1));
         }
 
-        public void LoadLevel(int wave)
+        public void LoadLevel(int waveID)
         {
-            _waveCount = wave;
-            StartWave();
+            StartCoroutine(SpawnTime(waveID));
         }
 
         public Transform RequestDestination()
@@ -165,7 +156,6 @@ namespace Scripts.Managers
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onDreadnaught", StartWave);
-            EventManager.UnsubscribeEvent("onNextWave", StartWave);
         }
     }
 

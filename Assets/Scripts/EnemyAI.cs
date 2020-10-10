@@ -172,7 +172,6 @@ namespace Scripts
             _agent.isStopped = true;
             _health = 0f;
             _anim.SetBool("Die", true);
-            EventManager.Fire("onMechDestroyedSpawn");
             yield return _destroyMechYield;
             StartCoroutine(DissolveRoutine());
         }
