@@ -28,7 +28,7 @@ public class PrefabCreator : EditorWindow
     private bool _showTower = false;
 
 
-    [MenuItem("Window/Prefab Creator")]
+    [MenuItem("Tools/Prefab Creator")]
     static void Init()
     {
         PrefabCreator window = (PrefabCreator)EditorWindow.GetWindow(typeof(PrefabCreator));

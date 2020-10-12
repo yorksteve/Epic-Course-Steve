@@ -15,15 +15,13 @@ public class WaveCustomization : EditorWindow
     private int _numberOfMechs;
     [SerializeField] private GameObject[] _mechs;
 
- 
     private List<GameObject> _mechList;
-    private SerializedObject _mechEditor;
 
     private bool _addingWave;
     private bool _addingMech;
     private bool _dataLoaded;
 
-    [MenuItem("Window/Wave Customization")]
+    [MenuItem("Tools/Wave Customization")]
     static void Init()
     {
         WaveCustomization window = (WaveCustomization)EditorWindow.GetWindow(typeof(WaveCustomization));
@@ -32,7 +30,6 @@ public class WaveCustomization : EditorWindow
 
     private void OnEnable()
     {
-        _mechEditor = new SerializedObject(this);
         EventManager.Listen("onCreateNewWave", (Action<List<GameObject>>)NewWave);
         EventManager.Listen("onInsertWave", (Action<List<GameObject>>)InsertWave);
         EventManager.Listen("onAddedMech", (Action<List<GameObject>>)AddedMechs);
@@ -69,9 +66,6 @@ public class WaveCustomization : EditorWindow
             {
                 _mechs[i] = (GameObject)EditorGUILayout.ObjectField(_mechs[i], typeof(GameObject));
             }
-            //var property = _mechEditor.FindProperty("_mechs");
-            //EditorGUILayout.PropertyField(property, true);
-            //_mechEditor.ApplyModifiedProperties();
 
             // Add a new prefab to current wave
             if (GUILayout.Button("Add New Mech"))

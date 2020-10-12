@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Tower
   - Mech2
+  - RaidDestroyer
   layers:
   - Default
   - TransparentFX

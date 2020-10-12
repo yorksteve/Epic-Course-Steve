@@ -34,8 +34,10 @@ namespace Scripts.Managers
         private int _startCountDown = 5;
         private int _nextWaveCountDown = 10;
         private bool _gameStarted;
+        private bool _airRaid;
         private Transform _purchaseButton;
         private WaitForSeconds _countDownYield;
+        private WaitForSeconds _airRaidYield;
 
 
         public override void Init()
@@ -63,6 +65,7 @@ namespace Scripts.Managers
             _lifeCount.text = "100";
  
             _countDownYield = new WaitForSeconds(1);
+            _airRaidYield = new WaitForSeconds(10);
             WaveCount(1);
         }
 
@@ -237,6 +240,12 @@ namespace Scripts.Managers
                 _levelStatusText.text = "LEVEL COMPLETE";
                 _levelStatus.SetActive(true);
             }
+
+            if (waveNumber == 6 && _lives > 70)
+            {
+                EventManager.Fire("onSendAirRaid");
+                _airRaid = true;
+            }
         }
 
         public IEnumerator StartingGame()
@@ -265,6 +274,11 @@ namespace Scripts.Managers
                 if (_nextWaveCountDown == 0)
                 {
                     _levelStatus.SetActive(false);
+                    if (_airRaid == true)
+                    {
+                        yield return _airRaidYield;
+                        _airRaid = false;
+                    }
                     SpawnManager.Instance.StartWave();
                 }
             }
