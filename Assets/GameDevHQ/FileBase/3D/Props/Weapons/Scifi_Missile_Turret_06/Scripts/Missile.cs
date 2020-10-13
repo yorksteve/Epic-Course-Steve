@@ -42,7 +42,8 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
         // Use this for initialization
         IEnumerator Start()
         {
-            _mech = GameObject.FindGameObjectsWithTag("Enemy");
+            _mech = GameObject.FindGameObjectsWithTag("Mech1");
+            _mech = GameObject.FindGameObjectsWithTag("Mech2");
 
             _rigidbody = GetComponent<Rigidbody>(); //assign the rigidbody component 
             _audioSource = GetComponent<AudioSource>(); //assign the audiosource component

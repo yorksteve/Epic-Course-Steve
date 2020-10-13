@@ -67,28 +67,17 @@ namespace Scripts.Managers
         }
 
 
-        public GameObject GetMech(GameObject mechToGet)
+        public GameObject GetMech(int id)
         {
             foreach (var mech in _mechPool)
             {
-                if (mech.activeInHierarchy == false && mechToGet.Equals(mech))
+                if (mech.activeInHierarchy == false && mech.CompareTag(_mechs[id].tag))
                 {
                     mech.transform.position = _startPoint.position;
                     mech.SetActive(true);
                     return mech;
                 }
             }
-
-            int id = 0;
-            if (mechToGet == _mechs[0])
-            {
-                id = 0;
-            }
-            else
-            {
-                id = 1;
-            }
-
             return CreateMech(id);
         }
 

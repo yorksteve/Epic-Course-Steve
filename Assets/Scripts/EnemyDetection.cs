@@ -29,7 +29,7 @@ namespace Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag("Mech1") || other.gameObject.CompareTag("Mech2"))
             {
                 mechs.Add(other.gameObject);
                 _targetEnemy = mechs[0];
@@ -39,7 +39,7 @@ namespace Scripts
 
         private void OnTriggerStay(Collider other)
         {
-            if (other.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag("Mech1") || other.gameObject.CompareTag("Mech2"))
             {
                 if (_targetEnemy != null)
                 {
@@ -56,7 +56,7 @@ namespace Scripts
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag("Mech1") || other.gameObject.CompareTag("Mech2"))
             {
                 mechs.Remove(other.gameObject);
                 EventManager.Fire("onMechExit", other.gameObject);

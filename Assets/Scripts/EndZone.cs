@@ -11,7 +11,7 @@ namespace Scripts
     {
         private void OnTriggerEnter(Collider other)
         {
-            if (other.tag == "Enemy")
+            if (other.CompareTag("Mech1") || other.CompareTag("Mech2"))
             {
                 EventManager.Fire("onEndZoneReached", other.gameObject);
                 EventManager.Fire("onSuccess");

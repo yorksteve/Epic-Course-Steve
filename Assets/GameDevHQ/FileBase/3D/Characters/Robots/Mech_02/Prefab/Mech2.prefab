@@ -363,7 +363,7 @@ GameObject:
   - component: {fileID: 7289992696709187576}
   m_Layer: 0
   m_Name: Mech2
-  m_TagString: Enemy
+  m_TagString: Mech2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -457,7 +457,6 @@ MonoBehaviour:
   _mechColl: {fileID: -5446082025213779002}
   _parentConstraint: {fileID: 0}
   _health: 100
-  _maxHealth: 100
   _mechWarFund: 50
   _damageAmount: 2
 --- !u!1 &1088550950582580

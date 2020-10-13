@@ -8,6 +8,7 @@ TagManager:
   - Tower
   - Mech2
   - RaidDestroyer
+  - Mech1
   layers:
   - Default
   - TransparentFX

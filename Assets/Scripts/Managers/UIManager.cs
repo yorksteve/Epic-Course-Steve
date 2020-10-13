@@ -43,18 +43,14 @@ namespace Scripts.Managers
         public override void Init()
         {
             base.Init();
+            _levelStatusImage = _levelStatus.GetComponent<Image>();
+            _sellDisplayImage = _sellDisplay.GetComponent<Image>();
         }
 
         private void OnEnable()
         {
             EventManager.Listen("onSuccess", LifeCount);
             EventManager.Listen("onWaveCount", (Action<int>)WaveCount);
-        }
-
-        private void Awake()
-        {
-            _levelStatusImage = _levelStatus.GetComponent<Image>();
-            _sellDisplayImage = _sellDisplay.GetComponent<Image>();
         }
 
         public void Start()
