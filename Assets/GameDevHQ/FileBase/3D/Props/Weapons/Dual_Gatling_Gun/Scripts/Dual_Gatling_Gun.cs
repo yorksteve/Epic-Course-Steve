@@ -43,7 +43,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
 
         [SerializeField] private ParticleSystem _explosion;
         private float _maxHealth = 100f;
-        private float _damageAmount = .04f;
+        private float _damageAmount = .08f;
 
 
         public int WarFundsRequired { get => _warFundsRequired; set => _warFundsRequired = value; }
@@ -135,7 +135,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
             {
                 float health = _maxHealth;
                 health -= damage;
-                EventManager.Fire("onHealthBar", health, obj);
+                EventManager.Fire("onHealthBarCube", health, obj);
                 if (health <= 0)
                 {
                     _explosion.Play();

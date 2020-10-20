@@ -109,7 +109,7 @@ namespace Scripts.Managers
                 }
                 else
                 {
-                    Debug.Log("TowerManager::PlaceDecoyTower() : Not enough War Funds to buy this tower");
+                    StartCoroutine(UIManager.Instance.NotEnoughFunds());
                 }
             } 
         }

@@ -130,7 +130,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             {
                 float health = _maxHealth;
                 health -= damage;
-                EventManager.Fire("onHealthBar", health, obj);
+                EventManager.Fire("onHealthBarCube", health, obj);
                 if (health <= 0f)
                 {
                     _explosion.Play();

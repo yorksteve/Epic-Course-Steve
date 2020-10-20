@@ -14,6 +14,7 @@ namespace Scripts.Managers
         [SerializeField] private GameObject[] _upgradeDisplay;
         [SerializeField] private GameObject _sellDisplay;
         [SerializeField] private GameObject _levelStatus;
+        [SerializeField] private GameObject _purchaseTextObject;
 
         [SerializeField] private Image _armoryDisplay;
         [SerializeField] private Image _warfundDisplay;
@@ -38,6 +39,7 @@ namespace Scripts.Managers
         private Transform _purchaseButton;
         private WaitForSeconds _countDownYield;
         private WaitForSeconds _airRaidYield;
+        private WaitForSeconds _textFadeYield;
 
 
         public override void Init()
@@ -62,6 +64,7 @@ namespace Scripts.Managers
  
             _countDownYield = new WaitForSeconds(1);
             _airRaidYield = new WaitForSeconds(10);
+            _textFadeYield = new WaitForSeconds(2);
             WaveCount(1);
         }
 
@@ -141,6 +144,13 @@ namespace Scripts.Managers
         public void CancelUpgrade(int i)
         {
             _upgradeDisplay[i].SetActive(false);
+        }
+
+        public IEnumerator NotEnoughFunds()
+        {
+            _purchaseTextObject.SetActive(true);
+            yield return _textFadeYield;
+            _purchaseTextObject.SetActive(false);
         }
 
         public void ChangeFunds(int amount)

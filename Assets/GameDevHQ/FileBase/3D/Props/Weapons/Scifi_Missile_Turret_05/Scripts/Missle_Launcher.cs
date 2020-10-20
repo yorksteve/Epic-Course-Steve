@@ -122,7 +122,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
             {
                 float health = 100f;
                 health -= damage;
-                EventManager.Fire("onHealthBar", health, obj);
+                EventManager.Fire("onHealthBarCube", health, obj);
                 if (health <= 0f)
                 {
                     _explosion.Play();
