@@ -16,14 +16,14 @@ namespace Scripts.ScriptableObjects
         public int waveDuration = 10;
 
         private WaitForSeconds _resetDelay;
-        private GameObject[] _mechs;
+        [SerializeField] private GameObject[] _mechs;
 
         private void Awake()
         {
             _resetDelay = new WaitForSeconds(.5f);
-            var mech1 = (GameObject)AssetDatabase.LoadMainAssetAtPath("Assets/GameDevHQ/FileBase/Projects/Tutorials/Starter_Files/Epic_Tower_Defense/3D/Characters/Robots/Mech1/Prefab/Mech1.prefab");
-            var mech2 = (GameObject)AssetDatabase.LoadMainAssetAtPath("Assets/GameDevHQ/FileBase/3D/Characters/Robots/Mech_02/Prefab/Mech2.prefab");
-            _mechs = new GameObject[] { mech1, mech2 };
+            //var mech1 = (GameObject)AssetDatabase.LoadMainAssetAtPath("Assets/GameDevHQ/FileBase/Projects/Tutorials/Starter_Files/Epic_Tower_Defense/3D/Characters/Robots/Mech1/Prefab/Mech1.prefab");
+            //var mech2 = (GameObject)AssetDatabase.LoadMainAssetAtPath("Assets/GameDevHQ/FileBase/3D/Characters/Robots/Mech_02/Prefab/Mech2.prefab");
+            //_mechs = new GameObject[] { mech1, mech2 };
         }
 
         public IEnumerator StartWaveSystem()

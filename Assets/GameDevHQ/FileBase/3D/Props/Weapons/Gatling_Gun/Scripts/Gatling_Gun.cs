@@ -1,7 +1,5 @@
 ﻿using Scripts.Interfaces;
 using Scripts.Managers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -44,7 +42,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private Transform _towerSource;
 
         private ParticleSystem _muzzleFlash;
-        private float _damageAmount = .04f;
+        private float _damageAmount = .08f;
         private float _maxHealth = 100;
 
         // Use this for initialization
@@ -64,7 +62,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         }
 
         // Method to rotate gun barrel 
-        void RotateBarrel() 
+        void RotateBarrel()
         {
             _gunBarrel.transform.Rotate(Vector3.forward * Time.deltaTime * -500.0f); //rotate the gun barrel along the "forward" (z) axis at 500 meters per second
 

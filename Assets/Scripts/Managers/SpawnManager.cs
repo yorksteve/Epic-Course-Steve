@@ -1,9 +1,7 @@
-﻿using Scripts.Extra;
-using Scripts.ScriptableObjects;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Scripts.ScriptableObjects;
 using UnityEngine;
 using YorkSDK.Util;
 
@@ -16,6 +14,9 @@ namespace Scripts.Managers
         [SerializeField] private List<WaveSystem> _wave;
 
         private List<GameObject> _currentWave;
+        private WaveSystem _waveTracker;
+
+        private int _mechCounter;
 
 
         public override void Init()
@@ -27,6 +28,8 @@ namespace Scripts.Managers
         private void OnEnable()
         {
             EventManager.Listen("onDreadnaught", StartWave);
+            EventManager.Listen("onSuccess", MechCounter);
+            EventManager.Listen("onMechKilled", MechCounter);
         }
 
         public void StartWave()
@@ -43,11 +46,27 @@ namespace Scripts.Managers
             //    yield return new WaitForSeconds(wave.waveDuration);
             //}
 
-            for (int i = (id - 1); i < _wave.Count; i++)
+            for (int i = 0; i < _wave.Count; i++)
             {
                 EventManager.Fire("onWaveCount", id);
+                _waveTracker = _wave[i];
                 yield return _wave[i].StartWaveSystem();
                 yield return new WaitForSeconds(_wave[i].waveDuration);
+                yield return WaveDelayRoutine();
+            }
+        }
+
+        IEnumerator WaveDelayRoutine()
+        {
+            yield return UIManager.Instance.NextWave();
+        }
+
+        public void MechCounter()
+        {
+            _mechCounter++;
+            if (_mechCounter == _waveTracker.sequence.Count)
+            {
+                EventManager.Fire("onStartNextWave", true);
             }
         }
 
@@ -156,6 +175,8 @@ namespace Scripts.Managers
         private void OnDisable()
         {
             EventManager.UnsubscribeEvent("onDreadnaught", StartWave);
+            EventManager.UnsubscribeEvent("onSuccess", MechCounter);
+            EventManager.UnsubscribeEvent("onMechKilled", MechCounter);
         }
     }
 

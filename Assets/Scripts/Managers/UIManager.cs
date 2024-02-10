@@ -36,6 +36,7 @@ namespace Scripts.Managers
         private int _nextWaveCountDown = 10;
         private bool _gameStarted;
         private bool _airRaid;
+        private bool _nextWave;
         private Transform _purchaseButton;
         private WaitForSeconds _countDownYield;
         private WaitForSeconds _airRaidYield;
@@ -53,6 +54,7 @@ namespace Scripts.Managers
         {
             EventManager.Listen("onSuccess", LifeCount);
             EventManager.Listen("onWaveCount", (Action<int>)WaveCount);
+            EventManager.Listen("onStartNextWave", NextWaveBool);
         }
 
         public void Start()
@@ -271,23 +273,32 @@ namespace Scripts.Managers
 
         public IEnumerator NextWave()
         {
-            while (_nextWaveCountDown > 0)
+            if (_nextWave == true)
             {
-                _levelStatusText.text = ("Next Wave in \n" + _nextWaveCountDown.ToString());
-                _levelStatus.SetActive(true);
-                _nextWaveCountDown--;
-                yield return _countDownYield;
-                if (_nextWaveCountDown == 0)
+                while (_nextWaveCountDown > 0)
                 {
-                    _levelStatus.SetActive(false);
-                    if (_airRaid == true)
+                    _levelStatusText.text = ("Next Wave in \n" + _nextWaveCountDown.ToString());
+                    _levelStatus.SetActive(true);
+                    _nextWaveCountDown--;
+                    yield return _countDownYield;
+                    if (_nextWaveCountDown == 0)
                     {
-                        yield return _airRaidYield;
-                        _airRaid = false;
+                        _levelStatus.SetActive(false);
+                        if (_airRaid == true)
+                        {
+                            yield return _airRaidYield;
+                            _airRaid = false;
+                        }
+                        //SpawnManager.Instance.StartWave();
                     }
-                    SpawnManager.Instance.StartWave();
                 }
+                _nextWave = false;
             }
+        }
+
+        public void NextWaveBool()
+        {
+            _nextWave = true;
         }
 
         public void ChangeStatus(Color color)
@@ -310,6 +321,7 @@ namespace Scripts.Managers
         {
             EventManager.UnsubscribeEvent("onSuccess", LifeCount);
             EventManager.UnsubscribeEvent("onWaveCount", (Action<int>)WaveCount);
+            EventManager.UnsubscribeEvent("onStartNextWave", NextWaveBool);
         }
     }
 }

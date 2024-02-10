@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using Scripts.Managers;
 using UnityEngine;
 
 /*
@@ -26,7 +26,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
 
         private Rigidbody _rigidbody; //reference to the rigidbody of the rocket
         private AudioSource _audioSource; //reference to the audiosource of the rocket
-        
+
         private bool _launched = false; //bool for if the rocket has launched
         private float _initialLaunchTime = 2.0f; //initial launch time for the rocket
         private bool _thrust; //bool to enable the rocket thrusters
@@ -38,6 +38,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
         private Transform _target;
 
         private GameObject[] _mech;
+        private float _damageAmount = 2f;
 
         // Use this for initialization
         IEnumerator Start()
@@ -62,7 +63,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
 
 
         // Update is called once per frame
-        void FixedUpdate()
+        void Update()
         {
             if (_fuseOut == false) //check if fuseOut is false
                 return;
@@ -74,18 +75,18 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
                 if (Time.time > _initialLaunchTime + _fuseDelay) //check if the initial launch + fuse delay has passed
                 {
                     _launched = false; //launched bool goes false
-                    _thrust = true; //thrust bool goes true
+                    //_thrust = true; //thrust bool goes true
                 }
             }
 
-            if (_thrust == true) //if thrust is true
-            {
-                _rigidbody.useGravity = true; //enable gravity 
-                _rigidbody.velocity = transform.forward * _power; //set velocity multiplied by the power variable
-                _thrust = false; //set thrust bool to false
-                _trackRotation = true; //track rotation bool set to true
-            }
-             
+            //if (_thrust == true) //if thrust is true
+            //{
+            _rigidbody.useGravity = true; //enable gravity 
+            _rigidbody.velocity = transform.forward * _power; //set velocity multiplied by the power variable
+                                                              //_thrust = false; //set thrust bool to false
+            _trackRotation = true; //track rotation bool set to true
+                                   //}
+
             if (_trackRotation == true) //check track rotation bool
             {
                 if (_missileType == Missile_Launcher.MissileType.Normal) //checking for normal missile 
@@ -93,7 +94,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
                     _rigidbody.rotation = Quaternion.LookRotation(_rigidbody.velocity); // adjust rotation of rocket based on velocity
                     _rigidbody.AddForce(transform.forward * 100f); //add force to the rocket
                 }
-                else if (_missileType == Missile_Launcher.MissileType.Homing) //if missle is homing
+                else //if missle is homing
                 {
                     if (_target == null) //checking if the target is null
                     {
@@ -113,7 +114,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
 
         }
 
-        /// <summary>
+        /// <summary>s
         /// This method is used to assign traits to our missle assigned from the launcher.
         /// </summary>
         public void AssignMissleRules(Missile_Launcher.MissileType missileType, Transform target, float launchSpeed, float power, float fuseDelay, float destroyTimer)
@@ -128,9 +129,9 @@ namespace GameDevHQ.FileBase.Missile_Launcher.Missile
 
         private void OnCollisionEnter(Collision other)
         {
-            if (other.gameObject.Equals(_mech))
+            if (other.transform.Equals(_target))
             {
-                Destroy(other.gameObject); //destroy collided object
+                EventManager.Fire("onDamage", _damageAmount);
             }
 
             if (_explosionPrefab != null)

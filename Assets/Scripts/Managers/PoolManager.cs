@@ -1,9 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using YorkSDK.Util;
-using System;
-using Scripts.ScriptableObjects;
 
 namespace Scripts.Managers
 {
@@ -40,9 +38,9 @@ namespace Scripts.Managers
         {
             GameObject mech = Instantiate(_mechs[id], _startPoint.position, Quaternion.identity);
             mech.transform.parent = _mechContainer.transform;
-            mech.SetActive(false);            
+            mech.SetActive(false);
             _mechPool.Add(mech);
-            
+
             return mech;
         }
 

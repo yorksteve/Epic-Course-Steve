@@ -1,9 +1,8 @@
-﻿using Scripts.Interfaces;
-using Scripts.Managers;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using Scripts.Interfaces;
+using Scripts.Managers;
 using UnityEngine;
-using System;
 
 namespace Scripts
 {

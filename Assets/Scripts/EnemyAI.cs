@@ -44,6 +44,17 @@ namespace Scripts
             _destroyMechYield = new WaitForSeconds(3);
         }
 
+        private void OnEnable()
+        {
+            EventManager.Listen("onDamage", (Action<float>)Health);
+            EventManager.Listen("onNewWave", ResetMech);
+            EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
+            EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
+            EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
+            EventManager.Listen("onCleaningMech", (Action<GameObject>)CleanUpMech);
+            EventManager.Listen("onTargetedMech", (Action<GameObject>)TargetedMech);
+        }
+
         private void Start()
         {
             _destination = SpawnManager.Instance.RequestDestination();
@@ -57,17 +68,6 @@ namespace Scripts
                 _agent = GetComponent<NavMeshAgent>();
                 _agent.SetDestination(_destination.position);
             }
-        }
-
-        private void OnEnable()
-        {
-            EventManager.Listen("onDamage", (Action<float>)Health);
-            EventManager.Listen("onNewWave", ResetMech);           
-            EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
-            EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
-            EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
-            EventManager.Listen("onCleaningMech", (Action<GameObject>)CleanUpMech);
-            EventManager.Listen("onTargetedMech", (Action<GameObject>)TargetedMech);
         }
 
         private void ResetMech()
@@ -157,6 +157,7 @@ namespace Scripts
                 {
                     _mechKilled = true;
                     EventManager.Fire("onTargetNew", this.gameObject); // Fire event to EnemyDetection
+                    EventManager.Fire("onMechKilled");
                     StartCoroutine(DestroyMech(this.gameObject));
                 }
             }
@@ -171,6 +172,7 @@ namespace Scripts
             _mechColl.enabled = false;
             _agent.isStopped = true;
             _health = 0f;
+            EventManager.Fire("onMechDestroyed", _mechWarFund);
             _anim.SetBool("Die", true);
             yield return _destroyMechYield;
             StartCoroutine(DissolveRoutine());
@@ -197,7 +199,6 @@ namespace Scripts
 
         void CleanUpMech(GameObject mech)
         {
-            EventManager.Fire("onMechDestroyed", _mechWarFund);
             _anim.WriteDefaultValues();
             foreach (var rend in _rends)
             {
@@ -206,6 +207,7 @@ namespace Scripts
             EventManager.Fire("onRecycleMech", mech);
             EventManager.Fire("onResetHealthMech", _maxHealth, mech);
             _mechColl.enabled = true;
+            _health = 100f;
             if (_parentConstraint != null)
             {
                 _parentConstraint.enabled = true;
