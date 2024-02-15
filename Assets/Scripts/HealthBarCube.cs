@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-using Scripts.Managers;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace Scripts
 {
@@ -17,12 +12,6 @@ namespace Scripts
         private Material _material;
         private Renderer _rend;
         private float _healthPercent;
-
-        private void OnEnable()
-        {
-            EventManager.Listen("onHealthBarCube", (Action<float, GameObject>)ModifyHealth);
-            EventManager.Listen("onResetHealthMech", (Action<float, GameObject>)ModifyHealth);
-        }
 
         private void Awake()
         {
@@ -39,21 +28,17 @@ namespace Scripts
             transform.LookAt(direction);
         }
 
-        private void ModifyHealth(float health, GameObject obj)
+        public void Reset()
         {
-            if (obj == _currentObj)
-            {
-                _currentHealth = health;
-                _healthPercent = _currentHealth / _maxHealth;
-                _material.SetFloat("_healthPercent", _healthPercent);
-                gameObject.transform.localScale = new Vector3(Mathf.Clamp(_healthPercent * _maxScale, 0, _maxScale), .5f, .05f);
-            }
+            ModifyHealth(_maxHealth);
         }
 
-        private void OnDisable()
+        public void ModifyHealth(float health)
         {
-            EventManager.UnsubscribeEvent("onHealthBarCube", (Action<float, GameObject>)ModifyHealth);
-            EventManager.UnsubscribeEvent("onResetHealthMech", (Action<float, GameObject>)ModifyHealth);
+            _currentHealth = health;
+            _healthPercent = _currentHealth / _maxHealth;
+            _material.SetFloat("_healthPercent", _healthPercent);
+            gameObject.transform.localScale = new Vector3(Mathf.Clamp(_healthPercent * _maxScale, 0, _maxScale), .5f, .05f);
         }
     }
 }

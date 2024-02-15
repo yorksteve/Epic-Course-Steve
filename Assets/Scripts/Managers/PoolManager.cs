@@ -30,7 +30,6 @@ namespace Scripts.Managers
 
         private void OnEnable()
         {
-            EventManager.Listen("onEndZoneReached", (Action<GameObject>)RecycleMech);
             EventManager.Listen("onRecycleMech", (Action<GameObject>)RecycleMech);
         }
 
@@ -87,7 +86,6 @@ namespace Scripts.Managers
 
         private void OnDisable()
         {
-            EventManager.UnsubscribeEvent("onEndZoneReached", (Action<GameObject>)RecycleMech);
             EventManager.UnsubscribeEvent("onRecycleMech", (Action<GameObject>)RecycleMech);
         }
     }

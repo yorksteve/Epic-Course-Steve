@@ -5,6 +5,7 @@ using GameDevHQ.FileBase.Missle_Launcher_Dual_Turret.Missle;
 using Scripts.Interfaces;
 using System;
 using Scripts.Managers;
+using Scripts;
 
 namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
 {
@@ -44,10 +45,13 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
         private float _maxHealth = 100f;
         private float _damageAmount = 8f;
 
+        private HealthBarCube _healthBar;
+
         private void Start()
         {
             _towerSource = _towerBase.GetComponent<Transform>();
             CurrentModel = this.gameObject;
+            _healthBar = GetComponentInChildren<HealthBarCube>();
         }
 
         IEnumerator FireRocketsRoutine()
@@ -122,7 +126,7 @@ namespace GameDevHQ.FileBase.Missle_Launcher_Dual_Turret
             {
                 float health = 100f;
                 health -= damage;
-                EventManager.Fire("onHealthBarCube", health, obj);
+                _healthBar.ModifyHealth(health);
                 if (health <= 0f)
                 {
                     _explosion.Play();

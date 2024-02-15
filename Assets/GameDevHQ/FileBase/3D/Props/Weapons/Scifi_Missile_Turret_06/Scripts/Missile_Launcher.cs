@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Scripts;
 using Scripts.Interfaces;
 using Scripts.Managers;
 using UnityEngine;
@@ -56,12 +57,15 @@ namespace GameDevHQ.FileBase.Missile_Launcher
         private float _maxHealth = 50f;
         private float _damageAmount = 2f;
 
+        private HealthBarCube _healthBar;
+
 
         private void Start()
         {
             CurrentModel = this.gameObject;
 
             _towerSource = _towerBase.GetComponent<Transform>();
+            _healthBar = GetComponentInChildren<HealthBarCube>();
         }
 
         IEnumerator FireRocketsRoutine()
@@ -128,7 +132,7 @@ namespace GameDevHQ.FileBase.Missile_Launcher
             {
                 float health = _maxHealth;
                 health -= damage;
-                EventManager.Fire("onHealthBarCube", health, obj);
+                _healthBar.ModifyHealth(health);
                 if (health <= 0f)
                 {
                     _explosion.Play();

@@ -1,4 +1,5 @@
-﻿using Scripts.Interfaces;
+﻿using Scripts;
+using Scripts.Interfaces;
 using Scripts.Managers;
 using System;
 using System.Collections;
@@ -51,6 +52,8 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
 
         public GameObject UpgradeModel => throw new System.NotImplementedException();
 
+        private HealthBarCube _healthBar;
+
         // Use this for initialization
         void Start()
         {
@@ -65,6 +68,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
 
             _towerSource = _towerBase.GetComponent<Transform>();
             _originalRotation = _towerSource.rotation;
+            _healthBar = GetComponentInChildren<HealthBarCube>();
         }
 
         // Method to rotate gun barrel 
@@ -135,7 +139,7 @@ namespace GameDevHQ.FileBase.Dual_Gatling_Gun
             {
                 float health = _maxHealth;
                 health -= damage;
-                EventManager.Fire("onHealthBarCube", health, obj);
+                _healthBar.ModifyHealth(health);
                 if (health <= 0)
                 {
                     _explosion.Play();

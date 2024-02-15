@@ -30,6 +30,8 @@ namespace Scripts
         private bool _mechKilled = false;
         private WaitForSeconds _destroyMechYield;
 
+        private HealthBarCube _healthBar;
+
         private void Awake()
         {
             _rotationPoint = _mechRotation.GetComponent<Transform>();
@@ -51,12 +53,13 @@ namespace Scripts
             EventManager.Listen("onTargetTower", (Action<GameObject>)Target);
             EventManager.Listen("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.Listen("onMechExit", (Action<GameObject>)MechExit);
-            EventManager.Listen("onCleaningMech", (Action<GameObject>)CleanUpMech);
             EventManager.Listen("onTargetedMech", (Action<GameObject>)TargetedMech);
+            EventManager.Listen("onEndZoneReached", (Action<GameObject>)EndReached);
         }
 
         private void Start()
         {
+            _healthBar = GetComponentInChildren<HealthBarCube>();
             _destination = SpawnManager.Instance.RequestDestination();
 
             if (_agent != null)
@@ -151,7 +154,7 @@ namespace Scripts
             if (_targetMech == this.gameObject)
             {
                 _health -= damage;
-                EventManager.Fire("onHealthBarCube", _health, this.gameObject);
+                _healthBar.ModifyHealth(_health);
 
                 if (_health <= 0 && _mechKilled == false)
                 {
@@ -192,27 +195,41 @@ namespace Scripts
 
                 if (dissolve >= 1f)
                 {
-                    EventManager.Fire("onCleaningMech", this.gameObject);
+                    CleanUpMech();
                 }
             }
         }
 
-        void CleanUpMech(GameObject mech)
+        private void CleanUpMech()
         {
             _anim.WriteDefaultValues();
             foreach (var rend in _rends)
             {
                 rend.material.SetFloat("_fillAmount", 0f);
             }
-            EventManager.Fire("onRecycleMech", mech);
-            EventManager.Fire("onResetHealthMech", _maxHealth, mech);
+            EventManager.Fire("onRecycleMech", this.gameObject);
             _mechColl.enabled = true;
-            _health = 100f;
+            ResetHealth();
             if (_parentConstraint != null)
             {
                 _parentConstraint.enabled = true;
             }
             _mechKilled = false;
+        }
+
+        private void ResetHealth()
+        {
+            _health = _maxHealth;
+            _healthBar.Reset();
+        }
+
+        private void EndReached(GameObject mech)
+        {
+            if (this.gameObject == mech)
+            {
+                ResetHealth();
+                EventManager.Fire("onRecycleMech", this.gameObject);
+            }
         }
 
         public float EditorGetHealth()
@@ -239,8 +256,8 @@ namespace Scripts
             EventManager.UnsubscribeEvent("onTargetTower", (Action<GameObject>)Target);
             EventManager.UnsubscribeEvent("onCheckMech", (Action<GameObject>)CheckMech);
             EventManager.UnsubscribeEvent("onMechExit", (Action<GameObject>)MechExit);
-            EventManager.UnsubscribeEvent("onCleaningMech", (Action<GameObject>)CleanUpMech);
             EventManager.UnsubscribeEvent("onTargetedMech", (Action<GameObject>)TargetedMech);
+            EventManager.UnsubscribeEvent("onEndZoneReached", (Action<GameObject>)EndReached);
         }
     }
 }

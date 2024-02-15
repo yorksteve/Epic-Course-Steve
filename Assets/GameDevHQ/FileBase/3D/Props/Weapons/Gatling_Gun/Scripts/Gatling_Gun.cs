@@ -1,4 +1,5 @@
-﻿using Scripts.Interfaces;
+﻿using Scripts;
+using Scripts.Interfaces;
 using Scripts.Managers;
 using UnityEngine;
 
@@ -45,6 +46,8 @@ namespace GameDevHQ.FileBase.Gatling_Gun
         private float _damageAmount = .08f;
         private float _maxHealth = 100;
 
+        private HealthBarCube _healthBar;
+
         // Use this for initialization
         void Start()
         {
@@ -59,6 +62,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             _audioSource.clip = fireSound; //assign the clip to play
 
             _muzzleFlash = Muzzle_Flash.GetComponent<ParticleSystem>();
+            _healthBar = GetComponentInChildren<HealthBarCube>();
         }
 
         // Method to rotate gun barrel 
@@ -74,7 +78,7 @@ namespace GameDevHQ.FileBase.Gatling_Gun
             {
                 float currentHealth = _maxHealth;
                 currentHealth -= damage;
-                EventManager.Fire("onHealthBarCube", currentHealth, obj);
+                _healthBar.ModifyHealth(currentHealth);
                 if (currentHealth <= 0)
                 {
                     _explosion.Play();
